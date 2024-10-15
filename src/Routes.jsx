@@ -5,91 +5,68 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import AttributeSetup from "./pages/ProductAttributeSetUp/ProductAttributeSetUp";
-import WelcomePage from "./pages/WelcomePage/WelcomePage";
-import Categories from "./pages/Categoreis/Categories";
-import Sub_Sub_Categories from "./pages/Categoreis/Sub_Sub_Categories";
-import AddNewBrand from "./pages/Brands/AddNew";
-import BulkImport from "./pages/In_House_Product/AddProduct/BulkImport/BulkImport";
-import Coupon from "./pages/OfferAndDeals/Coupon/Coupon";
-import FlashDeals from "./pages/OfferAndDeals/FlashDeal/FlashDeals";
-import DealOfTheDay from "./pages/OfferAndDeals/DealOfDay/DealOfDay";
-import FeatureDeal from "./pages/OfferAndDeals/FeatureDeal/FeatureDeal";
-import CustomerReviews from "./pages/Costumers/Costumer_Review/CustomerReviews";
-import CustomerList from "./pages/Costumers/Costumer_Review/CustomerList/CustomerList";
-import WalletManagement from "./pages/Costumers/CWallet/CustomersWallet";
-import CustomerBonusSetUp from "./pages/Costumers/CustomerBonusSetUp/CustomerBonusSetUp";
+import Categories from "./pages/admin/Categories/Main_Categories/Category/list/Categories.jsx";
+import Sub_Sub_Categories from "./pages/admin/Categories/subSubCategories/Sub_Sub_Categories.jsx";
+import BulkImport from "./pages/admin/product/add/bulkImport/bulkImport.jsx";
+import CustomerReviews from "./pages/user/costumerReview/customerReviews.jsx";
+import CustomerList from "./pages/user/customerList/CustomerList.jsx";
+import WalletManagement from "./pages/user/customersWallet/customersWallet.js";
+import CustomerBonusSetUp from "./pages/user/customerBonusSetUp/CustomerBonusSetUp.jsx";
 
-import CustomerLoyaltyReport from "./pages/Costumers/CustomerLoyalityReport/CustomerLoyaltyReport";
-import EmployeeRoleSetup from "./pages/Employees/EmployeRoleSetUp/EmployeeRoleSetup";
+import CustomerLoyaltyReport from "./pages/user/customerLoyalityReport/CustomerLoyaltyReport.jsx";
+import EmployeeRoleSetup from "./pages/admin/employees/add/EmployeeRoleSetup.jsx";
 
-import EmployeeList from "./pages/Employees/Employees/Employees";
-import SubscriberList from "./pages/Subscriber/SubscriberList";
-import SystemSetup from "./pages/SettingSetup/SystemSetup.jsx/SystemSetup";
-import AppSettings from "./pages/SettingSetup/SystemSetup.jsx/SystemSetups";
-import SystemSettings from "./pages/SettingSetup/SystemSetup.jsx/SystemSetups";
-import SystemSetups from "./pages/SettingSetup/SystemSetup.jsx/SystemSetups";
-import LoginSetups from "./pages/SettingSetup/LoginSetting/LoginSetting";
+import EmployeeList from "./pages/admin/employees/list/Employees.jsx";
+import SubscriberList from "./pages/admin/subscriber/SubscriberList.jsx";
+import SystemSetup from "./pages/admin/settingSetup/SystemSetup.jsx";
+import AppSettings from "./pages/admin/settingSetup/SystemSetups.jsx";
+import SystemSettings from "./pages/admin/settingSetup/SystemSetups.jsx";
+import SystemSetups from "./pages/admin/settingSetup/SystemSetups.jsx";
+import LoginSetups from "./pages/admin/settingSetup/loginSetting/LoginSetting.jsx";
 import TheemSetUp from "./pages/SettingSetup/Theem/TheemSetUp";
 import ThirParty from "./pages/ThirdParty/ThirParty";
 import OtherConfiguration from "./pages/ThirdParty/Paymentmethod/OtherConfiguration/OtherConfiguration";
-import Page from "./pages/ThirdParty/Paymentmethod/OtherConfiguration/page";
-import SocialMedia from "./pages/PagesAndMedia/SocialMedia";
-import PageAndMedia from "./pages/PagesAndMedia/page";
-import Combine from "./pages/SalesAndTransaction/EarnReport/totallcomponent";
-import EarningReport from "./pages/SalesAndTransaction/EarnReport/totallcomponent";
-import InhouseSale from "./pages/SalesAndTransaction/InhouseProduct/InhouseProduct";
-import BusinessSetup from "./pages/Bussnesssetup/BusinessSetup";
-import InHouseBusiness from "./pages/Bussnesssetup/InHouseBusiness/InHouseBusiness";
+import SocialMedia from "./pages/admin/pagesAndMedia/socialMedia/socialMedia.jsx";
+import PageAndMedia from "./pages/admin/pagesAndMedia/pageAndMedia.jsx";
+import EarningReport from "./pages/admin/transactionReport/EarnReport/EarningReport.jsx";
+import InhouseSale from "./pages/admin/transactionReport/InhouseProduct/InhouseProduct.jsx";
 
-import Ticket_Support from "./pages/Health_Support/Ticket_Support";
-import Message from "./pages/Health_Support/Message";
-import OrderList from "./pages/Order/OrderList";
-import ProdictGallery from "./pages/Health_Support/Product_Gallery";
-import BrandList from "./pages/Brands/BrandList";
-import BannerSetup from "./pages/faisal/BannerSetup/BannerSetup";
-import POS from "./pages/Health_Support/Pos";
-import IndexMessage from "./pages/Health_Support/Index";
+import Ticket_Support from "./pages/admin/healthSupport/Ticket_Support.jsx";
+import Message from "./pages/admin/healthSupport/Message.jsx";
+import ProdictGallery from "./pages/admin/healthSupport/Product_Gallery.jsx";
+import BannerSetup from "./pages/admin/banner/list/bannerSetup.jsx";
+import POS from "./pages/admin/healthSupport/Pos.js";
+import IndexMessage from "./pages/admin/healthSupport/Index.jsx";
 
-import PuchNotify from "./pages/faisal/PuchNotifaction/PuchNotify";
-import AnnouncementSetup from "./pages/faisal/AnnouncementSetup/AnnouncementSetup";
-import SendNotifaction from "./pages/faisal/SendNotifaction";
-import AddNewDelivery from "./pages/faisal/Delivery Men/AddNew";
-import DeliveryManList from "./pages/faisal/Delivery Men/List";
-import EmergencyContact from "./pages/faisal/Delivery Men/EmergencyContact";
-import WithdrawRequest from "./pages/faisal/Delivery Men/WithdrawRequest";
-import BusinessSetupShop from "./pages/Bussnesssetup/BusinessSetup";
-import VendorList from "./pages/Vender/VenderList/VenderList";
-import VenderListDetail from "./pages/Vender/VendereListDetail/VenderList";
-import ShopStoreDetails from "./pages/Vender/VendereListDetail/ShopStoreDetails";
-import OrderDeatiels from "./pages/Order/OrderDeatiels";
-import AddVendorForm from "./pages/Vender/AddVender/AddVender";
-import VenderWallet from "./pages/Vender/VenderWallet/VenderWallet";
-import VenderWalletMethod from "./pages/Vender/VenderWalletMethod/VenderWalletMethod";
-import WithdrawalMethods from "./pages/Vender/VenderWalletMethod/VenderWidrawmethod";
-import RefundDetails from "./pages/Refound/Details/RefoundDetail/RefoundDetail";
-import CategoryUpdate from "./pages/Categoreis/CategoryEdit/CategoryEdit";
-import BrandUpdate from "./pages/Brands/BrandUpdate";
-import UpdateAttribute from "./pages/ProductAttributeSetUp/UpdateAtribute";
+import PuchNotify from "./pages/admin/notification/puchNotify.jsx";
+import AnnouncementSetup from "./pages/admin/announcement/AnnouncementSetup.jsx";
+import SendNotifaction from "./pages/admin/notification/sendNotifaction.jsx";
+import AddNewDelivery from "./pages/delivery/add/AddNew.jsx";
+import DeliveryManList from "./pages/delivery/list/deliveryManList.jsx";
+import EmergencyContact from "./pages/delivery/list/emergencyContact.jsx";
+import WithdrawRequest from "./pages/delivery/list/withdrawRequest.jsx";
+import VendorList from "./pages/seller/vendor/list/vendorList/VenderList.jsx";
+import VenderListDetail from "./pages/seller/vendor/list/VenderDetail.jsx";
+import ShopStoreDetails from "./pages/seller/vendor/list/vendereListDetial/ShopStoreDetails.jsx";
+import OrderDeatiels from "./pages/Order/OrderDeatiels.jsx";
+import AddVendorForm from "./pages/seller/vendor/add/addVender/AddVender.jsx";
+import RefundDetails from "./pages/transaction/refound/detail/refoundDetail.jsx";
 // import GenerateBarcode from "./pages/In_House_Product/InHouseProductList/GeneratCode/GeneratCode";
-import ProductDetails from "./pages/In_House_Product/InHouseProductList/ProductDetail/ProductDetail.jsx";
-import BannerUpdateForm from "./pages/faisal/BannerSetup/BannerSetupForm";
-import AddBannerForm from "./pages/faisal/BannerSetup/AddBanner";
-import CouponUpdate from "./pages/OfferAndDeals/Coupon/CouponUpdate";
-import AddNewProductComponent from "./pages/OfferAndDeals/FeatureDeal/AddDealProduct";
-import LimitedStockProductsList from "./pages/In_House_Product/InHouseProductList/LimitedProduct/LimitedProduct";
-import ProductGallery from "./pages/Health_Support/Product_Gallery";
-import PageGallery from "./pages/Health_Support/Gallery";
-import EaringReports from "./pages/faisal/ReportAndAnalysis/SalesAndTranscationReports/EmaingReport/EamingReports";
-import ProductReports from "./pages/faisal/ReportAndAnalysis/ProductReports/ProductReports";
-import OrderReports from "./pages/faisal/ReportAndAnalysis/OrderReports/OrderReports";
-import InHouseSales from "./pages/faisal/ReportAndAnalysis/SalesAndTranscationReports/InHouseSales";
-import VendorSales from "./pages/faisal/ReportAndAnalysis/SalesAndTranscationReports/VendorSales";
-import TranscatioReports from "./pages/faisal/ReportAndAnalysis/SalesAndTranscationReports/TransctionReports/TranscatioReports";
-import AddInHouseNewProduct from "./pages/In_House_Product/AddProduct/AddProduct";
-import ProfileInformation from "./components/new/Footer/ProfileInformation/ProfileInformation";
+import ProductDetails from "./pages/admin/product/list/productDetail/ProductDetail.jsx";
+import BannerUpdateForm from "./pages/admin/banner/add/bannerUpdateForm.jsx";
+import AddBannerForm from "./pages/admin/banner/add/AddBanner.jsx";
+import LimitedStockProductsList from "./pages/admin/product/add/limitedProduct/limitedProduct.jsx";
+import ProductGallery from "./pages/admin/healthSupport/Product_Gallery.jsx";
+import PageGallery from "./pages/admin/healthSupport/Gallery.jsx";
+import EaringReports from "./pages/admin/reportAndAnalysis/earningReport/EamingReports.jsx";
+import ProductReports from "./pages/admin/reportAndAnalysis/productReports/ProductReports.jsx";
+import OrderReports from "./pages/admin/reportAndAnalysis/orderReports/orderReports.jsx";
+import InHouseSales from "./pages/admin/reportAndAnalysis/sales/InHouseSales.jsx";
+import VendorSales from "./pages/admin/reportAndAnalysis/sales/VendorSales.jsx";
+import TranscatioReports from "./pages/admin/reportAndAnalysis/salesAndTranscationReports/transactionalReport/TranscatioReports.jsx";
+import AddInHouseNewProduct from "./pages/admin/product/add/addProduct/AddProductForm.jsx";
+import ProfileInformation from "./components/ProfileInformation/ProfileInformation.jsx";
 
-import AddFlashDealProdcut from "./pages/OfferAndDeals/FlashDeal/addFlashDealProdcut.jsx";
 
 import {
   PendingOrders,
@@ -100,24 +77,28 @@ import {
   FailedToDeliverOrders,
   ReturnedOrders,
   CanceledOrders,
-} from "./pages/Order/OrderManagementPages.jsx";
+} from "./pages/transaction/Order/list/OrderManagementPages.jsx" ;
 
 import {
   ApprovedRefunds,
   PendingRefunds,
   RefundedRefunds,
   RejectedRefunds,
-} from "./pages/Refound/RefundRequestPage.jsx";
+} from "./pages/transaction/refound/list/refundRequestPage.jsx";
 import {
   InHouseProductPage,
   VendorPendingProductPage,
   VendorNewRequestProductPage,
   VendorApprovedProductPage,
   VendorDeniedProductPage,
-} from "./pages/In_House_Product/InHouseProductList/ProductManagmentComponent.jsx"; // Adjust the import path as needed
-import InhouseProductUpdate from "./pages/In_House_Product/AddProduct/InhouseProductUpdate.jsx";
+} from "./pages/admin/product/list/productList/productManagmentComponent.jsx"; // Adjust the import path as needed
+import InhouseProductUpdate from "./pages/admin/product/add/updateProduct/InhouseProductUpdate.jsx";
 import SubCategoriess from "./pages/Categoreis/SubCategories/SubCategories.jsx";
-import CustomerDetails from "./pages/Costumers/CustomerDetails.jsx";
+import CustomerDetails from "./pages/user/customerList/customerDetails.jsx";
+import Dashboard from "./pages/dashboard/Dashboard.jsx";
+import AddNewBrand from "./pages/admin/brands/AddNew.jsx";
+import BrandList from "./pages/admin/brands/BrandList.jsx";
+import BrandUpdate from "./pages/admin/brands/BrandUpdate.jsx";
 
 function AllRoutes() {
   return (
@@ -133,7 +114,7 @@ function AllRoutes() {
         <Route path="/venderapprove" element={<VendorApprovedProductPage />} />
         <Route path="/pos" element={<POS />} />
         <Route path="/venderdenied" element={<VendorDeniedProductPage />} />
-        <Route path="/dashboard" element={<WelcomePage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/allorders" element={<OrderList />} />
         <Route path="/orderdetail/:id" element={<OrderDeatiels />} />
         <Route path="/pendingorders" element={<PendingOrders />} />

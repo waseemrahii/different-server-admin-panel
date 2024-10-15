@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { login } from '../redux/auth/authSlice';
+import { login } from '../../redux/admin/authSlice';
 import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';

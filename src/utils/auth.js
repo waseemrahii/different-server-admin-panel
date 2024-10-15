@@ -1,6 +1,6 @@
 
 // utils/auth.js
-import { login } from '../components/redux/auth/authSlice';
+import { login } from '../redux/slices/admin/authSlice';
 
 export const checkAuth = (dispatch) => {
   const token = localStorage.getItem('token');

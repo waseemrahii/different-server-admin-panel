@@ -6,15 +6,15 @@ import {
   Navigate,
 } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Header from "./components/new/Header";
-import Sidebar from "./components/new/Sidebar";
+import Header from "./components/Layout/header/Header.jsx";
 import LoginPage from "./components/LoginPage/LoginPage";
-import Footer from "./components/new/Footer/Footer";
+import Footer from "./components/Layout/footer/footer.jsx";
 import { RiMenuUnfold3Fill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "./utils/auth";
 import AllRoutes from "./Routes.jsx";
 import "./App.css";
+import Sidebar from "./components/Layout/sidebar/sidebar.jsx";
 // Create a client
 const queryClient = new QueryClient();
 
