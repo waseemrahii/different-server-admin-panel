@@ -1,14 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-// import ProductImageUpload from "../../../../In_House_Product/AddProduct/AddProductForm/ProductImageUpload";
-// import ProductForm from "../../../../In_House_Product/AddProduct/AddProductForm/ProductForm";
-// import ProductGeneral from "../../../../In_House_Product/AddProduct/AddProductForm/ProductGeneral";
-// import ProductAttributes from "../../../../In_House_Product/AddProduct/AddProductForm/ProductAttributes";
 import "react-quill/dist/quill.snow.css";
 import "./form.css";
-// import ProductAdditional from "../../../../In_House_Product/AddProduct/AddProductForm/ProductAdditional";
-// import ProductVideo from "../../../../In_House_Product/AddProduct/AddProductForm/ProductVideo";
 import {
   fetchAttributes,
   fetchBrands,
@@ -24,6 +17,7 @@ import ProductAdditional from "./addProductFormComponent/productAdditional";
 import ProductVideo from "./addProductFormComponent/productVideo";
 import ProductAttributes from "./addProductFormComponent/productAttributes";
 import ProductImageWrapper from "./addProductFormComponent/productImageUpload";
+import SeoSection from "./addProductFormComponent/SeoSection";
 
 const AddNewProduct = () => {
   const dispatch = useDispatch();
@@ -195,7 +189,7 @@ const AddNewProduct = () => {
         brands={brands}
       />
       <ProductAdditional formData={formData} handleChange={handleChange} />
-      <ProductVideo formData={formData} handleChange={handleChange} />
+
       <ProductAttributes
         attributes={attributes}
         selectedColors={selectedColors}
@@ -212,13 +206,16 @@ const AddNewProduct = () => {
         images={images}
         handleImageChange={handleImageChange}
       />
+      <ProductVideo formData={formData} handleChange={handleChange} />
       {/* <ProductImageUpload
         thumbnail={thumbnail}
         setThumbnail={setThumbnail}
         images={images}
         handleImageChange={handleImageChange}
       /> */}
-      <div className="flex justify-end items-center">
+
+      <SeoSection />
+      <div className="flex justify-end items-center mt-2">
         <button
           type="submit"
           className="btn  bg-primary  hover:bg-primary-dark"
