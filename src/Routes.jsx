@@ -117,12 +117,14 @@ import WalletManagement from "./pages/user/customersWallet/customersWallet.jsx";
 import WithdrawalMethods from "./pages/seller/vendor/list/VenderWalletMethod/VenderWidrawmethod.jsx";
 import OtherConfiguration from "./pages/admin/thirdParty/Paymentmethod/OtherConfiguration/OtherConfiguration.jsx";
 import OrderDetails from "./pages/transaction/Order/detail/orderDetail.jsx";
+import NotFoundPage from "./components/LoginPage/NotFoundPage.jsx";
 // import SubCategoriess from "./pages/admin/Categories/SubCategories/SubCategories.jsx";
 
 function AllRoutes() {
   return (
     <>
       <Routes>
+
         <Route path="/" element={<Navigate to="/dashboard" />} />
         <Route path="/businesssetup" element={<BusinessSetupShop />} />
         <Route path="/vendernew" element={<VendorNewRequestProductPage />} />
@@ -240,10 +242,9 @@ function AllRoutes() {
         <Route path="/addvenderform" element={<AddVendorForm />} />
         <Route path="/addvenderwallet" element={<VenderWallet />} />
         <Route path="/addvenderwalletmethod" element={<VenderWalletMethod />} />
-        <Route
-          path="/addvenderwidthrawtmethod"
-          element={<WithdrawalMethods />}
-        />
+        <Route  path="/addvenderwidthrawtmethod"  element={<WithdrawalMethods />} />
+        <Route path="*" element={<NotFoundPage />} />
+
       </Routes>
     </>
   );

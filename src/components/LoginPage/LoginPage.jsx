@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-// import { login } from '../../redux/admin/authSlice';
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import { login } from "../../redux/slices/admin/authSlice";
+import { login, selectAuthLoading, selectAuthError } from "../../redux/slices/admin/authSlice";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
-  const { error } = useSelector((state) => state.auth);
+  const loading = useSelector(selectAuthLoading);
+  const error = useSelector(selectAuthError);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
@@ -26,6 +27,14 @@ const LoginPage = () => {
       if (login.fulfilled.match(resultAction)) {
         toast.success("Login successful");
         navigate("/dashboard");
+        // Save email and password if "Remember Me" is checked
+        if (rememberMe) {
+          localStorage.setItem("rememberedEmail", email);
+          localStorage.setItem("rememberedPassword", password);
+        } else {
+          localStorage.removeItem("rememberedEmail");
+          localStorage.removeItem("rememberedPassword");
+        }
       } else {
         toast.error(resultAction.payload || "Invalid email or password");
       }
@@ -33,6 +42,23 @@ const LoginPage = () => {
       toast.error("An error occurred during login");
     }
   };
+
+  const handleRememberMeChange = (e) => {
+    setRememberMe(e.target.checked);
+  };
+
+  // Automatically populate email and password if they were remembered
+  useEffect(() => {
+    const rememberedEmail = localStorage.getItem("rememberedEmail");
+    const rememberedPassword = localStorage.getItem("rememberedPassword");
+    if (rememberedEmail) {
+      setEmail(rememberedEmail);
+      setRememberMe(true);
+    }
+    if (rememberedPassword) {
+      setPassword(rememberedPassword);
+    }
+  }, []);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
@@ -88,6 +114,8 @@ const LoginPage = () => {
                 className="custom-control-input"
                 id="rememberMe"
                 name="remember"
+                checked={rememberMe}
+                onChange={handleRememberMeChange}
               />
               <label
                 className="custom-control-label text-gray-500"
@@ -104,13 +132,12 @@ const LoginPage = () => {
           ></div>
           <button
             type="submit"
-            className="btn btn-block p-3 rounded bg-green-300 hover:bg-green-200 hover:text-black text-white font-semibold mt-0"
+            className={`btn btn-block p-3 rounded bg-green-300 hover:bg-green-200 hover:text-black text-white font-semibold mt-0 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+            disabled={loading} // Disable button while loading
           >
-            Sign in
+            {loading ? "Loading..." : "Login"}
           </button>
-          {error && (
-            <div className="text-red-500 text-center mt-4">{error}</div>
-          )}
+          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
         </form>
       </div>
     </div>

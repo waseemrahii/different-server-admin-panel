@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import { AiOutlineDelete } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -59,9 +59,9 @@ const FileUpload = ({
             </div>
           )}
         </div>
-        <p className="text-muted mt-2">
+        {/* <p className="text-muted mt-2">
           Image format : Jpg, png, jpeg, webp <br /> Image size : Max 2 MB
-        </p>
+        </p> */}
       </div>
     </div>
   );
@@ -155,7 +155,7 @@ const ProductImageWrapper = () => {
                   <div key={idx} className="col-sm-12 col-md-4">
                     <FileUpload
                       label={`Additional Image ${idx + 1}`}
-                      ratio="1:1 (500 x 500 px)"
+                      // ratio="1:1 (500 x 500 px)"
                       image={img}
                       onChange={(e) => handleAdditionalImageChange(e, idx)}
                       onDelete={() => handleDeleteImage(idx)}
