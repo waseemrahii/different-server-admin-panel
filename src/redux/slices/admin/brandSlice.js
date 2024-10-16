@@ -52,7 +52,7 @@ export const createBrand = createAsyncThunk(
   async (brandData, { rejectWithValue }) => {
     try {
       const token = getToken();
-      const response = await axios.post(API_URL, brandData, {
+      const response = await axios.post(`http://192.168.0.100:3000/api/v1/admin/brands`, brandData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

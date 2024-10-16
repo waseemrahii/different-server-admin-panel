@@ -20,7 +20,6 @@ export const login = createAsyncThunk(
     try {
       // Get API endpoint based on role from apiConfig
       const apiEndpoint = apiConfig[role] || apiConfig.admin;
-
       // Use axiosInstance for login request
       const response = await axiosInstance.post(`${apiEndpoint}/employees/login`, { email, password });
       const { accessToken, user } = response.data;

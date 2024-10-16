@@ -14,12 +14,15 @@ const CategoryForm = ({
       const file = e.target.files[0];
       console.log(file);
       if (file) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setPreview(reader.result);
-          onFileChange(file);
-        };
-        reader.readAsDataURL(file);
+        // const reader = new FileReader();
+        const imageUrl = URL.createObjectURL(file);
+        setPreview(imageUrl);
+        onFileChange(file);
+
+        // reader.onloadend = () => {
+        //   setPreview(reader.result);
+        // };
+        // reader.readAsDataURL(file);
       } else {
         setPreview(null);
         onFileChange(""); // Reset if no file is selected
