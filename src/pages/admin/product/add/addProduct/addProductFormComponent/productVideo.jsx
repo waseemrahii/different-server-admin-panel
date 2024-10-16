@@ -23,3 +23,23 @@ const ProductVideo = ({ formData, handleChange }) => {
 };
 
 export default ProductVideo;
+
+// const ProductVideo = ({ formData, handleChange }) => {
+//   return (
+//     <FormSection title={"Product video"} icon={<IoMdPerson />}>
+//       {/* video link  */}
+//       <div className="flex flex-col px-2 mb-5">
+//         <label className="">Video Link</label>
+//         <FormInput
+//           type="text"
+//           name="videoLink"
+//           value={formData.videoLink}
+//           onChange={handleChange}
+//           placeholder="Video Link"
+//         />
+//       </div>
+//     </FormSection>
+//   );
+// };
+
+// export default ProductVideo;

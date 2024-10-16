@@ -165,7 +165,7 @@ const ProductImageWrapper = () => {
                 <div className="col-sm-12 col-md-4">
                   <FileUpload
                     label="Upload Additional Image"
-                    // ratio="1:1 (500 x 500 px)"
+                    ratio="1:1 (500 x 500 px)"
                     onChange={(e) =>
                       handleAdditionalImageChange(e, additionalImages.length)
                     }
