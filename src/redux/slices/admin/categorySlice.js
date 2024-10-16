@@ -55,7 +55,7 @@ export const createCategory = createAsyncThunk(
 
       const token = getToken();
       console.log("category data----",categoryData)
-      const response = await axios.post(API_URL, categoryData, {
+      const response = await axios.post(`http://192.168.0.100:3000/api/v1/admin/categories`, categoryData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -12,6 +12,8 @@ import {
 } from "../../../../../../redux/slices/admin/categorySlice";
 import ConfirmationModal from "../../../../../../components/FormInput/ConfirmationModal";
 
+import { getUploadUrl, uploadImageToS3 } from "../../../../../../utils/helpers";
+
 const Categories = () => {
   const dispatch = useDispatch();
   const { categories, loading, error } = useSelector(
@@ -62,7 +64,24 @@ const Categories = () => {
     };
 
     try {
-      const action = await dispatch(createCategory(formData));
+      console.log(formData);
+      const uploadConfig = await getUploadUrl(formData.logo.type);
+
+      console.log(uploadConfig);
+
+      if (!uploadConfig) {
+        toast.error("Image url not avaliable!");
+      }
+
+      await uploadImageToS3(uploadConfig.url, formData.logo);
+
+      const finalData = {
+        name: formData.name,
+        logo: uploadConfig.key,
+        priority: formData.priority,
+      };
+
+      const action = await dispatch(createCategory(finalData));
       if (createCategory.fulfilled.match(action)) {
         setNewCategory({ name: "", priority: "", logo: "" });
         toast.success("Category added successfully");

@@ -1,4 +1,3 @@
-
 // import React, { useEffect, useState, lazy, memo } from "react";
 // import { FiSearch } from "react-icons/fi";
 // import { ToastContainer } from "react-toastify";
@@ -135,9 +134,9 @@
 
 //           {/* Pagination */}
 //           <div className="flex justify-end mt-4 mx-4 sm:mx-6 md:mx-8 lg:mx-10 p-2 sm:p-3 md:p-4">
-//             <button 
-//               onClick={() => paginate(currentPage - 1)} 
-//               disabled={currentPage === 1} 
+//             <button
+//               onClick={() => paginate(currentPage - 1)}
+//               disabled={currentPage === 1}
 //               className={`px-4 py-2 rounded-lg bg-gray-200 text-black ${currentPage === 1 ? "cursor-not-allowed" : ""}`}
 //               title="Previous Page" // Added title
 //             >
@@ -151,7 +150,7 @@
 //                       onClick={() => paginate(index + 1)}
 //                       className={`px-4 py-2 rounded-lg ${
 //                         currentPage === index + 1
-//                           ? "bg-primary text-white !important" 
+//                           ? "bg-primary text-white !important"
 //                           : "bg-gray-200 text-black"
 //                       }`}
 //                       title={`Page ${index + 1}`} // Added title
@@ -162,9 +161,9 @@
 //                 ))}
 //               </ul>
 //             </nav>
-//             <button 
-//               onClick={() => paginate(currentPage + 1)} 
-//               disabled={currentPage === totalPages} 
+//             <button
+//               onClick={() => paginate(currentPage + 1)}
+//               disabled={currentPage === totalPages}
 //               className={`px-4 py-2 rounded-lg bg-gray-200 text-black ${currentPage === totalPages ? "cursor-not-allowed" : ""}`}
 //               title="Next Page" // Added title
 //             >
@@ -178,8 +177,6 @@
 // );
 
 // export default TableList;
-
-
 
 import React, { useEffect, useState, lazy, memo } from "react";
 import { FiSearch } from "react-icons/fi";
@@ -320,7 +317,12 @@ const TableList = memo(
                         className="px-4 py-3 text-center text-[#57596C]"
                       >
                         {col.render
-                          ? col.render(item, index, currentPage, itemsPerPageState)
+                          ? col.render(
+                              item,
+                              index,
+                              currentPage,
+                              itemsPerPageState
+                            )
                           : item[col.key]}
                       </td>
                     ))}
@@ -332,10 +334,12 @@ const TableList = memo(
 
           {/* Pagination */}
           <div className="flex justify-center md:justify-end mt-4 mx-4 sm:mx-6 md:mx-8 lg:mx-10 p-2 sm:p-3 md:p-4">
-          <button 
-              onClick={() => paginate(currentPage - 1)} 
-              disabled={currentPage === 1} 
-              className={`px-4 py-2 rounded-lg bg-gray-200 text-black ${currentPage === 1 ? "cursor-not-allowed" : ""}`}
+            <button
+              onClick={() => paginate(currentPage - 1)}
+              disabled={currentPage === 1}
+              className={`px-2  rounded-lg bg-gray-200 text-black ${
+                currentPage === 1 ? "cursor-not-allowed" : ""
+              }`}
               title="Previous Page" // Added title
             >
               &lt; {/* Previous Button */}
@@ -346,12 +350,13 @@ const TableList = memo(
                   <li key={pageNumber} className="mx-1">
                     <button
                       onClick={() => paginate(pageNumber)}
-                      className={`px-4 py-2 rounded-lg ${
+                      className={`px-2 rounded-lg ${
                         currentPage === pageNumber
                           ? "bg-primary text-white"
                           : "bg-gray-200 text-black"
                       }`}
                       title={`Page ${pageNumber}`} // Added title
+                      style={{ color: "white" }}
                     >
                       {pageNumber}
                     </button>
@@ -359,10 +364,12 @@ const TableList = memo(
                 ))}
               </ul>
             </nav>
-            <button 
-              onClick={() => paginate(currentPage + 1)} 
-              disabled={currentPage === totalPages} 
-              className={`px-4 py-2 rounded-lg bg-gray-200 text-black ${currentPage === totalPages ? "cursor-not-allowed" : ""}`}
+            <button
+              onClick={() => paginate(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className={`px-2  rounded-lg bg-gray-200 text-black ${
+                currentPage === totalPages ? "cursor-not-allowed" : ""
+              }`}
               title="Next Page" // Added title
             >
               &gt; {/* Next Button */}
