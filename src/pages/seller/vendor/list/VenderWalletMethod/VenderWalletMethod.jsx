@@ -3,14 +3,12 @@ import Swal from "sweetalert2";
 import {
   FaSearch,
   FaEdit,
-  FaTrashAlt,
   FaToggleOn,
   FaToggleOff,
   FaTrash,
 } from "react-icons/fa";
-import "./VenderWallet.css";
-import { Link } from "react-router-dom";
-import ActionButton from "../../../components/ActionButton/Action";
+import ActionButton from "../../../../../components/ActionButton/Action";
+
 // Sample data array
 const withdrawMethods = [
   {

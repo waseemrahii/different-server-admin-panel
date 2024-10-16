@@ -1,23 +1,20 @@
 import React, { useState, useEffect } from "react";
-import {
-  FaEye,
-  FaDownload,
-  FaEdit,
-  FaTrashAlt,
-  FaSearch,
-} from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { FaEye, FaDownload, FaSearch } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchOrder,
-  updateOrderStatus,
-  deleteOrder,
-} from "../../redux/transaction/orderSlice";
+// import {
+//   fetchOrder,
+//   updateOrderStatus,
+//   deleteOrder,
+// } from "../../redux/transaction/orderSlice";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import ActionButton from "../../components/ActionButton/Action";
-import ExportButton from "../../components/ActionButton/Export";
-import LoadingSpinner from "../../components/LoodingSpinner/LoadingSpinner";
+import {
+  deleteOrder,
+  fetchOrder,
+  updateOrderStatus,
+} from "../../../../redux/slices/transaction/orderSlice";
+import LoadingSpinner from "../../../../components/LoodingSpinner/LoadingSpinner";
+import ExportButton from "../../../../components/ActionButton/Export";
 
 const OrderList = () => {
   const dispatch = useDispatch();

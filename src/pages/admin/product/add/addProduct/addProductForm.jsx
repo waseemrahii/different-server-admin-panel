@@ -1,24 +1,29 @@
-
-
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchCategories,
-  fetchBrands,
-  fetchColors,
-  fetchAttributes,
-  fetchSubCategories,
-  fetchSubSubCategories,
-} from "../../../../../redux/admin/categorybrandSlice";
-import { createProduct } from "../../../../../redux/admin/productSlice";
-import ProductImageUpload from "../../../../In_House_Product/AddProduct/AddProductForm/ProductImageUpload";
-import ProductForm from "../../../../In_House_Product/AddProduct/AddProductForm/ProductForm";
-import ProductGeneral from "../../../../In_House_Product/AddProduct/AddProductForm/ProductGeneral";
-import ProductAttributes from "../../../../In_House_Product/AddProduct/AddProductForm/ProductAttributes";
+
+// import ProductImageUpload from "../../../../In_House_Product/AddProduct/AddProductForm/ProductImageUpload";
+// import ProductForm from "../../../../In_House_Product/AddProduct/AddProductForm/ProductForm";
+// import ProductGeneral from "../../../../In_House_Product/AddProduct/AddProductForm/ProductGeneral";
+// import ProductAttributes from "../../../../In_House_Product/AddProduct/AddProductForm/ProductAttributes";
 import "react-quill/dist/quill.snow.css";
 import "./form.css";
-import ProductAdditional from "../../../../In_House_Product/AddProduct/AddProductForm/ProductAdditional";
-import ProductVideo from "../../../../In_House_Product/AddProduct/AddProductForm/ProductVideo";
+// import ProductAdditional from "../../../../In_House_Product/AddProduct/AddProductForm/ProductAdditional";
+// import ProductVideo from "../../../../In_House_Product/AddProduct/AddProductForm/ProductVideo";
+import {
+  fetchAttributes,
+  fetchBrands,
+  fetchCategories,
+  fetchColors,
+  fetchSubCategories,
+  fetchSubSubCategories,
+} from "../../../../../redux/slices/admin/categorybrandSlice";
+import { createProduct } from "../../../../../redux/slices/admin/productSlice";
+import ProductForm from "./addProductFormComponent/productForm";
+import ProductGeneral from "./addProductFormComponent/productGeneral";
+import ProductAdditional from "./addProductFormComponent/productAdditional";
+import ProductVideo from "./addProductFormComponent/productVideo";
+import ProductAttributes from "./addProductFormComponent/productAttributes";
+import ProductImageWrapper from "./addProductFormComponent/productImageUpload";
 
 const AddNewProduct = () => {
   const dispatch = useDispatch();
@@ -200,14 +205,19 @@ const AddNewProduct = () => {
         addAttribute={addAttribute}
         productAttributes={productAttributes}
       />
-
-      <ProductImageUpload
+      {/* ProductImageWrapper */}
+      <ProductImageWrapper
         thumbnail={thumbnail}
         setThumbnail={setThumbnail}
         images={images}
         handleImageChange={handleImageChange}
       />
-
+      {/* <ProductImageUpload
+        thumbnail={thumbnail}
+        setThumbnail={setThumbnail}
+        images={images}
+        handleImageChange={handleImageChange}
+      /> */}
       <div className="flex justify-end items-center">
         <button
           type="submit"

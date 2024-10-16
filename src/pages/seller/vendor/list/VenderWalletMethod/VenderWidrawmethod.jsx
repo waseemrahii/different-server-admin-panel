@@ -1,199 +1,12 @@
-// import React, { useState } from 'react';
-// import { FaPlus } from 'react-icons/fa'; // Importing the icon
-// import './VenderWidraw.css'
-// const WithdrawalMethods = () => {
-//   // State to handle form data
-//   const [formData, setFormData] = useState({
-//     method_name: 'bkash',
-//     field_type: 'string',
-//     field_name: 'mobile_number',
-//     placeholder_text: '+8801111111111',
-//     is_required: true,
-//     is_default: false,
-//   });
-
-//   // Function to handle input changes
-//   const handleInputChange = (e) => {
-//     const { name, value, type, checked } = e.target;
-//     setFormData({
-//       ...formData,
-//       [name]: type === 'checkbox' ? checked : value,
-//     });
-//   };
-
-//   // Function to handle form submission
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     // Here you can handle the form submission (e.g., send data to an API)
-//     console.log('Form submitted:', formData);
-//   };
-
-//   // Function to reset the form
-//   const handleReset = () => {
-//     setFormData({
-//       method_name: '',
-//       field_type: '',
-//       field_name: '',
-//       placeholder_text: '',
-//       is_required: false,
-//       is_default: false,
-//     });
-//   };
-
-//   return (
-//     <div className="content container-fluid snipcss-xdhtz">
-//       <div className="mb-3">
-//         <div className="page-title-wrap d-flex justify-content-between flex-wrap align-items-center gap-3 mb-3">
-//           <h2 className="page-title text-capitalize text-black flex gap-2">
-//             <img
-//               width="20"
-//               src="https://6valley.6amtech.com/public/assets/back-end/img/withdraw-icon.png"
-//               alt=""
-//             />
-//             Withdrawal methods
-//           </h2>
-//           <button className="btn btn--primary text-capitalize flex gap-2" id="add-more-field" style={{ backgroundColor: 'green-400',display:"flex" }}>
-//             <FaPlus className="tio-add" />
-//              Add fields
-//           </button>
-//         </div>
-//       </div>
-//       <div className="row" data-select2-id="9">
-//         <div className="col-md-12" data-select2-id="8">
-//           <form action="https://6valley.6amtech.com/admin/vendors/withdraw-method/update" method="POST" onSubmit={handleSubmit}>
-//             <input type="hidden" name="_token" value="PwtXfCOB4jJW4r7EFP7tbQ85VIeh6Q28sCgcjoVB" autoComplete="off" />
-//             <input type="hidden" name="id" value="2" />
-//             <div className="p-30" data-select2-id="7">
-//               <div className="card card-body">
-//                 <div className="form-floating">
-//                   <input
-//                     type="text"
-//                     className="form-control"
-//                     name="method_name"
-//                     id="method_name"
-//                     placeholder="Select method name"
-//                     value={formData.method_name}
-//                     onChange={handleInputChange}
-//                     required
-//                   />
-//                   <label>Method name *</label>
-//                 </div>
-//               </div>
-//               <div className="card card-body mt-3">
-//                 <div className="row gy-4 align-items-center">
-//                   <div className="col-md-6 col-12">
-//                     <div>
-//                       <select
-//                         className="form-control"
-//                         name="field_type"
-//                         value={formData.field_type}
-//                         onChange={handleInputChange}
-//                         required
-//                       >
-//                         <option value="string">String</option>
-//                         <option value="number">Number</option>
-//                         <option value="date">Date</option>
-//                         <option value="password">Password</option>
-//                         <option value="email">Email</option>
-//                         <option value="phone">Phone</option>
-//                       </select>
-//                     </div>
-//                   </div>
-//                   <div className="col-md-6 col-12">
-//                     <div className="form-floating">
-//                       <input
-//                         type="text"
-//                         className="form-control"
-//                         name="field_name"
-//                         placeholder="Select field name"
-//                         value={formData.field_name}
-//                         onChange={handleInputChange}
-//                         required
-//                       />
-//                       <label>Field name *</label>
-//                     </div>
-//                   </div>
-//                   <div className="col-md-6 col-12">
-//                     <div className="form-floating">
-//                       <input
-//                         type="text"
-//                         className="form-control"
-//                         name="placeholder_text"
-//                         placeholder="Select placeholder text"
-//                         value={formData.placeholder_text}
-//                         onChange={handleInputChange}
-//                         required
-//                       />
-//                       <label>Placeholder text *</label>
-//                     </div>
-//                   </div>
-//                   <div className="col-md-6 col-12">
-//                     <div className="form-check">
-//                       <input
-//                         className="form-check-input"
-//                         type="checkbox"
-//                         value="1"
-//                         name="is_required"
-//                         id="flex-check-default"
-//                         checked={formData.is_required}
-//                         onChange={handleInputChange}
-//                       />
-//                       <label className="form-check-label" htmlFor="flex-check-default">
-//                         This field required
-//                       </label>
-//                     </div>
-//                   </div>
-//                 </div>
-//               </div>
-//               <div id="custom-field-section" className="mt-3" data-select2-id="custom-field-section"></div>
-//               <div className="d-flex justify-content-start">
-//                 <div className="form-check">
-//                   <input
-//                     className="form-check-input"
-//                     type="checkbox"
-//                     value="1"
-//                     name="is_default"
-//                     id="flex-check-default-method"
-//                     checked={formData.is_default}
-//                     onChange={handleInputChange}
-//                   />
-//                   <label className="form-check-label" htmlFor="flex-check-default-method">
-//                     Default method
-//                   </label>
-//                 </div>
-//               </div>
-//               <div className="d-flex justify-content-end">
-//                 <button type="reset" className="btn btn--secondary mx-2" onClick={handleReset}>
-//                   Reset
-//                 </button>
-//                 <button type="submit" className="btn btn--primary demo_check" style={{ backgroundColor: 'green-400' }}>
-//                   Submit
-//                 </button>
-//               </div>
-//             </div>
-//           </form>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default WithdrawalMethods;
-
-
-
-
-import React, { useState } from 'react';
-import { FaPlus, FaTrash } from 'react-icons/fa'; // Importing the icons
-import './VenderWidraw.css';
-
+import React, { useState } from "react";
+import { FaPlus, FaTrash } from "react-icons/fa"; // Importing the icons
 const WithdrawalMethods = () => {
   // State to handle form data for the main form
   const [formData, setFormData] = useState({
-    method_name: 'bkash',
-    field_type: 'string',
-    field_name: 'mobile_number',
-    placeholder_text: '+8801111111111',
+    method_name: "bkash",
+    field_type: "string",
+    field_name: "mobile_number",
+    placeholder_text: "+8801111111111",
     is_required: true,
     is_default: false,
   });
@@ -206,7 +19,7 @@ const WithdrawalMethods = () => {
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     });
   };
 
@@ -217,7 +30,7 @@ const WithdrawalMethods = () => {
       if (i === index) {
         return {
           ...field,
-          [name]: type === 'checkbox' ? checked : value,
+          [name]: type === "checkbox" ? checked : value,
         };
       }
       return field;
@@ -230,9 +43,9 @@ const WithdrawalMethods = () => {
     setCustomFields([
       ...customFields,
       {
-        field_type: 'string',
-        field_name: '',
-        placeholder_text: '',
+        field_type: "string",
+        field_name: "",
+        placeholder_text: "",
         is_required: false,
       },
     ]);
@@ -248,16 +61,16 @@ const WithdrawalMethods = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Here you can handle the form submission (e.g., send data to an API)
-    console.log('Form submitted:', formData, customFields);
+    console.log("Form submitted:", formData, customFields);
   };
 
   // Function to reset the main form and dynamic fields
   const handleReset = () => {
     setFormData({
-      method_name: '',
-      field_type: '',
-      field_name: '',
-      placeholder_text: '',
+      method_name: "",
+      field_type: "",
+      field_name: "",
+      placeholder_text: "",
       is_required: false,
       is_default: false,
     });
@@ -279,7 +92,7 @@ const WithdrawalMethods = () => {
           <button
             className="btn  text-capitalize remove gap-2"
             id="add-more-field"
-            style={{ backgroundColor: 'green-400', display: 'flex' }}
+            style={{ backgroundColor: "green-400", display: "flex" }}
             onClick={handleAddField}
           >
             <FaPlus className="tio-add " /> Add fields
@@ -289,7 +102,12 @@ const WithdrawalMethods = () => {
       <div className="row" data-select2-id="9">
         <div className="col-md-12" data-select2-id="8">
           <form onSubmit={handleSubmit}>
-            <input type="hidden" name="_token" value="PwtXfCOB4jJW4r7EFP7tbQ85VIeh6Q28sCgcjoVB" autoComplete="off" />
+            <input
+              type="hidden"
+              name="_token"
+              value="PwtXfCOB4jJW4r7EFP7tbQ85VIeh6Q28sCgcjoVB"
+              autoComplete="off"
+            />
             <input type="hidden" name="id" value="2" />
             <div className="p-30" data-select2-id="7">
               <div className="card card-body">
@@ -366,7 +184,10 @@ const WithdrawalMethods = () => {
                         checked={formData.is_required}
                         onChange={handleInputChange}
                       />
-                      <label className="form-check-label" htmlFor="flex-check-default">
+                      <label
+                        className="form-check-label"
+                        htmlFor="flex-check-default"
+                      >
                         This field required
                       </label>
                     </div>
@@ -433,7 +254,10 @@ const WithdrawalMethods = () => {
                           checked={field.is_required}
                           onChange={(e) => handleCustomFieldChange(index, e)}
                         />
-                        <label className="form-check-label" htmlFor={`flex-check-${index}`}>
+                        <label
+                          className="form-check-label"
+                          htmlFor={`flex-check-${index}`}
+                        >
                           This field required
                         </label>
                       </div>
@@ -461,16 +285,27 @@ const WithdrawalMethods = () => {
                     checked={formData.is_default}
                     onChange={handleInputChange}
                   />
-                  <label className="form-check-label" htmlFor="flex-check-default-method">
+                  <label
+                    className="form-check-label"
+                    htmlFor="flex-check-default-method"
+                  >
                     Default method
                   </label>
                 </div>
               </div>
               <div className="d-flex justify-content-end mt-3">
-                <button type="reset" className="btn btn--secondary mx-2" onClick={handleReset}>
+                <button
+                  type="reset"
+                  className="btn btn--secondary mx-2"
+                  onClick={handleReset}
+                >
                   Reset
                 </button>
-                <button type="submit" className="btn btn--primary demo_check" style={{ backgroundColor: 'green-400' }}>
+                <button
+                  type="submit"
+                  className="btn btn--primary demo_check"
+                  style={{ backgroundColor: "green-400" }}
+                >
                   Submit
                 </button>
               </div>

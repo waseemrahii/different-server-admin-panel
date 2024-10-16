@@ -1,7 +1,6 @@
 import React from "react";
 import { IoFilter } from "react-icons/io5";
 import { Form, Col, Button } from "react-bootstrap";
-import "./FilterForm.css";
 const FilterForm = () => {
   const handleSubmit = (event) => {
     event.preventDefault();

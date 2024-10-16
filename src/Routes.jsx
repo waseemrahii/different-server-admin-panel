@@ -10,7 +10,7 @@ import Sub_Sub_Categories from "./pages/admin/Categories/subSubCategories/Sub_Su
 import BulkImport from "./pages/admin/product/add/bulkImport/bulkImport.jsx";
 import CustomerReviews from "./pages/user/costumerReview/customerReviews.jsx";
 import CustomerList from "./pages/user/customerList/CustomerList.jsx";
-import WalletManagement from "./pages/user/customersWallet/customersWallet.js";
+
 import CustomerBonusSetUp from "./pages/user/customerBonusSetUp/CustomerBonusSetUp.jsx";
 
 import CustomerLoyaltyReport from "./pages/user/customerLoyalityReport/CustomerLoyaltyReport.jsx";
@@ -23,9 +23,8 @@ import AppSettings from "./pages/admin/settingSetup/SystemSetups.jsx";
 import SystemSettings from "./pages/admin/settingSetup/SystemSetups.jsx";
 import SystemSetups from "./pages/admin/settingSetup/SystemSetups.jsx";
 import LoginSetups from "./pages/admin/settingSetup/loginSetting/LoginSetting.jsx";
-import TheemSetUp from "./pages/SettingSetup/Theem/TheemSetUp";
-import ThirParty from "./pages/ThirdParty/ThirParty";
-import OtherConfiguration from "./pages/ThirdParty/Paymentmethod/OtherConfiguration/OtherConfiguration";
+// import TheemSetUp from "./pages/SettingSetup/Theem/TheemSetUp";
+// import OtherConfiguration from "./pages/ThirdParty/Paymentmethod/OtherConfiguration/OtherConfiguration";
 import SocialMedia from "./pages/admin/pagesAndMedia/socialMedia/socialMedia.jsx";
 import PageAndMedia from "./pages/admin/pagesAndMedia/pageAndMedia.jsx";
 import EarningReport from "./pages/admin/transactionReport/EarnReport/EarningReport.jsx";
@@ -35,7 +34,7 @@ import Ticket_Support from "./pages/admin/healthSupport/Ticket_Support.jsx";
 import Message from "./pages/admin/healthSupport/Message.jsx";
 import ProdictGallery from "./pages/admin/healthSupport/Product_Gallery.jsx";
 import BannerSetup from "./pages/admin/banner/list/bannerSetup.jsx";
-import POS from "./pages/admin/healthSupport/Pos.js";
+// import POS from "./pages/admin/healthSupport/Pos.js";
 import IndexMessage from "./pages/admin/healthSupport/Index.jsx";
 
 import PuchNotify from "./pages/admin/notification/puchNotify.jsx";
@@ -48,7 +47,7 @@ import WithdrawRequest from "./pages/delivery/list/withdrawRequest.jsx";
 import VendorList from "./pages/seller/vendor/list/vendorList/VenderList.jsx";
 import VenderListDetail from "./pages/seller/vendor/list/VenderDetail.jsx";
 import ShopStoreDetails from "./pages/seller/vendor/list/vendereListDetial/ShopStoreDetails.jsx";
-import OrderDeatiels from "./pages/Order/OrderDeatiels.jsx";
+
 import AddVendorForm from "./pages/seller/vendor/add/addVender/AddVender.jsx";
 import RefundDetails from "./pages/transaction/refound/detail/refoundDetail.jsx";
 // import GenerateBarcode from "./pages/In_House_Product/InHouseProductList/GeneratCode/GeneratCode";
@@ -67,7 +66,6 @@ import TranscatioReports from "./pages/admin/reportAndAnalysis/salesAndTranscati
 import AddInHouseNewProduct from "./pages/admin/product/add/addProduct/AddProductForm.jsx";
 import ProfileInformation from "./components/ProfileInformation/ProfileInformation.jsx";
 
-
 import {
   PendingOrders,
   ConfirmedOrders,
@@ -77,7 +75,7 @@ import {
   FailedToDeliverOrders,
   ReturnedOrders,
   CanceledOrders,
-} from "./pages/transaction/Order/list/OrderManagementPages.jsx" ;
+} from "./pages/transaction/Order/list/OrderManagementPages.jsx";
 
 import {
   ApprovedRefunds,
@@ -93,30 +91,51 @@ import {
   VendorDeniedProductPage,
 } from "./pages/admin/product/list/productList/productManagmentComponent.jsx"; // Adjust the import path as needed
 import InhouseProductUpdate from "./pages/admin/product/add/updateProduct/InhouseProductUpdate.jsx";
-import SubCategoriess from "./pages/Categoreis/SubCategories/SubCategories.jsx";
 import CustomerDetails from "./pages/user/customerList/customerDetails.jsx";
 import Dashboard from "./pages/dashboard/Dashboard.jsx";
 import AddNewBrand from "./pages/admin/brands/AddNew.jsx";
 import BrandList from "./pages/admin/brands/BrandList.jsx";
 import BrandUpdate from "./pages/admin/brands/BrandUpdate.jsx";
+import InHouseBusiness from "./pages/admin/Bussnesssetup/InHouseBusiness/InHouseBusiness.jsx";
+import OrderList from "./pages/transaction/Order/list/OrderList.jsx";
+import VenderWallet from "./pages/seller/vendor/list/VenderWallet/VenderWallet.jsx";
+import VenderWalletMethod from "./pages/seller/vendor/list/VenderWalletMethod/VenderWalletMethod.jsx";
+import ThirParty from "./pages/admin/thirdParty/thirParty.jsx";
+import BusinessSetupShop from "./pages/admin/Bussnesssetup/BusinessSetup.jsx";
+import AttributeSetup from "./pages/admin/productAttributeSetUp/productAttributeSetUp.jsx";
+import UpdateAttribute from "./pages/admin/productAttributeSetUp/UpdateAtribute.jsx";
+import CategoryUpdate from "./pages/admin/Categories/Main_Categories/Category/add/CategoryEdit/CategoryEdit.jsx";
+import CouponManagement from "./pages/admin/offerAndDeals/coupon/coupon.jsx";
+import CouponUpdate from "./pages/admin/offerAndDeals/coupon/couponUpdate.jsx";
+import FlashDeals from "./pages/admin/offerAndDeals/flashDeal/flashDeals.jsx";
+import DealOfTheDay from "./pages/admin/offerAndDeals/dealOfDay/dealOfDay.jsx";
+import FeatureDeal from "./pages/admin/offerAndDeals/featureDeal/featureDeal.jsx";
+import AddNewProduct from "./pages/admin/product/add/addProduct/AddProductForm.jsx";
+import ProductEdit from "./pages/admin/product/add/ProductEdit/ProductEdit.jsx";
+import AddFlashDealProdcut from "./pages/admin/offerAndDeals/flashDeal/addFlashDealProdcut.jsx";
+import WalletManagement from "./pages/user/customersWallet/customersWallet.jsx";
+import WithdrawalMethods from "./pages/seller/vendor/list/VenderWalletMethod/VenderWidrawmethod.jsx";
+import OtherConfiguration from "./pages/admin/thirdParty/Paymentmethod/OtherConfiguration/OtherConfiguration.jsx";
+import OrderDetails from "./pages/transaction/Order/detail/orderDetail.jsx";
+// import SubCategoriess from "./pages/admin/Categories/SubCategories/SubCategories.jsx";
 
 function AllRoutes() {
   return (
     <>
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" />} />
-        <Route path="/businesssetup" element={<BusinessSetup />} />
+        <Route path="/businesssetup" element={<BusinessSetupShop />} />
         <Route path="/vendernew" element={<VendorNewRequestProductPage />} />
         <Route
           path="/venderpendingproduct"
           element={<VendorPendingProductPage />}
         />
         <Route path="/venderapprove" element={<VendorApprovedProductPage />} />
-        <Route path="/pos" element={<POS />} />
+        {/* <Route path="/pos" element={<POS />} /> */}
         <Route path="/venderdenied" element={<VendorDeniedProductPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/allorders" element={<OrderList />} />
-        <Route path="/orderdetail/:id" element={<OrderDeatiels />} />
+        <Route path="/orderdetail/:id" element={<OrderDetails />} />
         <Route path="/pendingorders" element={<PendingOrders />} />
         <Route path="/pendingrefundrequests" element={<PendingRefunds />} />
         <Route path="/refunddetail/:id" element={<RefundDetails />} />
@@ -134,25 +153,20 @@ function AllRoutes() {
         <Route path="/inhouseaddproduct" element={<AddInHouseNewProduct />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/categoryedit/:id" element={<CategoryUpdate />} />
-        <Route path="/subcategories" element={<SubCategoriess />} />
+        {/* <Route path="/subcategories" element={<SubCategoriess />} /> */}
         <Route path="/subsubcategories" element={<Sub_Sub_Categories />} />
         <Route path="/addnewbrand" element={<AddNewBrand />} />
         <Route path="/brandlist" element={<BrandList />} />
         <Route path="/brandupdate/:id" element={<BrandUpdate />} />
         <Route path="/bulkimport" element={<BulkImport />} />
-        <Route path="/coupon" element={<Coupon />} />
+        <Route path="/coupon" element={<CouponManagement />} />
         <Route path="/couponupdate" element={<CouponUpdate />} />
         <Route path="/flashdeals" element={<FlashDeals />} />
         <Route path="/dealofday" element={<DealOfTheDay />} />
         <Route path="/featuredeal" element={<FeatureDeal />} />
-        <Route
-          path="featuredeal/add-product/:id"
-          element={<AddNewProductComponent />}
-        />
-        <Route
-          path="/add-flashproduct/:id"
-          element={<AddFlashDealProdcut />}
-        />
+        <Route path="featuredeal/add-product/:id" element={<ProductEdit />} />
+        <Route path="featuredeal/add-product" element={<AddNewProduct />} />
+        <Route path="/add-flashproduct/:id" element={<AddFlashDealProdcut />} />
         <Route path="/customerreviews" element={<CustomerReviews />} />
         <Route path="/customerlist" element={<CustomerList />} />
         <Route path="/customerdetails" element={<CustomerDetails />} />
@@ -170,7 +184,7 @@ function AllRoutes() {
         <Route path="/systemsettings" element={<SystemSettings />} />
         <Route path="/systemsetups" element={<SystemSetups />} />
         <Route path="/loginsetups" element={<LoginSetups />} />
-        <Route path="/theemsetup" element={<TheemSetUp />} />
+        {/* <Route path="/theemsetup" element={<TheemSetUp />} /> */}
         <Route path="/thirdparty" element={<ThirParty />} />
         <Route path="/otherconfiguration" element={<OtherConfiguration />} />
         <Route path="/pagesocialmedia" element={<SocialMedia />} />
@@ -222,7 +236,7 @@ function AllRoutes() {
         <Route path="/shopview" element={<ShopStoreDetails />} />
         <Route path="/new" element={<ShopStoreDetails />} />
         <Route path="/image" element={<ShopStoreDetails />} />
-        <Route path="/orderdetail" element={<OrderDeatiels />} />
+        <Route path="/orderdetail" element={<OrderDetails />} />
         <Route path="/addvenderform" element={<AddVendorForm />} />
         <Route path="/addvenderwallet" element={<VenderWallet />} />
         <Route path="/addvenderwalletmethod" element={<VenderWalletMethod />} />

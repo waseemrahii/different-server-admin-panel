@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { FaCog, FaDatabase, FaGlobe, FaLock, FaServer } from "react-icons/fa";
+import { useState } from "react";
+// import { FaCog, FaDatabase, FaGlobe, FaLock, FaServer } from "react-icons/fa";
 
 import PayMentMethod from "./Paymentmethod/PayMentMethod";
 import OfflinePaymentMethods from "./OfflinePayment/OfflinePaymentMethods";

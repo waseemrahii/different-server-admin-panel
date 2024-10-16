@@ -1,18 +1,22 @@
-
-
-
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
-import { fetchCategories, createCategory, deleteCategory }
- from "../../../../../../redux/admin/categorySlice";
+// import { fetchCategories, createCategory, deleteCategory }
+//  from "../../../../../../redux/admin/categorySlice";
 import CategoryForm from "../add/CategoryForm";
 import CategoryList from "./CategoryList";
+import {
+  createCategory,
+  deleteCategory,
+  fetchCategories,
+} from "../../../../../../redux/slices/admin/categorySlice";
 import ConfirmationModal from "../../../../../../components/FormInput/ConfirmationModal";
 
 const Categories = () => {
   const dispatch = useDispatch();
-  const { categories, loading, error } = useSelector((state) => state.productCategory);
+  const { categories, loading, error } = useSelector(
+    (state) => state.productCategory
+  );
 
   const [newCategory, setNewCategory] = useState({
     name: "",
@@ -51,7 +55,11 @@ const Categories = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    const formData = { name: newCategory.name, priority: newCategory.priority, logo: newCategory.logo };
+    const formData = {
+      name: newCategory.name,
+      priority: newCategory.priority,
+      logo: newCategory.logo,
+    };
 
     try {
       const action = await dispatch(createCategory(formData));
@@ -98,14 +106,18 @@ const Categories = () => {
 
   const filteredCategories = categories.filter(
     (category) =>
-      category.name && category.name.toLowerCase().includes(searchQuery.toLowerCase())
+      category.name &&
+      category.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <div className="px-3 md:px-5 md:mx-5 md:py-8 ">
       <ToastContainer />
       <h2 className="h1 mb-4 d-flex gap-3">
-        <img src="https://6valley.6amtech.com/public/assets/back-end/img/brand-setup.png" alt="" />
+        <img
+          src="https://6valley.6amtech.com/public/assets/back-end/img/brand-setup.png"
+          alt=""
+        />
         Category Setup
       </h2>
       {error && <div className="alert alert-danger">{error}</div>}

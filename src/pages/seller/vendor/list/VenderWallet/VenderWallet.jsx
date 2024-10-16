@@ -1,9 +1,7 @@
 import React from "react";
 import { FaDownload, FaEye } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import "./VenderWallet.css";
-import ExportButton from "../../../components/ActionButton/Export";
-import ActionButton from "../../../components/ActionButton/Action";
+// import ExportButton from "../../../components/ActionButton/Export";
+// import ActionButton from "../../../components/ActionButton/Action";
 
 const VenderWallet = () => {
   // Your array of withdraw requests data (example)

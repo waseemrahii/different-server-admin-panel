@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { FaDownload, FaEdit, FaSearch, FaTrash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
+
+import LoadingSpinner from "../../../../components/LoodingSpinner/LoadingSpinner";
+import ActionButton from "../../../../components/ActionButton/Action";
+import ExportButton from "../../../../components/ActionButton/Export";
 import {
+  addSubSubCategory,
+  deleteSubSubCategory,
   fetchCategories,
   fetchSubCategories,
   fetchSubSubCategories,
-  addSubSubCategory,
-  updateSubSubCategory,
-  deleteSubSubCategory,
-} from "../../../../redux/admin/categorybrandSlice";
-import {
   selectCategories,
   selectSubCategories,
   selectSubSubCategories,
-} from "../../../../redux/admin/categorybrandSlice";
-import LoadingSpinner from "../../../../components/LoodingSpinner/LoadingSpinner";
-import ExportButton from "../../../../components/ActionButton/Export";
-import ActionButton from "../../../../components/ActionButton/Action";
+} from "../../../../redux/slices/admin/categorybrandSlice";
 
 const Sub_Sub_Categories = () => {
   const dispatch = useDispatch();
@@ -321,7 +319,7 @@ const Sub_Sub_Categories = () => {
                       Selected
                     </span>
                     <ActionButton
-                      onClick={() => handleDelete(subCategory._id)}
+                      // onClick={() => handleDelete(subCategory._id)}
                       icon={FaTrash} // Pass dynamic icon
                       className="ml-4"
                       label="Delete"

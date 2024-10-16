@@ -11,13 +11,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import {
+  deleteOrder,
   fetchOrder,
   updateOrderStatus,
-  deleteOrder,
-} from "../../redux/transaction/orderSlice";
-import LoadingSpinner from "../../components/LoodingSpinner/LoadingSpinner";
-import ExportButton from "../../components/ActionButton/Export";
-import ActionButton from "../../components/ActionButton/Action";
+} from "../../../../redux/slices/transaction/orderSlice";
+import LoadingSpinner from "../../../../components/LoodingSpinner/LoadingSpinner";
+import ExportButton from "../../../../components/ActionButton/Export";
+import ActionButton from "../../../../components/ActionButton/Action";
 
 const OrderManagement = ({ status, title }) => {
   const dispatch = useDispatch();

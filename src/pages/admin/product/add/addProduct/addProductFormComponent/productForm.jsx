@@ -1,10 +1,14 @@
+import React from "react";
+import ReactQuill from "react-quill";
+import FormSection from "../../../../../../components/FormInput/FormSection";
+import FormInput from "../../../../../../components/FormInput/FormInput";
 
-import React from 'react';
-import ReactQuill from 'react-quill';
-import FormInput from '../../../../components/FormInput/FormInput';
-import FormSection from '../../../../components/FormInput/FormSection';
-
-const ProductForm = ({ formData, handleChange, handleDescriptionChange, errorMessage }) => {
+const ProductForm = ({
+  formData,
+  handleChange,
+  handleDescriptionChange,
+  errorMessage,
+}) => {
   return (
     <div>
       <FormSection title="Product Details">

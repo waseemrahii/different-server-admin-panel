@@ -6,7 +6,8 @@ import { Link } from "react-router-dom";
 // import { useAuth } from '../context/AuthContext.jsx';
 import { toast, ToastContainer } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../../redux/admin/authSlice";
+import { logout } from "../../../redux/slices/admin/authSlice";
+// import { logout } from "../../../redux/admin/authSlice";
 const Header = () => {
   const dispatch = useDispatch();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

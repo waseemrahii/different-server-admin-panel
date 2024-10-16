@@ -1,21 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaSearch, FaPlus, FaTrash, FaDownload } from "react-icons/fa";
-import { BsToggleOn, BsToggleOff } from "react-icons/bs";
+import { FaTrash, FaDownload } from "react-icons/fa";
+
 import { toast, ToastContainer } from "react-toastify";
 import Swal from "sweetalert2";
-import {
-  fetchDeals,
-  createDeal,
-  updateDealStatus,
-  deleteDeal,
-} from "../../../redux/admin/featureDealSlice";
+// import {
+//   fetchDeals,
+//   createDeal,
+//   updateDealStatus,
+//   deleteDeal,
+// } from "../../../redux/admin/featureDealSlice";
 
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import LoadingSpinner from "../../../../components/LoodingSpinner/LoadingSpinner";
 import ExportButton from "../../../../components/ActionButton/Export";
 import ActionButton from "../../../../components/ActionButton/Action";
+import {
+  createDeal,
+  deleteDeal,
+  fetchDeals,
+  updateDealStatus,
+} from "../../../../redux/slices/admin/featureDealSlice";
 
 const FeatureDeal = () => {
   const [searchQuery, setSearchQuery] = useState("");

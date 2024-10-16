@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IoFilter } from "react-icons/io5";
-import "./inhouse.css";
+
 // Sample categories array
 const categories = [
   { id: "all", name: "All" },

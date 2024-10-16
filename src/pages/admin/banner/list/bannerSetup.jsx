@@ -1,17 +1,16 @@
-
 import React, { useEffect, lazy } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchBanners,
-  updateBannerStatus,
-  deleteBanner,
-} from "../../../../redux/admin/bannerSlice";
+
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import {
+  deleteBanner,
+  fetchBanners,
+  updateBannerStatus,
+} from "../../../../redux/slices/admin/bannerSlice";
 import ConfirmationModal from "../../../../components/FormInput/ConfirmationModal";
-import ActionButton from "../../../../components/ActionButton/Action";
 import Switcher from "../../../../components/FormInput/Switcher";
+import ActionButton from "../../../../components/ActionButton/Action";
 import LoadingSpinner from "../../../../components/LoodingSpinner/LoadingSpinner";
 
 const LazyTableList = lazy(() =>
@@ -63,7 +62,8 @@ const BannerSetup = () => {
     {
       key: "_id",
       label: "SL",
-      render: (banner, index, currentPage, itemsPerPage) => index + 1 + (currentPage - 1) * itemsPerPage,
+      render: (banner, index, currentPage, itemsPerPage) =>
+        index + 1 + (currentPage - 1) * itemsPerPage,
     },
     {
       key: "bannerImage",
@@ -73,7 +73,7 @@ const BannerSetup = () => {
           src={banner.bannerImage}
           alt={banner.name}
           className="h-16 w-24 object-cover "
-          style={{margin:"0 auto"}}
+          style={{ margin: "0 auto" }}
         />
       ),
     },
@@ -93,10 +93,7 @@ const BannerSetup = () => {
       label: "Action",
       render: (banner) => (
         <div className="flex justify-center gap-2">
-          <ActionButton
-            to={`/editbannerform/${banner._id}`}
-            icon={FaEdit}
-          />
+          <ActionButton to={`/editbannerform/${banner._id}`} icon={FaEdit} />
           <ActionButton
             onClick={() => handleDeleteBanner(banner._id)}
             icon={FaTrash}
@@ -108,7 +105,7 @@ const BannerSetup = () => {
 
   return (
     <div className="bg-[#F9F9FB] px-0 sm:px-6 md:px-8 lg:px-10 py-0 w-full">
-  <div className="mt-4 sm:mt-6 md:mt-8 lg:mt-10">
+      <div className="mt-4 sm:mt-6 md:mt-8 lg:mt-10">
         <React.Suspense
           fallback={
             <div>

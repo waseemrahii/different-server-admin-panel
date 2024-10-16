@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchDeals,
-  createDeal,
-  updateDealStatus,
-  deleteDeal,
-  updateDeal, // Ensure you have this action imported
-} from "../../../redux/admin/dealOfDaySlice"; // Adjust the import path as necessary
-import { fetchProducts } from "../../../redux/admin/productSlice"; // Adjust import path as necessary
-import Swal from "sweetalert2";
-import { AiOutlineCheckCircle, AiOutlineDelete } from "react-icons/ai"; // Import the necessary icons
-import { FaEdit, FaPen, FaTrash } from "react-icons/fa"; // Import the necessary icon
+
+// Import the necessary icons
+import { FaPen, FaTrash } from "react-icons/fa"; // Import the necessary icon
 import ActionButton from "../../../../components/ActionButton/Action";
+import {
+  createDeal,
+  deleteDeal,
+  fetchDeals,
+  updateDeal,
+  updateDealStatus,
+} from "../../../../redux/slices/admin/dealOfDaySlice";
+import Swal from "sweetalert2";
+import { fetchProducts } from "../../../../redux/slices/admin/productSlice";
 
 const DealOfTheDay = () => {
   const dispatch = useDispatch();

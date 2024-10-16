@@ -1,18 +1,19 @@
 import React, { useState, useEffect, Suspense, lazy } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchProducts,
-  toggleFeatured,
-  deleteProduct,
-  updateProductStatus,
-} from "../../../redux/admin/productSlice";
-import {
-  fetchCategories,
-  fetchBrands,
-} from "../../../redux/admin/categorybrandSlice";
+
 import Swal from "sweetalert2";
 import FilterForm from "./FilterForm";
-import LoadingSpinner from "../../../components/LoodingSpinner/LoadingSpinner";
+import {
+  deleteProduct,
+  fetchProducts,
+  toggleFeatured,
+  updateProductStatus,
+} from "../../../../../redux/slices/admin/productSlice";
+import {
+  fetchBrands,
+  fetchCategories,
+} from "../../../../../redux/slices/admin/categorybrandSlice";
+import LoadingSpinner from "../../../../../components/LoodingSpinner/LoadingSpinner";
 
 // Lazy load the ProductTable component
 const ProductTable = lazy(() => import("./productTable"));

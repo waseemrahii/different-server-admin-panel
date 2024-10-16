@@ -1,5 +1,5 @@
 import React from "react";
-import "./PaymentMethod.css";
+
 const PayMentMethod = () => {
   return (
     <div className="row gy-3" id="payment-gateway-cards">
@@ -43,7 +43,7 @@ const PayMentMethod = () => {
                   alt="Public"
                 />
               </div>
-              
+
               <div className="form-group">
                 <input name="gateway" value="mercadopago" className="d-none" />
                 <select

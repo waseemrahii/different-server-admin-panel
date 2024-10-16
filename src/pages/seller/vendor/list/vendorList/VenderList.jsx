@@ -1,22 +1,15 @@
-
 import React, { useEffect, useState, Suspense, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchVendors,
-  deleteVendor,
-  updateVendorStatus,
-  resetError,
-} from "../../../../../redux/seller/vendorSlice";
-import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import { AiOutlinePlus } from "react-icons/ai";
+import {
+  deleteVendor,
+  fetchVendors,
+  resetError,
+  updateVendorStatus,
+} from "../../../../../redux/slices/seller/vendorSlice";
+import VendorTable from "./VendorTable";
 
 // Lazy load VendorSearch and VendorTable components
-import VendorSearch from "./VendorSearch";
-import VendorTable from "./VendorTable";
-import ExportButton from "../../../../../components/ActionButton/Export";
-import { FaDownload } from "react-icons/fa";
-import LoadingSpinner from "../../../../../components/LoodingSpinner/LoadingSpinner";
 
 const VendorList = () => {
   const dispatch = useDispatch();
@@ -108,17 +101,15 @@ const VendorList = () => {
   //       <h2>Error: {error}</h2>
   //     </div>
   //   );
-  
+
   return (
-
-              <VendorTable
-                vendors={memoizedVendors}
-                onDeleteVendor={handleDeleteVendor}
-                onUpdateStatus={handleUpdateStatus}
-                setImageLoading={setImageLoading}
-                imageLoading={imageLoading}
-              />
-
+    <VendorTable
+      vendors={memoizedVendors}
+      onDeleteVendor={handleDeleteVendor}
+      onUpdateStatus={handleUpdateStatus}
+      setImageLoading={setImageLoading}
+      imageLoading={imageLoading}
+    />
   );
 };
 

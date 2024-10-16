@@ -92,9 +92,9 @@
 //   // Filter subcategories
 //   useEffect(() => {
 //     const selectedCategory = formData.category;
-//     const relevantSubCategories = subCategories.filter(sub => sub.categoryId === selectedCategory); 
+//     const relevantSubCategories = subCategories.filter(sub => sub.categoryId === selectedCategory);
 //     setFilteredSubCategories(relevantSubCategories);
-    
+
 //     // Reset sub-sub-category
 //     setFormData(prevData => ({
 //       ...prevData,
@@ -114,7 +114,7 @@
 //         ? subSubCategories.filter(subSub => subSub.subCategoryId === selectedSubCategory)
 //         : [];
 //     setFilteredSubSubCategories(relevantSubSubCategories);
-    
+
 //     // Reset sub-sub-category
 //     setFormData(prevData => ({
 //         ...prevData,
@@ -201,14 +201,14 @@
 //             />
 //           </div>
 //           {/* Stock  */}
- 
+
 //           <div className="flex flex-col px-2">
 //             <FormInput
 //               label="Product Stock"
 //               name="stock"
 //               value={formData.stock}
 //               onChange={handleChange}
-           
+
 //               required
 //             />
 //           </div>
@@ -303,23 +303,27 @@
 
 // export default ProductGeneral;
 
-
-
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import FormInput from '../../../../components/FormInput/FormInput';
-import FormSection from '../../../../components/FormInput/FormSection';
-import FormSelect from '../../../../components/FormInput/FormSelect';
-import { AiOutlineClose, AiOutlineSync } from 'react-icons/ai';
+
+import { AiOutlineClose, AiOutlineSync } from "react-icons/ai";
+// import {
+//   fetchCategories,
+//   fetchBrands,
+//   fetchColors,
+//   fetchAttributes,
+//   fetchSubCategories,
+//   fetchSubSubCategories,
+// } from "../../../../redux/admin/categorybrandSlice";
+import FormSection from "../../../../../../components/FormInput/FormSection";
+import FormSelect from "../../../../../../components/FormInput/FormSelect";
+import FormInput from "../../../../../../components/FormInput/FormInput";
 import {
-  fetchCategories,
-  fetchBrands,
-  fetchColors,
   fetchAttributes,
-  fetchSubCategories,
-  fetchSubSubCategories,
-} from "../../../../redux/admin/categorybrandSlice";
+  fetchBrands,
+  fetchCategories,
+  fetchColors,
+} from "../../../../../../redux/slices/admin/categorybrandSlice";
 
 // Function to generate a 6-digit random SKU
 const generateSKU = () => {
@@ -328,17 +332,16 @@ const generateSKU = () => {
 
 const ProductGeneral = ({ formData, handleChange, setFormData }) => {
   const dispatch = useDispatch();
-  const {
-    categories,
-    subCategories,
-    subSubCategories,
-    brands,
-  } = useSelector((state) => state.category);
+  const { categories, subCategories, subSubCategories, brands } = useSelector(
+    (state) => state.category
+  );
 
   // State for tags
   //         tagsArray.forEach((tag) => productFormData.append("tags[]", tag));
 
-  const [tags, setTags] = useState(formData.tags ? formData.tags.split(',') : []);
+  const [tags, setTags] = useState(
+    formData.tags ? formData.tags.split(",") : []
+  );
   const [filteredSubCategories, setFilteredSubCategories] = useState([]);
   const [filteredSubSubCategories, setFilteredSubSubCategories] = useState([]);
 
@@ -354,29 +357,33 @@ const ProductGeneral = ({ formData, handleChange, setFormData }) => {
   useEffect(() => {
     if (formData.category) {
       // console.log("SubCategories before filter:", subCategories);
-      const relevantSubCategories = subCategories.filter(sub => sub.mainCategory._id === formData.category);
+      const relevantSubCategories = subCategories.filter(
+        (sub) => sub.mainCategory._id === formData.category
+      );
       // console.log("Filtered SubCategories:", relevantSubCategories);
       setFilteredSubCategories(relevantSubCategories);
-      setFilteredSubSubCategories([]);  // Reset sub-sub-categories
+      setFilteredSubSubCategories([]); // Reset sub-sub-categories
     }
   }, [formData.category, subCategories]);
-  
 
   useEffect(() => {
     if (formData.subCategorySlug) {
       // console.log("SubSubCategories before filter:", subSubCategories);
-      const relevantSubSubCategories = subSubCategories.doc?.filter(subSub => subSub.subCategory._id === formData.subCategorySlug) || [];
+      const relevantSubSubCategories =
+        subSubCategories.doc?.filter(
+          (subSub) => subSub.subCategory._id === formData.subCategorySlug
+        ) || [];
       // console.log("Filtered SubSubCategories:", relevantSubSubCategories);
       setFilteredSubSubCategories(relevantSubSubCategories);
     }
   }, [formData.subCategorySlug, subSubCategories]);
-  
+
   // console.log("sub cateogories", subCategories)
   // console.log("sub sub cateogories", subSubCategories)
   // SKU generation
   const handleGenerateSKU = () => {
     const newSKU = generateSKU();
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
       sku: newSKU,
     }));
@@ -384,17 +391,17 @@ const ProductGeneral = ({ formData, handleChange, setFormData }) => {
 
   // Adding tags
   const handleTagInput = (e) => {
-    if (e.key === 'Enter' && e.target.value.trim()) {
+    if (e.key === "Enter" && e.target.value.trim()) {
       e.preventDefault(); // Prevent form submission
       const newTag = e.target.value.trim();
       if (!tags.includes(newTag)) {
         setTags([...tags, newTag]);
-        setFormData(prevData => ({
+        setFormData((prevData) => ({
           ...prevData,
-          tags: [...tags, newTag].join(','),
+          tags: [...tags, newTag].join(","),
         }));
       }
-      e.target.value = ''; // Clear input after adding tag
+      e.target.value = ""; // Clear input after adding tag
     }
   };
 
@@ -402,9 +409,9 @@ const ProductGeneral = ({ formData, handleChange, setFormData }) => {
   const removeTag = (indexToRemove) => {
     const updatedTags = tags.filter((_, index) => index !== indexToRemove);
     setTags(updatedTags);
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
-      tags: updatedTags.join(','),
+      tags: updatedTags.join(","),
     }));
   };
 
@@ -412,8 +419,9 @@ const ProductGeneral = ({ formData, handleChange, setFormData }) => {
     <>
       {/* General Product Information Section */}
       <FormSection title="General Information">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4"> {/* Reduced gap size */}
-
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          {" "}
+          {/* Reduced gap size */}
           {/* Category */}
           <div className="flex flex-col px-2">
             <FormSelect
@@ -421,14 +429,17 @@ const ProductGeneral = ({ formData, handleChange, setFormData }) => {
               name="category"
               value={formData.category}
               onChange={handleChange}
-              options={categories.length > 0 ? categories.map((category) => ({
-                value: category._id,
-                label: category.name,
-              })) : [{ value: '', label: 'Not Category Found' }]}
+              options={
+                categories.length > 0
+                  ? categories.map((category) => ({
+                      value: category._id,
+                      label: category.name,
+                    }))
+                  : [{ value: "", label: "Not Category Found" }]
+              }
               required
             />
           </div>
-
           {/* Sub-Category */}
           <div className="flex flex-col px-2">
             {/* <FormSelect
@@ -442,35 +453,43 @@ const ProductGeneral = ({ formData, handleChange, setFormData }) => {
               })) : [{ value: '', label: 'Not Sub-Category Found' }]}
             /> */}
 
-<FormSelect
-  label="Sub-Category"
-  name="subCategorySlug"
-  value={formData.subCategorySlug}
-  onChange={(e) => setFormData({ ...formData, subCategorySlug: e.target.value })}
-  options={filteredSubCategories.length > 0 ? filteredSubCategories.map((subCategory) => ({
-    value: subCategory._id,  // Ensure you're setting the correct _id here
-    label: subCategory.name,
-  })) : [{ value: '', label: 'Not Sub-Category Found' }]}
-/>
-
+            <FormSelect
+              label="Sub-Category"
+              name="subCategorySlug"
+              value={formData.subCategorySlug}
+              onChange={(e) =>
+                setFormData({ ...formData, subCategorySlug: e.target.value })
+              }
+              options={
+                filteredSubCategories.length > 0
+                  ? filteredSubCategories.map((subCategory) => ({
+                      value: subCategory._id, // Ensure you're setting the correct _id here
+                      label: subCategory.name,
+                    }))
+                  : [{ value: "", label: "Not Sub-Category Found" }]
+              }
+            />
           </div>
-     {
-      // console.log("sub catoegyr ", filteredSubCategories)
-     }
+          {
+            // console.log("sub catoegyr ", filteredSubCategories)
+          }
           {/* Sub-Sub-Category */}
           <div className="flex flex-col px-2">
-          <FormSelect
-  label="Sub-Sub-Category"
-  name="subSubCategorySlug"
-  value={formData.subSubCategorySlug}
-  onChange={handleChange}
-  options={filteredSubSubCategories.length > 0 ? filteredSubSubCategories.map((subSubCategory) => ({
-    value: subSubCategory._id,  // Ensure correct field here
-    label: subSubCategory.name,
-  })) : [{ value: '', label: 'Not Sub-Sub-Category Found' }]}
-/>
+            <FormSelect
+              label="Sub-Sub-Category"
+              name="subSubCategorySlug"
+              value={formData.subSubCategorySlug}
+              onChange={handleChange}
+              options={
+                filteredSubSubCategories.length > 0
+                  ? filteredSubSubCategories.map((subSubCategory) => ({
+                      value: subSubCategory._id, // Ensure correct field here
+                      label: subSubCategory.name,
+                    }))
+                  : [{ value: "", label: "Not Sub-Sub-Category Found" }]
+              }
+            />
           </div>
-
           {/* Brand */}
           <div className="flex flex-col px-2">
             <FormSelect
@@ -478,14 +497,17 @@ const ProductGeneral = ({ formData, handleChange, setFormData }) => {
               name="brand"
               value={formData.brand}
               onChange={handleChange}
-              options={brands.length > 0 ? brands.map((brand) => ({
-                value: brand._id,
-                label: brand.name,
-              })) : [{ value: '', label: 'Not Brand Found' }]}
+              options={
+                brands.length > 0
+                  ? brands.map((brand) => ({
+                      value: brand._id,
+                      label: brand.name,
+                    }))
+                  : [{ value: "", label: "Not Brand Found" }]
+              }
               required
             />
           </div>
-
           {/* Product Type */}
           <div className="flex flex-col px-2">
             <FormSelect
@@ -494,14 +516,14 @@ const ProductGeneral = ({ formData, handleChange, setFormData }) => {
               value={formData.productType}
               onChange={handleChange}
               options={[
-                { value: 'physical', label: 'Physical' },
-                { value: 'digital', label: 'Digital' },
+                { value: "physical", label: "Physical" },
+                { value: "digital", label: "Digital" },
               ]}
               required
             />
           </div>
           {/* Conditionally Render Digital Product Type */}
-          {formData.productType === 'digital' && (
+          {formData.productType === "digital" && (
             <div className="flex flex-col px-2">
               <FormSelect
                 label="Digital Product Type"
@@ -509,14 +531,14 @@ const ProductGeneral = ({ formData, handleChange, setFormData }) => {
                 value={formData.digitalProductType}
                 onChange={handleChange}
                 options={[
-                  { value: 'readyAfterSell', label: 'Ready After Sell' },
-                  { value: 'readyProduct', label: 'Ready Product' },
+                  { value: "readyAfterSell", label: "Ready After Sell" },
+                  { value: "readyProduct", label: "Ready Product" },
                 ]}
               />
             </div>
           )}
-             {/* Stock  */}
-             <div className="flex flex-col px-2">
+          {/* Stock  */}
+          <div className="flex flex-col px-2">
             <FormInput
               label="Product Stock"
               name="stock"
@@ -526,7 +548,6 @@ const ProductGeneral = ({ formData, handleChange, setFormData }) => {
               required
             />
           </div>
-
           {/* SKU */}
           <div className="flex flex-col px-2">
             <label className="font-semibold">SKU</label>
@@ -547,7 +568,6 @@ const ProductGeneral = ({ formData, handleChange, setFormData }) => {
               />
             </div>
           </div>
-
           {/* Unit */}
           <div className="flex flex-col px-2">
             <FormSelect
@@ -556,17 +576,17 @@ const ProductGeneral = ({ formData, handleChange, setFormData }) => {
               value={formData.unit}
               onChange={handleChange}
               options={[
-                { value: 'piece', label: 'Piece' },
-                { value: 'kg', label: 'Kilogram' },
-                { value: 'liter', label: 'Liter' },
-                { value: 'box', label: 'Box' },
-                { value: 'packet', label: 'Packet' },
-                { value: 'dozen', label: 'Dozen' },
-                { value: 'mL', label: 'Milliliter' },
-                { value: 'g', label: 'Gram' },
-                { value: 'ton', label: 'Ton' },
-                { value: 'bottle', label: 'Bottle' },
-                { value: 'set', label: 'Set' },
+                { value: "piece", label: "Piece" },
+                { value: "kg", label: "Kilogram" },
+                { value: "liter", label: "Liter" },
+                { value: "box", label: "Box" },
+                { value: "packet", label: "Packet" },
+                { value: "dozen", label: "Dozen" },
+                { value: "mL", label: "Milliliter" },
+                { value: "g", label: "Gram" },
+                { value: "ton", label: "Ton" },
+                { value: "bottle", label: "Bottle" },
+                { value: "set", label: "Set" },
               ]}
               required
             />
@@ -578,7 +598,10 @@ const ProductGeneral = ({ formData, handleChange, setFormData }) => {
           <label className="font-semibold">Tags</label>
           <div className="flex flex-wrap border border-gray-300 p-2 rounded">
             {tags.map((tag, index) => (
-              <span key={index} className="bg-gray-200 text-gray-700 p-1 m-1 rounded inline-flex items-center">
+              <span
+                key={index}
+                className="bg-gray-200 text-gray-700 p-1 m-1 rounded inline-flex items-center"
+              >
                 {tag}
                 <AiOutlineClose
                   onClick={() => removeTag(index)}

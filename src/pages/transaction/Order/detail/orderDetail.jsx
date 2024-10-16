@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
-import { FaMapLocation } from "react-icons/fa6";
 import { IoIosPrint } from "react-icons/io";
 import { IoPersonSharp } from "react-icons/io5";
 import { FaMapMarkerAlt } from "react-icons/fa";
@@ -9,10 +8,13 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { updateOrderStatus } from "../../redux/transaction/orderSlice";
-import ApiUrl from "../../ApiUrl";
-import ImageApiUrl from "../../ImageApiUrl";
-import LoadingSpinner from "../../components/LoodingSpinner/LoadingSpinner";
+// import { updateOrderStatus } from "../../redux/transaction/orderSlice";
+// import ApiUrl from "../../ApiUrl";
+// import ImageApiUrl from "../../ImageApiUrl";
+import { updateOrderStatus } from "../../../../redux/slices/transaction/orderSlice";
+import ApiUrl from "../../../../ApiUrl";
+import ImageApiUrl from "../../../../ImageApiUrl";
+import LoadingSpinner from "../../../../components/LoodingSpinner/LoadingSpinner";
 
 const OrderDetails = () => {
   const { id } = useParams(); // Get the order ID from URL parameters
@@ -64,10 +66,13 @@ const OrderDetails = () => {
     setPaymentStatus(!paymentStatus);
   };
 
-
-
   if (!order) {
-    return <div>   <LoadingSpinner /></div>; // Display a loading state until data is fetched
+    return (
+      <div>
+        {" "}
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   const {
@@ -112,8 +117,8 @@ const OrderDetails = () => {
                 <button
                   className="border rounded px-3 py-2  bg-primary flex items-center gap-2 text-white hover:bg-primary-dark"
                   onClick={printInvoice}
-                 style={{color:"white"}}
-             >
+                  style={{ color: "white" }}
+                >
                   <IoIosPrint className="text-white" /> Print Invoice
                 </button>
               </div>

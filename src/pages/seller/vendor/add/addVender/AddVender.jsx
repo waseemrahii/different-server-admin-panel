@@ -1,18 +1,23 @@
-
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { FiUserPlus, FiInfo, FiImage, FiMail } from "react-icons/fi";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { createVendor } from "../../../../../redux/seller/vendorSlice";
+
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import FormInput from "../../../../../components/FormInput/FormInput";
-import FormTextArea from "../../../../../components/FormInput/FormTextArea";
-import FileUpload from "../../../../../components/FormInput/FileUpload";
-import PreviewImage from "../../../../../components/FormInput/PreviewImage";
+// import FormInput from "../../../../../components/FormInput/FormInput";
+// import FormTextArea from "../../../../../components/FormInput/FormTextArea";
+// import FileUpload from "../../../../../components/FormInput/FileUpload";
+// import PreviewImage from "../../../../../components/FormInput/PreviewImage";
+// import FormSection from "../../../../../components/FormInput/FormSection";
+import { createVendor } from "../../../../../redux/slices/seller/vendorSlice";
 import FormSection from "../../../../../components/FormInput/FormSection";
+import FormInput from "../../../../../components/FormInput/FormInput";
+import PreviewImage from "../../../../../components/FormInput/PreviewImage";
+import FileUpload from "../../../../../components/FormInput/FileUpload";
+import FormTextArea from "../../../../../components/FormInput/FormTextArea";
 
 const AddVendorForm = () => {
   const [formData, setFormData] = useState({
@@ -43,7 +48,8 @@ const AddVendorForm = () => {
       form.append("password", formData.password);
       form.append("shopName", formData.shopName);
       form.append("address", formData.address);
-      if (formData.vendorImage) form.append("vendorImage", formData.vendorImage);
+      if (formData.vendorImage)
+        form.append("vendorImage", formData.vendorImage);
       if (formData.logo) form.append("logo", formData.logo);
       if (formData.banner) form.append("banner", formData.banner);
 
@@ -87,7 +93,6 @@ const AddVendorForm = () => {
     });
   };
 
-  
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {

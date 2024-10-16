@@ -1,19 +1,18 @@
-
-
 import { useEffect } from "react";
-import FormInput from "../../../../components/FormInput/FormInput";
-import FormSection from "../../../../components/FormInput/FormSection";
-import FormSelect from "../../../../components/FormInput/FormSelect";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import FormSection from "../../../../../../components/FormInput/FormSection";
+import FormInput from "../../../../../../components/FormInput/FormInput";
+import FormSelect from "../../../../../../components/FormInput/FormSelect";
 
 const ProductAdditional = ({ formData = {}, handleChange }) => {
   // Check for discount validation
   useEffect(() => {
-    if (formData.discountType === 'percent' && formData.discountAmount > 100) {
+    if (formData.discountType === "percent" && formData.discountAmount > 100) {
       toast.error("Discount amount cannot exceed 100%.");
     } else if (
-      formData.discountType === 'flat' &&
+      formData.discountType === "flat" &&
       formData.discountAmount > formData.price
     ) {
       toast.error("Discount amount cannot exceed the price.");
@@ -24,7 +23,6 @@ const ProductAdditional = ({ formData = {}, handleChange }) => {
     <FormSection title="Pricing Information">
       <ToastContainer />
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-
         {/* Price */}
         <div className="flex flex-col px-2">
           <label className="font-semibold">Price</label>
@@ -59,16 +57,16 @@ const ProductAdditional = ({ formData = {}, handleChange }) => {
             value={formData.discountType}
             onChange={handleChange}
             options={[
-              { value: 'percent', label: 'Percentage' },
-              { value: 'flat', label: 'Flat Amount' },
+              { value: "percent", label: "Percentage" },
+              { value: "flat", label: "Flat Amount" },
             ]}
           />
         </div>
 
         {/* Discount Amount */}
-        <div className="flex flex-col px-2 " style={{marginTop:"-.5rem"}}>
+        <div className="flex flex-col px-2 " style={{ marginTop: "-.5rem" }}>
           <label className="font-semibold">
-            Discount Amount {formData.discountType === 'percent' ? '%' : '$'}
+            Discount Amount {formData.discountType === "percent" ? "%" : "$"}
           </label>
           <div className="relative">
             <FormInput
@@ -86,7 +84,6 @@ const ProductAdditional = ({ formData = {}, handleChange }) => {
         <div className="flex flex-col px-2">
           <label className="font-semibold">Shipping Cost</label>
           <FormInput
-  
             type="text"
             name="shippingCost"
             value={formData.shippingCost}
@@ -94,7 +91,7 @@ const ProductAdditional = ({ formData = {}, handleChange }) => {
             placeholder="Shipping Cost"
           />
         </div>
-     
+
         {/* Tax Amount */}
         <div className="flex flex-col px-2">
           <label className="font-semibold">Tax Amount</label>
@@ -122,11 +119,10 @@ const ProductAdditional = ({ formData = {}, handleChange }) => {
           </div>
         </div>
 
-           {/* video link  */}
-           <div className="flex flex-col px-2">
+        {/* video link  */}
+        <div className="flex flex-col px-2">
           <label className="font-semibold">Video Link</label>
           <FormInput
-  
             type="text"
             name="videoLink"
             value={formData.videoLink}

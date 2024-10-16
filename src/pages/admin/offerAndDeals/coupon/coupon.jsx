@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
-import { fetchCoupons, createCoupon } from '../../../redux/admin/couponSlice';
-import { fetchVendors } from '../../../redux/seller/vendorSlice';
-import { fetchCustomers } from '../../../redux/user/customerSlice';
 import FormSelect from "../../../../components/FormInput/FormSelect";
 import FormInput from "../../../../components/FormInput/FormInput";
 import ExportButton from "../../../../components/ActionButton/Export";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { fetchCoupons } from "../../../../redux/slices/admin/couponSlice";
+import { fetchVendors } from "../../../../redux/slices/seller/vendorSlice";
+import { fetchCustomers } from "../../../../redux/slices/user/customerSlice";
 const CouponManagement = () => {
   const dispatch = useDispatch();
   const { coupons, loading, error } = useSelector((state) => state.coupons);
@@ -56,11 +55,12 @@ const CouponManagement = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(createCoupon(form))
-    console.log("form data coupon to be submit ", form)
+    dispatch(createCoupon(form));
+    console
+      .log("form data coupon to be submit ", form)
       .then(() => {
         Swal.fire("Success", "Coupon Created Successfully", "success");
-        
+
         // Reset form after success
         setForm({
           title: "",
@@ -81,7 +81,9 @@ const CouponManagement = () => {
       })
       .catch((error) => {
         // Show error message with toast notification
-        toast.error(error.message || "Failed to create coupon. Please try again.");
+        toast.error(
+          error.message || "Failed to create coupon. Please try again."
+        );
         console.error("Error creating coupon:", error);
       });
   };
@@ -90,7 +92,10 @@ const CouponManagement = () => {
     <div className="p-10">
       <div className="mb-3">
         <h2 className="h1 mb-0 text-capitalize d-flex align-items-center gap-2">
-          <img src="https://6valley.6amtech.com/public/assets/back-end/img/coupon_setup.png" alt="" />
+          <img
+            src="https://6valley.6amtech.com/public/assets/back-end/img/coupon_setup.png"
+            alt=""
+          />
           Coupon setup
         </h2>
       </div>
@@ -108,7 +113,10 @@ const CouponManagement = () => {
                       value={form.type}
                       onChange={handleInputChange}
                       options={[
-                        { value: "Discount on Purchase", label: "Discount on Purchase" },
+                        {
+                          value: "Discount on Purchase",
+                          label: "Discount on Purchase",
+                        },
                         { value: "Free Delivery", label: "Free Delivery" },
                         { value: "Buy One Get One", label: "Buy One Get One" },
                         { value: "Others", label: "Others" },
@@ -260,8 +268,18 @@ const CouponManagement = () => {
                       label="Select Vendors"
                       name="vendors"
                       value={form.vendors}
-                      onChange={(e) => setForm({ ...form, vendors: [...e.target.selectedOptions].map(option => option.value) })}
-                      options={vendors.map(vendor => ({ value: vendor._id, label: vendor.shopName }))}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          vendors: [...e.target.selectedOptions].map(
+                            (option) => option.value
+                          ),
+                        })
+                      }
+                      options={vendors.map((vendor) => ({
+                        value: vendor._id,
+                        label: vendor.shopName,
+                      }))}
                       isMulti
                     />
                   </div>
@@ -271,14 +289,27 @@ const CouponManagement = () => {
                       label="Select Customers"
                       name="customers"
                       value={form.customers}
-                      onChange={(e) => setForm({ ...form, customers: [...e.target.selectedOptions].map(option => option.value) })}
-                      options={customers.map(customer => ({ value: customer._id, label: `${customer.firstName} ${customer.lastName}` }))}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          customers: [...e.target.selectedOptions].map(
+                            (option) => option.value
+                          ),
+                        })
+                      }
+                      options={customers.map((customer) => ({
+                        value: customer._id,
+                        label: `${customer.firstName} ${customer.lastName}`,
+                      }))}
                       isMulti
                     />
                   </div>
 
                   <div className="col-md-12">
-                    <button type="submit" className="btn bg-green-400 text-white">
+                    <button
+                      type="submit"
+                      className="btn bg-green-400 text-white"
+                    >
                       Submit
                     </button>
                   </div>
@@ -327,8 +358,12 @@ const CouponManagement = () => {
                           <td>{coupon.code}</td>
                           <td>{coupon.type}</td>
                           <td>{coupon.discountAmount}</td>
-                          <td>{new Date(coupon.startDate).toLocaleDateString()}</td>
-                          <td>{new Date(coupon.expiredDate).toLocaleDateString()}</td>
+                          <td>
+                            {new Date(coupon.startDate).toLocaleDateString()}
+                          </td>
+                          <td>
+                            {new Date(coupon.expiredDate).toLocaleDateString()}
+                          </td>
                           <td>{coupon.status}</td>
                         </tr>
                       ))}
@@ -346,5 +381,3 @@ const CouponManagement = () => {
 };
 
 export default CouponManagement;
-
-

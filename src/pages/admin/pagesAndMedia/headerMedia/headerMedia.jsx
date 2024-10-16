@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 // import { TioDelete } from 'react-icons/tio';
-import "./HeaderMedia.css";
+
 const HeaderMedia = () => {
   const [selectedImage, setSelectedImage] = useState(
     "https://6valley.6amtech.com/public/assets/back-end/img/placeholder/placeholder-4-1.png"

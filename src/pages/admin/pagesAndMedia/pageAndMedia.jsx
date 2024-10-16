@@ -3,8 +3,8 @@ import SocialMedia from "./socialMedia/socialMedia";
 import HeaderMedia from "./headerMedia/headerMedia";
 import BusinessProcess from "./businessProcess/businessProcess";
 import DownloadAppSection from "./dowloadApp/downloadApp";
-import FAQ from "./faq/faq";
-import FaqList from "./faq/faq";
+import FAQ from "./faq/Faq";
+import FaqList from "./faq/Faq";
 
 const PageAndMedia = () => {
   const [currentTab, setCurrentTab] = useState("header"); // State to manage active tab

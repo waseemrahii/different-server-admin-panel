@@ -1,15 +1,14 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { FaSearch, FaDownload, FaEye, FaTrash, FaEdit } from "react-icons/fa";
+import { FaSearch, FaDownload, FaEye, FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchCustomers,
-  deleteCustomer,
-  updateCustomerStatus,
-} from "../../../redux/user/customerSlice"; // Import deleteCustomer action
+// Import deleteCustomer action
 import Swal from "sweetalert2"; // Assuming SweetAlert2 for confirmation dialog
 import * as XLSX from "xlsx"; // For exporting customer data as Excel
-import ExportButton from "../../../components/ActionButton/Export";
-import ActionButton from "../../../components/ActionButton/Action";
+import {
+  deleteCustomer,
+  fetchCustomers,
+  updateCustomerStatus,
+} from "../../../redux/slices/user/customerSlice";
 
 const CustomerList = React.memo(() => {
   const dispatch = useDispatch();

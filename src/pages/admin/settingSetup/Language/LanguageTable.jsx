@@ -1,15 +1,5 @@
 import React, { useState } from "react";
-import {
-  FaInfoCircle,
-  FaPlus,
-  FaCog,
-  FaLanguage,
-  FaTrash,
-  FaEdit,
-  FaToggleOn,
-  FaToggleOff,
-} from "react-icons/fa";
-import "./LanguageTable.css";
+import { FaInfoCircle, FaPlus, FaCog } from "react-icons/fa";
 const LanguageTable = () => {
   const [languages, setLanguages] = useState([
     {

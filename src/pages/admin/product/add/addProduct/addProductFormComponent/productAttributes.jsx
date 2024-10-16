@@ -1,14 +1,18 @@
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchAttributes,
+  fetchColors,
+} from "../../../../../../redux/slices/admin/categorybrandSlice";
+import { FormSelect } from "react-bootstrap";
+import FormSection from "../../../../../../components/FormInput/FormSection";
 
-
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchColors, fetchAttributes } from 
-'../../../../redux/admin/categorybrandSlice';
-import FormSelect from '../../../../components/FormInput/FormSelect';
-import FormSection from '../../../../components/FormInput/FormSection';
-
-
-const ProductAttributes = ({ selectedColors, setSelectedColors, productAttributes, setProductAttributes }) => {
+const ProductAttributes = ({
+  selectedColors,
+  setSelectedColors,
+  productAttributes,
+  setProductAttributes,
+}) => {
   const dispatch = useDispatch();
   const [selectedAttribute, setSelectedAttribute] = useState("");
 
@@ -22,24 +26,32 @@ const ProductAttributes = ({ selectedColors, setSelectedColors, productAttribute
   const { colors, attributes } = useSelector((state) => state.category);
 
   const handleAttributeChange = (e) => {
-    const selectedAttr = attributes.find(attr => attr._id === e.target.value);
+    const selectedAttr = attributes.find((attr) => attr._id === e.target.value);
     setSelectedAttribute(selectedAttr); // Store the whole attribute object
   };
-  
+
   const addAttribute = () => {
-    if (selectedAttribute && !productAttributes.some(attr => attr._id === selectedAttribute._id)) {
+    if (
+      selectedAttribute &&
+      !productAttributes.some((attr) => attr._id === selectedAttribute._id)
+    ) {
       setProductAttributes([...productAttributes, selectedAttribute]);
       setSelectedAttribute(""); // Clear selection after adding
     }
   };
 
   const removeAttribute = (attr) => {
-    setProductAttributes(productAttributes.filter((item) => item._id !== attr._id));
+    setProductAttributes(
+      productAttributes.filter((item) => item._id !== attr._id)
+    );
   };
 
   const handleColorChange = (e) => {
-    const selectedColor = colors.find(color => color._id === e.target.value);
-    if (selectedColor && !selectedColors.some(color => color._id === selectedColor._id)) {
+    const selectedColor = colors.find((color) => color._id === e.target.value);
+    if (
+      selectedColor &&
+      !selectedColors.some((color) => color._id === selectedColor._id)
+    ) {
       setSelectedColors([...selectedColors, selectedColor]);
     }
   };
@@ -59,7 +71,10 @@ const ProductAttributes = ({ selectedColors, setSelectedColors, productAttribute
               name="attribute"
               value={selectedAttribute ? selectedAttribute._id : ""}
               onChange={handleAttributeChange}
-              options={attributes.map(attr => ({ value: attr._id, label: attr.name }))}
+              options={attributes.map((attr) => ({
+                value: attr._id,
+                label: attr.name,
+              }))}
               className="w-full h-12"
             />
             <button
@@ -74,7 +89,10 @@ const ProductAttributes = ({ selectedColors, setSelectedColors, productAttribute
           {/* Selected Attributes */}
           <div className="flex flex-wrap mb-4">
             {productAttributes.map((attr, index) => (
-              <div key={index} className="bg-gray-200 px-3 py-1 rounded flex items-center mr-2 mb-2">
+              <div
+                key={index}
+                className="bg-gray-200 px-3 py-1 rounded flex items-center mr-2 mb-2"
+              >
                 {attr.name}
                 <button
                   type="button"
@@ -96,7 +114,10 @@ const ProductAttributes = ({ selectedColors, setSelectedColors, productAttribute
               name="color"
               value={""}
               onChange={handleColorChange}
-              options={colors.map(color => ({ value: color._id, label: color.name }))}
+              options={colors.map((color) => ({
+                value: color._id,
+                label: color.name,
+              }))}
               className="w-full h-12"
             />
           </div>
@@ -104,7 +125,10 @@ const ProductAttributes = ({ selectedColors, setSelectedColors, productAttribute
           {/* Selected Colors */}
           <div className="flex flex-wrap mb-4">
             {selectedColors.map((color, index) => (
-              <div key={index} className="bg-gray-200 px-3 py-1 rounded flex items-center mr-2 mb-2">
+              <div
+                key={index}
+                className="bg-gray-200 px-3 py-1 rounded flex items-center mr-2 mb-2"
+              >
                 {color.name}
                 <button
                   type="button"

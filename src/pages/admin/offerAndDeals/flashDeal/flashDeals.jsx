@@ -4,11 +4,11 @@ import { MdFlashOn } from "react-icons/md";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
-import ApiUrl from "../../../ApiUrl";
 import FileUpload from "../../../../components/FormInput/FileUpload";
 import PreviewImage from "../../../../components/FormInput/PreviewImage";
 import ExportButton from "../../../../components/ActionButton/Export";
 import ActionButton from "../../../../components/ActionButton/Action";
+import ApiUrl from "../../../../ApiUrl";
 
 const FlashDeals = () => {
   const [activeLang, setActiveLang] = useState("en");
@@ -94,14 +94,18 @@ const FlashDeals = () => {
       image: formData.image,
       title: formData.title,
     };
-  
+
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.post(`${ApiUrl}flash-deals`, formDataToSubmit, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(
+        `${ApiUrl}flash-deals`,
+        formDataToSubmit,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.data.status === "success") {
         fetchFlashDeals();
         Swal.fire({
@@ -306,17 +310,17 @@ const FlashDeals = () => {
                     <FaSearch /> <h1>Search</h1>
                   </div>
                 </div> */}
-                   <div className="search-bar mb-4">
-         <input
-          type="text"
-          placeholder="Search Flash Deals"
-          className="form-control"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        {/* <FaSearch /> */}
-      </div>
-           {/* <div>
+                <div className="search-bar mb-4">
+                  <input
+                    type="text"
+                    placeholder="Search Flash Deals"
+                    className="form-control"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  {/* <FaSearch /> */}
+                </div>
+                {/* <div>
 
                 <ExportButton
                  s // data={filteredFlashDeals} // Pass the data to export
@@ -356,9 +360,9 @@ const FlashDeals = () => {
                             />
                           </td>
                           <td>{deal.title}</td>
-                           <td>{formatDate(deal.startDate)}</td>  
-                           <td>{formatDate(deal.endDate)}</td> 
-                          
+                          <td>{formatDate(deal.startDate)}</td>
+                          <td>{formatDate(deal.endDate)}</td>
+
                           <td>
                             {/* <label className="switcher">
                               <input
@@ -392,27 +396,27 @@ const FlashDeals = () => {
                             </label>
                           </td>
                           <td>
-                          <div className="d-flex justify-content-center gap-2">
-                          <Link
-                              to={`/add-flashproduct/${deal._id}`}
-                              className="h-30 d-flex gap-2 align-items-center btn btn-soft-info btn-sm border-green-500"
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="9"
-                              height="9"
-                              viewBox="0 0 9 9"
-                              fill="none"
-                              className="svg replaced-svg border-green-500"
-                            >
-                              <path
-                                d="M9 3.9375H5.0625V0H3.9375V3.9375H0V5.0625H3.9375V9H5.0625V5.0625H9V3.9375Z"
-                                fill="#00A3AD"
-                              />
-                            </svg>{" "}
-                            Add product
-                          </Link>
-                            {/* <ActionButton
+                            <div className="d-flex justify-content-center gap-2">
+                              <Link
+                                to={`/add-flashproduct/${deal._id}`}
+                                className="h-30 d-flex gap-2 align-items-center btn btn-soft-info btn-sm border-green-500"
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="9"
+                                  height="9"
+                                  viewBox="0 0 9 9"
+                                  fill="none"
+                                  className="svg replaced-svg border-green-500"
+                                >
+                                  <path
+                                    d="M9 3.9375H5.0625V0H3.9375V3.9375H0V5.0625H3.9375V9H5.0625V5.0625H9V3.9375Z"
+                                    fill="#00A3AD"
+                                  />
+                                </svg>{" "}
+                                Add product
+                              </Link>
+                              {/* <ActionButton
                               to={`/add-flashproduct/${deal._id}`}
                               icon={FaEdit} // Pass dynamic icon
                               className="ml-4"
@@ -420,13 +424,12 @@ const FlashDeals = () => {
                               
                             /> */}
 
-
-                            <ActionButton
-                              onClick={() => handleDelete(deal._id)}
-                              icon={FaTrash} // Pass dynamic icon
-                              className="ml-4"
-                              label="Delete"
-                            />
+                              <ActionButton
+                                onClick={() => handleDelete(deal._id)}
+                                icon={FaTrash} // Pass dynamic icon
+                                className="ml-4"
+                                label="Delete"
+                              />
                             </div>
                           </td>
                         </tr>
@@ -450,5 +453,3 @@ const FlashDeals = () => {
 };
 
 export default FlashDeals;
-
-

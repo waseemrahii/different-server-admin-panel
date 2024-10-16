@@ -1,14 +1,22 @@
-import React, { useState, useEffect, useCallback, lazy, Suspense, memo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  lazy,
+  Suspense,
+  memo,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import {
-  fetchSubCategories,
-  createSubCategory,
-  deleteSubCategory,
-  updateSubCategory,
-} from "../../../redux/admin/subCategorySlice";
-import { fetchCategories } from "../../../redux/admin/categorySlice";
+// import {
+//   fetchSubCategories,
+//   createSubCategory,
+//   deleteSubCategory,
+//   updateSubCategory,
+// } from "../../../redux/admin/subCategorySlice";
+// import { fetchCategories } from "../../../redux/admin/categorySlice";
 import ConfirmationModal from "../../../components/FormInput/ConfirmationModal";
+import { fetchCategories } from "../../../../redux/slices/admin/categorySlice";
 
 // Lazy load components
 const SubCategoryForm = lazy(() => import("./SubCategoryForm"));
@@ -16,7 +24,9 @@ const SubCategoryList = lazy(() => import("./SubCategoryList"));
 
 const SubCategoriess = () => {
   const dispatch = useDispatch();
-  const { subCategories, loading, error } = useSelector((state) => state.productSubcategory);
+  const { subCategories, loading, error } = useSelector(
+    (state) => state.productSubcategory
+  );
   const { categories } = useSelector((state) => state.productCategory);
 
   const [formData, setFormData] = useState({
@@ -48,13 +58,25 @@ const SubCategoriess = () => {
       e.preventDefault();
       try {
         const { id, ...dataToSubmit } = formData; // Remove id if present
-        await dispatch(editMode ? updateSubCategory(dataToSubmit) : createSubCategory(dataToSubmit)).unwrap();
-        Swal.fire("Success!", `Sub-category ${editMode ? "updated" : "created"} successfully.`, "success");
+        await dispatch(
+          editMode
+            ? updateSubCategory(dataToSubmit)
+            : createSubCategory(dataToSubmit)
+        ).unwrap();
+        Swal.fire(
+          "Success!",
+          `Sub-category ${editMode ? "updated" : "created"} successfully.`,
+          "success"
+        );
         resetForm();
         await loadData();
       } catch (error) {
         console.error("Submit Error:", error);
-        Swal.fire("Error!", error.message || "Failed to process the request.", "error");
+        Swal.fire(
+          "Error!",
+          error.message || "Failed to process the request.",
+          "error"
+        );
       }
     },
     [editMode, formData, dispatch, loadData]
@@ -65,24 +87,27 @@ const SubCategoriess = () => {
     setEditMode(false);
   }, []);
 
-  const handleDelete = useCallback(async (id) => {
-    const confirmed = await ConfirmationModal({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this sub-category!",
-      icon: "warning",
-      dangerMode: true,
-    });
+  const handleDelete = useCallback(
+    async (id) => {
+      const confirmed = await ConfirmationModal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this sub-category!",
+        icon: "warning",
+        dangerMode: true,
+      });
 
-    if (confirmed) {
-      try {
-        await dispatch(deleteSubCategory(id)).unwrap();
-        Swal.fire("Deleted!", "Sub-category has been deleted.", "success");
-        await loadData();
-      } catch (error) {
-        Swal.fire("Error!", "Failed to delete the sub-category.", "error");
+      if (confirmed) {
+        try {
+          await dispatch(deleteSubCategory(id)).unwrap();
+          Swal.fire("Deleted!", "Sub-category has been deleted.", "success");
+          await loadData();
+        } catch (error) {
+          Swal.fire("Error!", "Failed to delete the sub-category.", "error");
+        }
       }
-    }
-  }, [dispatch]);
+    },
+    [dispatch]
+  );
 
   const handleEdit = useCallback((subCategory) => {
     setFormData(subCategory);
@@ -101,14 +126,20 @@ const SubCategoriess = () => {
     <div className="content container-fluid">
       <div className="font-bold pb-4 text-xl flex gap-2 items-start">
         <h2 className="h1 mb-2 text-capitalize d-flex align-items-center gap-2">
-          <img src="/add-new-seller.png" alt="Table Heading Icon" className="w-8 h-8" />
+          <img
+            src="/add-new-seller.png"
+            alt="Table Heading Icon"
+            className="w-8 h-8"
+          />
           <span className="form-label text-[1.5rem] font-semibold text-green-600">
             Sub Categories
           </span>
         </h2>
       </div>
       <div className="card">
-        <div className="card-body" ref={formRef}> {/* Add ref to the card body */}
+        <div className="card-body" ref={formRef}>
+          {" "}
+          {/* Add ref to the card body */}
           <Suspense fallback={<div>Loading Form...</div>}>
             <MemoizedSubCategoryForm
               formData={formData}
