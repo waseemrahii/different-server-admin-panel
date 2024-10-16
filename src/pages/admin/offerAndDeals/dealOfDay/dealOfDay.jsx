@@ -334,7 +334,7 @@ const DealOfTheDay = () => {
                           /> */}
                           <button
                             title="Edit"
-                            className="btn hover:text-white btn-sm border-green-400 hover:bg-green-400 hover:text-white"
+                            className="btn  btn-sm border-green-400 hover:bg-green-400 hover:text-white"
                             onClick={() => console.log("Edit button clicked")}
                           >
                             <FaPen />

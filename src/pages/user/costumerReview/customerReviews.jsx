@@ -210,7 +210,7 @@ const CustomerReviews = () => {
               <div>
                 <button
                   type="submit"
-                  className="btn px-3 px-4 py-2 bg-primary text-white hover:bg-primary-dark"
+                  className="btn px-3  py-2 bg-primary text-white hover:bg-primary-dark"
                 >
                   Filter
                 </button>
