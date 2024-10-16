@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
-import { AiOutlineDelete } from 'react-icons/ai';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { AiOutlineDelete } from "react-icons/ai";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // FileUpload component for handling both thumbnail and additional images
-const FileUpload = ({ label, ratio, image, onChange, onDelete, isThumbnail }) => {
+const FileUpload = ({
+  label,
+  ratio,
+  image,
+  onChange,
+  onDelete,
+  isThumbnail,
+}) => {
   return (
     <div className="card h-100">
       <div className="card-body">
@@ -34,7 +41,7 @@ const FileUpload = ({ label, ratio, image, onChange, onDelete, isThumbnail }) =>
                 <img
                   src={image}
                   className="h-auto aspect-1 bg-white"
-                  alt={isThumbnail ? 'Product Thumbnail' : 'Additional Image'}
+                  alt={isThumbnail ? "Product Thumbnail" : "Additional Image"}
                 />
               </div>
             </>
@@ -52,9 +59,9 @@ const FileUpload = ({ label, ratio, image, onChange, onDelete, isThumbnail }) =>
             </div>
           )}
         </div>
-        <p className="text-muted mt-2">
+        {/* <p className="text-muted mt-2">
           Image format : Jpg, png, jpeg, webp <br /> Image size : Max 2 MB
-        </p>
+        </p> */}
       </div>
     </div>
   );
@@ -65,16 +72,25 @@ const ProductImageWrapper = () => {
   const [additionalImages, setAdditionalImages] = useState([]);
 
   const validateFile = (file) => {
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/bmp', 'image/tiff'];
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "image/gif",
+      "image/bmp",
+      "image/tiff",
+    ];
     const maxSize = 2 * 1024 * 1024; // 2 MB
 
     if (!allowedTypes.includes(file.type)) {
-      toast.error('Invalid file format. Please upload a JPG, PNG, WEBP, GIF, BMP, or TIFF image.');
+      toast.error(
+        "Invalid file format. Please upload a JPG, PNG, WEBP, GIF, BMP, or TIFF image."
+      );
       return false;
     }
 
     if (file.size > maxSize) {
-      toast.error('File size exceeds 2 MB. Please upload a smaller image.');
+      toast.error("File size exceeds 2 MB. Please upload a smaller image.");
       return false;
     }
 
@@ -119,7 +135,7 @@ const ProductImageWrapper = () => {
       <ToastContainer />
       {/* Thumbnail Section */}
       <div className="item-1">
-        <FileUpload 
+        <FileUpload
           label="Product Thumbnail"
           ratio="1:1 (500 x 500 px)"
           image={thumbnail}
@@ -133,14 +149,13 @@ const ProductImageWrapper = () => {
       <div className="additional_image_column item-2 col-md-9">
         <div className="card h-100">
           <div className="card-body">
-          
             <div className="coba-area">
               <div className="row g-2" id="additional_Image_Section">
                 {additionalImages.map((img, idx) => (
                   <div key={idx} className="col-sm-12 col-md-4">
                     <FileUpload
                       label={`Additional Image ${idx + 1}`}
-                      ratio="1:1 (500 x 500 px)"
+                      // ratio="1:1 (500 x 500 px)"
                       image={img}
                       onChange={(e) => handleAdditionalImageChange(e, idx)}
                       onDelete={() => handleDeleteImage(idx)}
@@ -150,8 +165,10 @@ const ProductImageWrapper = () => {
                 <div className="col-sm-12 col-md-4">
                   <FileUpload
                     label="Upload Additional Image"
-                    ratio="1:1 (500 x 500 px)"
-                    onChange={(e) => handleAdditionalImageChange(e, additionalImages.length)}
+                    // ratio="1:1 (500 x 500 px)"
+                    onChange={(e) =>
+                      handleAdditionalImageChange(e, additionalImages.length)
+                    }
                   />
                 </div>
               </div>

@@ -1,17 +1,16 @@
 // import React, { useState, useEffect } from 'react';
 // import { useDispatch, useSelector } from "react-redux";
-// import FormInput from '../../../../components/FormInput/FormInput';
-// import FormSection from '../../../../components/FormInput/FormSection';
-// import FormSelect from '../../../../components/FormInput/FormSelect';
+// import FormSection from "../../../../../../components/FormInput/FormSection";
+// import FormSelect from "../../../../../../components/FormInput/FormSelect";
+// import FormInput from "../../../../../../components/FormInput/FormInput";
 // import { AiOutlineClose, AiOutlineSync } from 'react-icons/ai';
 // import {
-//   fetchCategories,
-//   fetchBrands,
-//   fetchColors,
 //   fetchAttributes,
-//   fetchSubCategories,
-//   fetchSubSubCategories,
-// } from "../../../../components/redux/categorybrandSlice";
+//   fetchBrands,
+//   fetchCategories,
+//   fetchColors,
+// } from "../../../../../../redux/slices/admin/categorybrandSlice";
+
 
 // // Function to generate a 6-digit random SKU
 // const generateSKU = () => {

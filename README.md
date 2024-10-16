@@ -12,6 +12,13 @@ This project is a highly scalable **e-commerce admin dashboard** built with Reac
 
 ## 🛠️ Installation
 
+🔧 Technologies Used
+## React for the frontend UI
+## Redux for state management
+## Axios for making HTTP requests
+## Tailwind CSS for styling
+
 ### 1. Clone the repository:
 ```bash
 git clone https://github.com/your-username/different-server-admin-panel.git
+
