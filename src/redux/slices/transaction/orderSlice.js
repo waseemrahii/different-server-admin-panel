@@ -48,14 +48,16 @@ export const fetchOrdersWithFilters = createAsyncThunk(
 // Async thunk to fetch order by ID
 export const fetchOrderById = createAsyncThunk(
   'vendorOrder/fetchOrderById',
-  async (orderId, { rejectWithValue }) => {
+  async (id, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get(`${API_URL}/${orderId}`, {
+      const response = await axiosInstance.get(`${API_URL}/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`, // Include the token in the header
         },
       });
+      console.log("order in slice response  ====", response)
       return response.data.doc; // Assuming the response contains the order in data.doc
+      
     } catch (error) {
       return rejectWithValue(ErrorMessage(error)); // Use ErrorMessage utility for error handling
     }

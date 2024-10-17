@@ -14,6 +14,7 @@ import FeatureDealReducer from './slices/admin/featureDealSlice';
 import customersReducer from './slices/user/customerSlice'; 
 import couponReducer from './slices/admin/couponSlice'; 
 import flashDealReducer from './slices/admin/flashDealSlice'; 
+import attributeReducer from './slices/admin/attributeSlice'; 
 
 const store = configureStore({
   reducer: {
@@ -32,6 +33,7 @@ const store = configureStore({
     customers: customersReducer,
     coupons: couponReducer, 
     flashDeals: flashDealReducer,
+    attribute: attributeReducer,
 
   },
   middleware: (getDefaultMiddleware) =>

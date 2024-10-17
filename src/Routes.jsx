@@ -118,7 +118,7 @@ import WithdrawalMethods from "./pages/seller/vendor/list/VenderWalletMethod/Ven
 import OtherConfiguration from "./pages/admin/thirdParty/Paymentmethod/OtherConfiguration/OtherConfiguration.jsx";
 import OrderDetails from "./pages/transaction/Order/detail/orderDetail.jsx";
 import NotFoundPage from "./components/LoginPage/NotFoundPage.jsx";
-// import SubCategoriess from "./pages/admin/Categories/SubCategories/SubCategories.jsx";
+import SubCategoriess from "./pages/admin/Categories/SubCategories/SubCategories.jsx";
 
 function AllRoutes() {
   return (
@@ -155,7 +155,7 @@ function AllRoutes() {
         <Route path="/inhouseaddproduct" element={<AddInHouseNewProduct />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/categoryedit/:id" element={<CategoryUpdate />} />
-        {/* <Route path="/subcategories" element={<SubCategoriess />} /> */}
+        <Route path="/subcategories" element={<SubCategoriess />} />
         <Route path="/subsubcategories" element={<Sub_Sub_Categories />} />
         <Route path="/addnewbrand" element={<AddNewBrand />} />
         <Route path="/brandlist" element={<BrandList />} />
@@ -218,7 +218,7 @@ function AllRoutes() {
         <Route path="/packagingorder" element={<PackagingOrders />} />
         <Route path="/deliveredorder" element={<DeliveredOrders />} />
         <Route path="/returnedorder" element={<ReturnedOrders />} />
-        <Route path="/cancelledorder" element={<CanceledOrders />} />
+        <Route path="/cancel" element={<CanceledOrders />} />
         <Route path="/failedorder" element={<FailedToDeliverOrders />} />
         <Route path="/outfordelivery" element={<OutForDeliveryOrders />} />
         <Route path="/pushnotification" element={<PuchNotify />} />

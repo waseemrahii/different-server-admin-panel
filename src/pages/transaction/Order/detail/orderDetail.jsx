@@ -1,61 +1,46 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { IoIosPrint } from "react-icons/io";
 import { IoPersonSharp } from "react-icons/io5";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-// import { updateOrderStatus } from "../../redux/transaction/orderSlice";
-// import ApiUrl from "../../ApiUrl";
-// import ImageApiUrl from "../../ImageApiUrl";
-import { updateOrderStatus } from "../../../../redux/slices/transaction/orderSlice";
-import ApiUrl from "../../../../ApiUrl";
-import ImageApiUrl from "../../../../ImageApiUrl";
+import { useDispatch, useSelector } from "react-redux";
+import { updateOrderStatus, fetchOrderById } from "../../../../redux/slices/transaction/orderSlice";
 import LoadingSpinner from "../../../../components/LoodingSpinner/LoadingSpinner";
+import ImageApiUrl from "../../../../ImageApiUrl";
 
 const OrderDetails = () => {
   const { id } = useParams(); // Get the order ID from URL parameters
   const dispatch = useDispatch();
-  const [order, setOrder] = useState(null);
+
+  const { orders, status, error } = useSelector((state) => state.vendorOrder);
+ 
+    console.log("order in component ------", orders)
   const [showModal, setShowModal] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState(true);
   const fallbackImage = "/image-place-holder.png"; // Replace with the path to your fallback image
+  
+  useEffect(() => {
+    dispatch(fetchOrderById(id)); // Fetch order details via Redux
+  }, [dispatch, id]);
 
   useEffect(() => {
-    const fetchOrderDetails = async () => {
-      try {
-        const token = localStorage.getItem("token"); // Retrieve the token from local storage
-        const response = await axios.get(`${ApiUrl}/orders/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`, // Set the Authorization header
-          },
-        });
-        setOrder(response.data.doc);
-      } catch (error) {
-        console.error("There was an error fetching the order details!", error);
-        toast.error("Failed to fetch order details.");
-      }
-    };
-
-    fetchOrderDetails();
-  }, [id]);
-
+    console.log('Order details:', orders); // Check if order data is populated
+  }, [orders]);
   const printInvoice = () => {
     window.print();
   };
+
+
 
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
 
   const handleUpdateStatus = async (orderId, status) => {
     try {
-      console.log("status==", status);
-      console.log("orderId==", orderId);
       await dispatch(updateOrderStatus({ orderId, status })).unwrap();
-      setOrder((prevOrder) => ({ ...prevOrder, orderStatus: status }));
       toast.success("Order status updated successfully!");
     } catch (error) {
       toast.error("Failed to update order status.");
@@ -65,14 +50,25 @@ const OrderDetails = () => {
   const togglePaymentStatus = () => {
     setPaymentStatus(!paymentStatus);
   };
+  const order = orders.find((order) => order._id === id);
 
-  if (!order) {
-    return (
-      <div>
-        {" "}
-        <LoadingSpinner />
-      </div>
-    );
+
+  // Check the loading state
+  if (status === 'loading') {
+    return <LoadingSpinner />;
+  }
+
+  // Check for errors
+  if (status === 'failed') {
+    return <div>Error fetching orders details: {error}</div>;
+  }
+ // Find the specific order based on the ID
+ // Find the specific order based on the ID
+ const Orders = orders.find((order) => order._id === id);
+ console.log("orderdtail====", Orders)
+ // Check if orders exists
+  if (!orders) {
+    return <div>No orders details found.</div>;
   }
 
   const {
@@ -84,8 +80,8 @@ const OrderDetails = () => {
     paymentMethod,
     shippingAddress,
     billingAddress,
-  } = order;
-
+  } = Orders;
+  console.log("order status ====", Orders.orderStatus)
   return (
     <>
       <div className="bg-[#F9F9FB] w-full px-4 py-8">
@@ -104,9 +100,9 @@ const OrderDetails = () => {
             <div className="flex justify-between items-center">
               <div>
                 <h2 className="text-[1rem] font-bold pb-5">
-                  Order ID #{order._id}
+                  Order ID #{Orders._id}
                 </h2>
-                <p>{new Date(order.createdAt).toLocaleString()}</p>
+                <p>{new Date(Orders.createdAt).toLocaleString()}</p>
               </div>
               <div className="flex items-center gap-2">
                 <div>
@@ -115,7 +111,7 @@ const OrderDetails = () => {
                   </Button>
                 </div>
                 <button
-                  className="border rounded px-3 py-2  bg-primary flex items-center gap-2 text-white hover:bg-primary-dark"
+                  className="borders rounded px-3 py-2  bg-primary flex items-center gap-2 text-white hover:bg-primary-dark"
                   onClick={printInvoice}
                   style={{ color: "white" }}
                 >
@@ -129,6 +125,7 @@ const OrderDetails = () => {
                 <span
                   className={`bg-green-100 font-bold p-1 rounded border text-primary`}
                 >
+                  {console.log("orderStatus====", orderStatus)}
                   {orderStatus}
                 </span>
               </h1>
@@ -143,10 +140,10 @@ const OrderDetails = () => {
                 </span>
               </h1>
               <h1 className="pt-3 text-md">
-                Order verification code :
+                orders verification code :
                 <span className="font-bold ms-3">
                   {" "}
-                  {order._id.substring(0, 6)}
+                  {Orders.orderId}
                 </span>
               </h1>
             </div>
@@ -176,52 +173,61 @@ const OrderDetails = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {products.map((product, index) => (
-                      <tr className="hover:bg-gray-100" key={product._id}>
-                        <td className="px-4 py-2 text-center">{index + 1}</td>
-                        <td className="px-4 py-2 w-full">
-                          <div className="flex items-center whitespace-nowrap">
-                            <img
-                              src={
-                                product.thumbnail
-                                  ? `${ImageApiUrl}/${product.thumbnail}`
-                                  : fallbackImage
-                              }
-                              alt={product.name}
-                              className="w-10 h-10 object-cover rounded mr-3"
-                              onError={(e) => (e.target.src = fallbackImage)} // Fallback image if load fails
-                            />
-                            <div>
-                              <div>{product.name}</div>
-                              <div>Qty : {product.qty}</div>
-                              <div>
-                                Unit price : ${product.price.toFixed(2)} (Tax:{" "}
-                                {product.taxAmount}%)
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-4 py-2 text-center">
-                          ${product.price.toFixed(2)}
-                        </td>
-                        <td className="px-4 py-2 text-center">
-                          ${product.taxAmount.toFixed(2)}
-                        </td>
-                        <td className="px-4 py-2 text-center">
-                          ${product.discountAmount.toFixed(2)}
-                        </td>
-                        <td className="px-4 py-2 text-center">
-                          ${(product.price + product.taxAmount).toFixed(2)}
-                        </td>
-                      </tr>
-                    ))}
+                  {(products && products.length > 0) ? (
+  products.map((product, index) => (
+    <tr className="hover:bg-gray-100" key={product._id}>
+      <td className="px-4 py-2 text-center">{index + 1}</td>
+      <td className="px-4 py-2 w-full">
+        <div className="flex items-center whitespace-nowrap">
+          <img
+            src={
+              product.thumbnail
+                ? `${ImageApiUrl}/${product.thumbnail}`
+                : fallbackImage
+            }
+            alt={product.name}
+            className="w-10 h-10 object-cover rounded mr-3"
+            onError={(e) => (e.target.src = fallbackImage)} // Fallback image if load fails
+          />
+          <div>
+            <div>{product.name}</div>
+            <div>Qty: {product.qty}</div>
+            <div>
+              Unit price: ${product?.price} (Tax:{" "}
+              {product.taxAmount}%)
+            </div>
+          </div>
+        </div>
+      </td>
+      <td className="px-4 py-2 text-center">
+        ${product?.price}
+      </td>
+      <td className="px-4 py-2 text-center">
+        ${product.taxAmount}
+      </td>
+      <td className="px-4 py-2 text-center">
+        ${product.discountAmount}
+      </td>
+      <td className="px-4 py-2 text-center">
+        ${(product.price + product.taxAmount)}
+      </td>
+    </tr>
+  ))
+) : (
+  <tr>
+    <td colSpan="6" className="text-center py-4">
+      No products available
+    </td>
+  </tr>
+)}
+
                   </tbody>
                 </table>
               </div>
               <div className="mt-4">
                 <div className="flex justify-between border-t pt-2">
                   <span>Item price</span>
-                  <span>${totalAmount.toFixed(2)}</span>
+                  <span>${totalAmount}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Item Discount</span>
@@ -229,7 +235,7 @@ const OrderDetails = () => {
                 </div>
                 <div className="flex justify-between">
                   <span>Sub Total</span>
-                  <span>${totalAmount.toFixed(2)}</span>
+                  <span>${totalAmount}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Coupon discount</span>
@@ -245,7 +251,7 @@ const OrderDetails = () => {
                 </div>
                 <div className="flex justify-between font-bold border-t pt-2">
                   <span>Total</span>
-                  <span>${totalAmount.toFixed(2)}</span>
+                  <span>${totalAmount}</span>
                 </div>
               </div>
             </div>
@@ -263,10 +269,10 @@ const OrderDetails = () => {
                       Change Order Status
                     </span>
                     <select
-                      className="form-select mt-1 bg-white border border-gray-400 px-3 py-2 rounded block w-full"
-                      value={order.orderStatus}
+                      className="form-select mt-1 bg-white borders border-gray-400 px-3 py-2 rounded block w-full"
+                      value={Orders.orderStatus}
                       onChange={(e) =>
-                        handleUpdateStatus(order._id, e.target.value)
+                        handleUpdateStatus(Orders._id, e.target.value)
                       }
                     >
                       <option value="pending">Pending</option>
@@ -338,14 +344,14 @@ const OrderDetails = () => {
                     Contact: {customer?.phoneNumber}
                   </p>
                   <p className="text-gray-500">
-                    Country: {shippingAddress.country}
+                    Country: {shippingAddress?.country}
                   </p>
-                  <p className="text-gray-500">City: {shippingAddress.city}</p>
+                  <p className="text-gray-500">City: {shippingAddress?.city}</p>
                   <p className="text-gray-500">
-                    Zip Code: {shippingAddress.zipCode}
+                    Zip Code: {shippingAddress?.zipCode}
                   </p>
                   <p className="text-gray-500">
-                    address: {shippingAddress.address}
+                    address: {shippingAddress?.address}
                   </p>
                 </div>
               </div>
@@ -360,14 +366,14 @@ const OrderDetails = () => {
                 </div>
                 <div className="space-y-1">
                   <p className="text-gray-500">
-                    Country: {billingAddress.country}
+                    Country: {billingAddress?.country}
                   </p>
-                  <p className="text-gray-500">City: {billingAddress.city} </p>
+                  <p className="text-gray-500">City: {billingAddress?.city} </p>
                   <p className="text-gray-500">
-                    Zip Code: {billingAddress.zipCode}
+                    Zip Code: {billingAddress?.zipCode}
                   </p>
                   <p className="text-gray-500">
-                    Address: {billingAddress.address}
+                    Address: {billingAddress?.address}
                   </p>
                 </div>
               </div>
@@ -375,37 +381,32 @@ const OrderDetails = () => {
 
             <div className="mt-8">
               <h2 className="text-xl font-semibold mb-4">Vendor Information</h2>
-              {vendors.map((vendor, index) => (
-                <div
-                  key={index}
-                  className="mb-4 p-4 bg-white rounded shadow-md"
-                >
-                  <h3 className="text-lg font-semibold">
-                    Name : {vendor.firstName}
-                  </h3>
-                  <img
-                    src={`${ImageApiUrl}/${vendor.vendorImage}`}
-                    alt={vendor.name}
-                    className="w-16 h-16 object-cover rounded mb-2"
-                  />
-                  <div>
-                    <p className="text-lg font-bold ">
-                      {" "}
-                      Shop:{vendor.shopName}
-                    </p>
-                    <p className="text-gray-500 pt-3">
-                      Vendor Orders :9 Orders Served
-                    </p>
-                    <p className="text-gray-500 ">
-                      Vendor No:{vendor.phoneNumber}
-                    </p>
-                    <p className="text-gray-500 flex justify-center gap-2">
-                      <FaMapMarkerAlt className="text-xl" />
-                      {vendor.address}
-                    </p>
-                  </div>
-                </div>
-              ))}
+              {vendors && vendors.length > 0 ? (
+  vendors.map((vendor, index) => (
+    <div key={index} className="mb-4 p-4 bg-white rounded shadow-md">
+      <h3 className="text-lg font-semibold">
+        Name: {vendor?.firstName || "N/A"}
+      </h3>
+      <img
+        src={vendor?.vendorImage ? `${ImageApiUrl}/${vendor.vendorImage}` : fallbackImage}
+        alt={vendor?.name || "N/A"}
+        className="w-16 h-16 object-cover rounded mb-2"
+      />
+      <div>
+        <p className="text-lg font-bold">Shop: {vendor?.shopName || "N/A"}</p>
+        <p className="text-gray-500 pt-3">Vendor Orders: 9 Orders Served</p>
+        <p className="text-gray-500">Vendor No: {vendor?.phoneNumber || "N/A"}</p>
+        <p className="text-gray-500 flex justify-center gap-2">
+          <FaMapMarkerAlt className="text-xl" />
+          {vendor?.address || "N/A"}
+        </p>
+      </div>
+    </div>
+  ))
+) : (
+  <p>No vendors available</p>
+)}
+
             </div>
           </div>
         </div>

@@ -8,19 +8,19 @@ import React, {
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-// import {
-//   fetchSubCategories,
-//   createSubCategory,
-//   deleteSubCategory,
-//   updateSubCategory,
-// } from "../../../redux/admin/subCategorySlice";
+import {
+  fetchSubCategories,
+  createSubCategory,
+  deleteSubCategory,
+  updateSubCategory,
+} from "../../../../redux/slices/admin/subCategorySlice";
 // import { fetchCategories } from "../../../redux/admin/categorySlice";
-import ConfirmationModal from "../../../components/FormInput/ConfirmationModal";
 import { fetchCategories } from "../../../../redux/slices/admin/categorySlice";
+import ConfirmationModal from "../../../../components/FormInput/ConfirmationModal";
 
 // Lazy load components
-const SubCategoryForm = lazy(() => import("./SubCategoryForm"));
-const SubCategoryList = lazy(() => import("./SubCategoryList"));
+const SubCategoryForm = lazy(() => import("./add/SubCategoryForm"));
+const SubCategoryList = lazy(() => import("./list/SubCategoryList"));
 
 const SubCategoriess = () => {
   const dispatch = useDispatch();

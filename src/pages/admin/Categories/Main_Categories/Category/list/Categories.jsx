@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
-// import { fetchCategories, createCategory, deleteCategory }
-//  from "../../../../../../redux/admin/categorySlice";
+
 import CategoryForm from "../add/CategoryForm";
 import CategoryList from "./CategoryList";
 import {
@@ -60,7 +59,8 @@ const Categories = () => {
       priority: newCategory.priority,
       logo: newCategory.logo,
     };
-
+    
+    console.log("formdata-----", formData)
     try {
       const action = await dispatch(createCategory(formData));
       if (createCategory.fulfilled.match(action)) {
@@ -68,7 +68,7 @@ const Categories = () => {
         toast.success("Category added successfully");
         await dispatch(fetchCategories({})); // Refresh categories
       } else {
-        toast.error(action.payload || "Failed to add category");
+        toast.error("Failed to add category");
       }
     } catch (error) {
       toast.error(error.message || "Failed to add category");

@@ -1,44 +1,30 @@
 import React, { useState, useEffect } from "react";
-
-import { FaDownload, FaEdit, FaEye, FaSearch, FaTrash } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { FaDownload, FaEdit, FaSearch, FaTrash } from "react-icons/fa";
+import { useDispatch, useSelector } from 'react-redux';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ApiUrl from "../../../ApiUrl";
 
+import {
+  fetchAttributes,
+  createAttribute,
+  updateAttribute,
+  deleteAttribute
+} from '../../../redux/slices/admin/attributeSlice';
 import ActionButton from "../../../components/ActionButton/Action";
 import ExportButton from "../../../components/ActionButton/Export";
 
 const AttributeSetup = () => {
-  const [attributes, setAttributes] = useState([]);
+  const dispatch = useDispatch();
+  const { attributes, loading, error } = useSelector((state) => state.attribute);
   const [activeTab, setActiveTab] = useState("en");
   const [searchValue, setSearchValue] = useState("");
   const [newAttribute, setNewAttribute] = useState({ name: "" });
   const [editingAttribute, setEditingAttribute] = useState(null);
 
-  // Retrieve the token from local storage
-  const token = localStorage.getItem("token");
-
-  // Set Axios headers with token
-  const axiosConfig = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  // Fetch attributes data from API
+  // Fetch attributes on component mount
   useEffect(() => {
-    const fetchAttributes = async () => {
-      try {
-        const response = await axios.get(`${ApiUrl}attributes/`, axiosConfig);
-        setAttributes(response.data.doc);
-      } catch (error) {
-        toast.error("Error fetching attributes data.");
-      }
-    };
-    fetchAttributes();
-  }, [axiosConfig]);
+    dispatch(fetchAttributes());
+  }, [dispatch]);
 
   // Handle tab click
   const handleTabClick = (lang) => setActiveTab(lang);
@@ -56,42 +42,19 @@ const AttributeSetup = () => {
   };
 
   // Handle form submission (add or update)
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    try {
-      if (editingAttribute) {
-        // Update attribute
-        await axios.put(
-          `${ApiUrl}attributes/${editingAttribute._id}`,
-          newAttribute,
-          axiosConfig
-        );
-        toast.success("Attribute updated successfully!");
-      } else {
-        // Add new attribute
-        await axios.post(`${ApiUrl}attributes/`, newAttribute, axiosConfig);
-        toast.success("Attribute added successfully!");
-      }
-      // Reset form and refetch attributes
-      setNewAttribute({ name: "" });
-      setEditingAttribute(null);
-      const response = await axios.get(`${ApiUrl}attributes/`, axiosConfig);
-      setAttributes(response.data.doc);
-    } catch (error) {
-      toast.error("Error saving attribute.");
+    if (editingAttribute) {
+      // Update attribute
+      dispatch(updateAttribute({ id: editingAttribute._id, data: newAttribute }));
+      toast.success("Attribute updated successfully!");
+    } else {
+      // Add new attribute
+      dispatch(createAttribute(newAttribute));
+      toast.success("Attribute added successfully!");
     }
-  };
-
-  // Handle attribute deletion
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`${ApiUrl}attributes/${id}`, axiosConfig);
-      toast.success("Attribute deleted successfully!");
-      const response = await axios.get(`${ApiUrl}attributes/`, axiosConfig);
-      setAttributes(response.data.doc);
-    } catch (error) {
-      toast.error("Error deleting attribute.");
-    }
+    setNewAttribute({ name: "" });
+    setEditingAttribute(null);
   };
 
   // Handle attribute edit (populate form)
@@ -103,18 +66,16 @@ const AttributeSetup = () => {
     document.querySelector("form").scrollIntoView({ behavior: "smooth" });
   };
 
+  // Handle attribute deletion
+  const handleDelete = (id) => {
+    dispatch(deleteAttribute(id));
+    toast.success("Attribute deleted successfully!");
+  };
+
   // Filter attributes based on search value
-  const filteredAttributes = attributes.filter((attribute) =>
+  const filteredAttributes = attributes?.filter((attribute) =>
     attribute.name.toLowerCase().includes(searchValue.toLowerCase())
   );
-  // if (loading)
-  //   return (
-  //     <div>
-  //       <LoadingSpinner />
-  //     </div>
-  //   );
-  // if (error) return <div>Error: {error}</div>;
-
   return (
     <>
       <div className="content container-fluid p-15 snipcss-oDPVp">
@@ -182,7 +143,7 @@ const AttributeSetup = () => {
                     <h5 className="mb-0 d-flex align-items-center gap-2 text-[1rem] font-semibold">
                       Attribute list{" "}
                       <span className="badge badge-soft-dark radius-50 fz-12">
-                        {filteredAttributes.length}
+                        {filteredAttributes?.length}
                       </span>
                     </h5>
                   </div>

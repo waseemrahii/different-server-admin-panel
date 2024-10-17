@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaEye, FaDownload, FaSearch } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-// import {
-//   fetchOrder,
-//   updateOrderStatus,
-//   deleteOrder,
-// } from "../../redux/transaction/orderSlice";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import {
@@ -15,6 +10,7 @@ import {
 } from "../../../../redux/slices/transaction/orderSlice";
 import LoadingSpinner from "../../../../components/LoodingSpinner/LoadingSpinner";
 import ExportButton from "../../../../components/ActionButton/Export";
+import ActionButton from "../../../../components/ActionButton/Action";
 
 const OrderList = () => {
   const dispatch = useDispatch();
@@ -153,15 +149,16 @@ const OrderList = () => {
                       </td>
                       <td>{new Date(order.createdAt).toLocaleDateString()}</td>
                       <td>
-                        {order.customer
-                          ? `${order.customer.firstName} ${order.customer.lastName}`
-                          : "Unknown Customer"}
-                      </td>
-                      <td>
-                        {order.vendors.length > 0
-                          ? order.vendors[0].shopName
-                          : "Unknown Store"}
-                      </td>
+  {order.customer
+    ? `${order.customer.firstName} ${order.customer.lastName}`
+    : "Unknown Customer"}
+</td>
+<td>
+  {order.vendors.length > 0 && order.vendors[0] // Check if the first vendor exists
+    ? order.vendors[0].shopName // Access shopName safely
+    : "Unknown Store"}
+</td>
+
                       <td>{order.totalAmount}</td>
                       <td>
                         {(() => {
@@ -234,7 +231,7 @@ const OrderList = () => {
                           to={`/orderdetail/${order._id}`}
                           icon={FaEye} // Pass dynamic icon
                           className="ml-4"
-                          label="View"
+                       
                         />
                         {/* <button
                           className="btn bg-red-300 text-white btn-sm ml-2"

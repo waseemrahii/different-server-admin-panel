@@ -1,4 +1,5 @@
-// Constants for storage keys
+
+// Constants for storage keys 
 
 const getStorageKey = (role) => ({
     token: `token`,

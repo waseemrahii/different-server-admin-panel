@@ -168,7 +168,7 @@ const AddNewProduct = () => {
     <form onSubmit={handleSubmit} className="add-product-form p-6">
       <div className="flex gap-2 items-center py-2">
         <img
-          src="https://vistamart.biz/public/assets/back-end/img/inhouse-product-list.png"
+          src="/inhouse-product-list.png"
           alt=""
         />
         <h1 className="text-[1rem] font-semibold">Add New Product</h1>

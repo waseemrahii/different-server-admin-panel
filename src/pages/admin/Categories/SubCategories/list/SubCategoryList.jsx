@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { FaEye, FaPen, FaTrash } from "react-icons/fa";
-import ActionButton from "../../../components/ActionButton/Action";
-import TableList from "../../../components/FormInput/TableList";
+import TableList from "../../../../../components/FormInput/TableList";
+import ActionButton from "../../../../../components/ActionButton/Action";
 
 const SubSubCategoryList = React.memo(
   ({ subCategories, handleDelete, handleEdit }) => {  // Added handleEdit as a prop

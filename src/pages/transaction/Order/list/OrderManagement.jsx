@@ -241,7 +241,7 @@ const OrderManagement = ({ status, title }) => {
                         </td>
                         <td>
                           {order.products
-                            .map((product) => product.name)
+                            .map((product) => product?.name)
                             .join(", ")}
                         </td>
                         <td>
@@ -279,7 +279,7 @@ const OrderManagement = ({ status, title }) => {
                             to={`/orderdetail/${order._id}`}
                             icon={FaEye} // Pass dynamic icon
                             className="ml-4"
-                            label="View"
+                          
                           />
                           {/* <button
                             onClick={() => handleDeleteOrder(order._id)}
