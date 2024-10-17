@@ -8,7 +8,7 @@ const ActionButton = ({ to, onClick, icon: Icon, className, label }) => {
       className={`btn border-[#009444] text-[#009444] hover:bg-[#009444] hover:text-white ${className}`}
     >
       {Icon && <Icon className="" />} {/* If an icon is passed, render it */}
-      {label}
+      {/* {label} */}
     </Link>
   ) : (
     <button

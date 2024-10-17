@@ -308,7 +308,8 @@ const CouponManagement = () => {
                   <div className="col-md-12">
                     <button
                       type="submit"
-                      className="btn bg-green-400 text-white"
+                      className="btn bg-primary hover:bg-primary-dark text-white"
+                      style={{ color: "white" }}
                     >
                       Submit
                     </button>
