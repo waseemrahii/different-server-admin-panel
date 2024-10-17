@@ -4,12 +4,6 @@ import { FaTrash, FaDownload } from "react-icons/fa";
 
 import { toast, ToastContainer } from "react-toastify";
 import Swal from "sweetalert2";
-// import {
-//   fetchDeals,
-//   createDeal,
-//   updateDealStatus,
-//   deleteDeal,
-// } from "../../../redux/admin/featureDealSlice";
 
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
@@ -103,13 +97,13 @@ const FeatureDeal = () => {
     const options = { year: "numeric", month: "short", day: "2-digit" };
     return new Date(dateString).toLocaleDateString("en-US", options);
   };
-  if (loading)
-    return (
-      <div>
-        <LoadingSpinner />
-      </div>
-    );
-  if (error) return <div>Error: {error}</div>;
+  // if (loading)
+  //   return (
+  //     <div>
+  //       <LoadingSpinner />
+  //     </div>
+  //   );
+  // if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="content container-fluid">

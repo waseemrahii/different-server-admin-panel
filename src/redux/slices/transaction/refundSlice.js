@@ -1,19 +1,21 @@
+// Helper function to make API calls with authorization
+import axiosInstance from '../../../utils/axiosConfig'; // Axios instance with interceptors
+import apiConfig from '../../../config/apiConfig'; // API URLs
+import { ErrorMessage } from '../../../utils/ErrorMessage'; // Error handling utility
+import { getAuthData } from '../../../utils/authHelper'; // Authentication token helper
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import ApiUrl from '../../../ApiUrl';
 
-// Async Thunks
-const getToken = () => {
-  return localStorage.getItem('token');
-};
+// Use the transaction endpoint for refunds
+const API_URL = `${apiConfig.transaction}/refunds`;
+const { token } = getAuthData(); // Extract token from auth data
 
 // Fetch refunds for a specific vendor
 export const fetchRefundsForVendor = createAsyncThunk(
   'refund/fetchRefundsForVendor',
   async (vendorId) => {
-    const response = await axios.get(`${ApiUrl}refunds/vendor/?vendorId=${vendorId}`, {
+    const response = await axiosInstance.get(`${API_URL}/vendor/?vendorId=${vendorId}`, {
       headers: {
-        Authorization: `Bearer ${getToken()}`, // Include the token in the header
+        Authorization: `Bearer ${token}`, // Include the token in the header
       },
     });
     return response.data.doc;
@@ -24,9 +26,9 @@ export const fetchRefundsForVendor = createAsyncThunk(
 export const fetchRefundsForVendorByStatus = createAsyncThunk(
   'refund/fetchRefundsForVendorByStatus',
   async ({ status }) => {
-    const response = await axios.get(`${ApiUrl}refunds/?status=${status}`, {
+    const response = await axiosInstance.get(`${API_URL}/?status=${status}`, {
       headers: {
-        Authorization: `Bearer ${getToken()}`, // Include the token in the header
+        Authorization: `Bearer ${token}`, // Include the token in the header
       },
     });
     return response.data.doc;
@@ -37,9 +39,9 @@ export const fetchRefundsForVendorByStatus = createAsyncThunk(
 export const fetchRefundByIdForVendor = createAsyncThunk(
   'refund/fetchRefundByIdForVendor',
   async (refundId) => {
-    const response = await axios.get(`${ApiUrl}refunds/${refundId}`, {
+    const response = await axiosInstance.get(`${API_URL}/${refundId}`, {
       headers: {
-        Authorization: `Bearer ${getToken()}`, // Include the token in the header
+        Authorization: `Bearer ${token}`, // Include the token in the header
       },
     });
     return response.data.doc;
@@ -50,12 +52,12 @@ export const fetchRefundByIdForVendor = createAsyncThunk(
 export const updateRefundStatus = createAsyncThunk(
   'refund/updateRefundStatus',
   async ({ refundId, status, statusReason }) => {
-    const response = await axios.put(
-      `${ApiUrl}refunds/${refundId}/status`,
+    const response = await axiosInstance.put(
+      `${API_URL}/${refundId}/status`,
       { status, statusReason },
       {
         headers: {
-          Authorization: `Bearer ${getToken()}`, // Include the token in the header
+          Authorization: `Bearer ${token}`, // Include the token in the header
         },
       }
     );
@@ -67,9 +69,9 @@ export const updateRefundStatus = createAsyncThunk(
 export const deleteRefund = createAsyncThunk(
   'refund/deleteRefund',
   async (refundId) => {
-    await axios.delete(`${ApiUrl}refunds/${refundId}`, {
+    await axiosInstance.delete(`${API_URL}/${refundId}`, {
       headers: {
-        Authorization: `Bearer ${getToken()}`, // Include the token in the header
+        Authorization: `Bearer ${token}`, // Include the token in the header
       },
     });
     return refundId;
@@ -81,12 +83,12 @@ export const fetchRefundsWithFilters = createAsyncThunk(
   'refund/fetchRefundsWithFilters',
   async ({ vendorId, searchQuery, status, startDate, endDate }, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${ApiUrl}api/refunds/`, {
+      const response = await axiosInstance.get(`${API_URL}/`, {
         params: { 
           vendorId, searchQuery, status, startDate, endDate 
         },
         headers: {
-          Authorization: `Bearer ${getToken()}`, // Include the token in the header
+          Authorization: `Bearer ${token}`, // Include the token in the header
         },
       });
       return response.data;

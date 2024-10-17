@@ -1,22 +1,27 @@
+// Helper function to make API calls with authorization
+import axiosInstance from '../../../utils/axiosConfig'; // axios instance with interceptors
+import apiConfig from '../../../config/apiConfig'; // API URLs
+import { ErrorMessage } from '../../../utils/ErrorMessage'; // Error handling utility
+import { getAuthData } from '../../../utils/authHelper'; // Authentication token helper
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import ApiUrl from '../../../ApiUrl';
+
+// Use the admin endpoint for customers
+const API_URL = `${apiConfig.user}/customers`;
+const { token } = getAuthData(); 
 
 // Async thunk to fetch customers
 export const fetchCustomers = createAsyncThunk(
   'customers/fetchCustomers',
   async (_, { rejectWithValue }) => {
-    const token = localStorage.getItem('token'); // Fetch token from localStorage
     try {
-      const response = await fetch(`${ApiUrl}customers/`, {
+      const response = await axiosInstance.get(API_URL, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      const data = await response.json();
-      console.log("customer data ===", data);
-      return data.doc; // Assuming the response contains customers in data.doc
+      return response.data.doc; // Assuming the response contains customers in data.doc
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(ErrorMessage(error));
     }
   }
 );
@@ -25,20 +30,18 @@ export const fetchCustomers = createAsyncThunk(
 export const updateCustomerStatus = createAsyncThunk(
   'customers/updateCustomerStatus',
   async ({ id, status }, { rejectWithValue }) => {
-    const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`${ApiUrl}customers/status/${id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ status }),
-      });
-      const data = await response.json();
-      return { id, status: data.status }; // Return the updated status
+      const response = await axiosInstance.patch(`${API_URL}/status/${id}`, 
+        { status }, 
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return { id, status: response.data.status }; // Return the updated status
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(ErrorMessage(error));
     }
   }
 );
@@ -47,17 +50,33 @@ export const updateCustomerStatus = createAsyncThunk(
 export const deleteCustomer = createAsyncThunk(
   'customers/deleteCustomer',
   async (id, { rejectWithValue }) => {
-    const token = localStorage.getItem('token');
     try {
-      await fetch(`${ApiUrl}customers/${id}`, {
-        method: 'DELETE',
+      await axiosInstance.delete(`${API_URL}/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       return id; // Return the deleted customer's ID
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(ErrorMessage(error));
+    }
+  }
+);
+
+// Async thunk to update customer details
+export const updateCustomer = createAsyncThunk(
+  'customers/updateCustomer',
+  async ({ id, customerData }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.patch(`${API_URL}/${id}`, customerData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      return response.data; // Return the updated customer data
+    } catch (error) {
+      return rejectWithValue(ErrorMessage(error));
     }
   }
 );
@@ -100,6 +119,23 @@ const customerSlice = createSlice({
         state.status = 'succeeded';
       })
       .addCase(updateCustomerStatus.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      })
+
+      // Update customer details
+      .addCase(updateCustomer.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(updateCustomer.fulfilled, (state, action) => {
+        const updatedCustomer = action.payload; // Get the updated customer data
+        const index = state.customers.findIndex((customer) => customer._id === updatedCustomer._id);
+        if (index !== -1) {
+          state.customers[index] = updatedCustomer; // Update the customer in the state
+        }
+        state.status = 'succeeded';
+      })
+      .addCase(updateCustomer.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload;
       })

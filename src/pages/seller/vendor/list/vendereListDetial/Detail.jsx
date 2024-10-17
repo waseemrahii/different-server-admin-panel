@@ -1,82 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { AiOutlineUser } from "react-icons/ai";
 import { FaStar } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
 import Swal from "sweetalert2";
-import ApiUrl from "../../../../../ApiUrl";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchVendorById, updateVendorStatus } from "../../../../../redux/slices/seller/vendorSlice"; // Adjust the import path as needed
 import LoadingSpinner from "../../../../../components/LoodingSpinner/LoadingSpinner";
 
 const VendorDetailes = () => {
-  const [vendorData, setVendorData] = useState(null);
-  const [loading, setLoading] = useState(true);
   const { id } = useParams(); // Extract vendor ID from URL parameters
+  const dispatch = useDispatch();
+  const { vendorDetails, loading, error } = useSelector((state) => state.vendor); // Adjust state slice name as needed
 
   // Fetch the vendor details
   useEffect(() => {
-    const fetchVendorDetails = async () => {
-      try {
-        const token = localStorage.getItem("token");
+    dispatch(fetchVendorById(id));
+  }, [dispatch, id]);
 
-        if (!token) {
-          throw new Error("No authorization token found.");
-        }
-
-        const response = await fetch(`${ApiUrl}vendors/${id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          setVendorData(data.doc);
-          setLoading(false);
-        } else {
-          setLoading(false);
-        }
-      } catch (err) {
-        setLoading(false);
-      }
-    };
-
-    fetchVendorDetails();
-  }, []);
-
-  // Function to update vendor status
-  const updateStatus = async (newStatus) => {
-    try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        throw new Error("No authorization token found.");
-      }
-
-      const response = await axios.put(
-        `${ApiUrl}vendors/status/${id}`,
-        { status: newStatus },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        setVendorData((prevData) => ({
-          ...prevData,
-          status: newStatus,
-        }));
-      }
-    } catch (error) {
-      console.error("Error updating status:", error);
-    }
-  };
-
-  // Confirm status change
+  // Function to confirm and update vendor status
   const confirmStatusChange = (newStatus, action) => {
     Swal.fire({
       title: `Are you sure you want to ${action} this vendor?`,
@@ -94,34 +35,48 @@ const VendorDetailes = () => {
     });
   };
 
+  // Function to update vendor status using the Redux thunk
+  const updateStatus = async (newStatus) => {
+    try {
+      await dispatch(updateVendorStatus({ vendorId: id, status: newStatus })).unwrap();
+      dispatch(fetchVendorById(id)); // Refetch vendor details after updating status
+    } catch (error) {
+      console.error("Error updating status:", error);
+      Swal.fire("Error", "Failed to update vendor status.", "error");
+    }
+  };
+
   if (loading) {
     return <div><LoadingSpinner /> </div>;
   }
 
-  if (!vendorData) {
+  if (error) {
     return <div>Error loading vendor data.</div>;
   }
 
+  if (!vendorDetails) {
+    return <div>No vendor data found.</div>;
+  }
   return (
     <div className="max-w-5xl mx-auto p-4 bg-white shadow rounded-lg">
       <div className="flex flex-col md:flex-row justify-between items-start mb-4">
         <div className="flex flex-col md:flex-row items-center space-x-0 md:space-x-4">
           <img
-            src={vendorData.vendorImage}
+            src={vendorDetails.vendorImage}
             alt="Shop Logo"
             className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover"
           />
           <div>
             <h1 className="text-xl md:text-2xl font-semibold">
-              {vendorData.shopName}
+              {vendorDetails.shopName}
             </h1>
             <div className="flex flex-col md:flex-row items-start md:items-center py-5 space-y-1 md:space-y-0 md:space-x-6">
               <h1>
-                <span>{vendorData?.totalProducts ?? 0}</span>
+                <span>{vendorDetails?.totalProducts ?? 0}</span>
                 <span className="font-semibold"> Products</span>
               </h1>
               <h1>
-                <span>{vendorData?.totalOrders ?? 0}</span>
+                <span>{vendorDetails?.totalOrders ?? 0}</span>
                 <span className="font-semibold"> Orders</span>
               </h1>
             </div>
@@ -133,7 +88,7 @@ const VendorDetailes = () => {
 
         {/* Dynamic Buttons */}
         <div className="flex flex-col gap-2 mt-4 md:mt-0">
-          {vendorData.status === "pending" && (
+          {vendorDetails.status === "pending" && (
             <>
               <button
                 className="bg-green-500 text-white px-4 py-2 rounded"
@@ -149,7 +104,7 @@ const VendorDetailes = () => {
               </button>
             </>
           )}
-          {vendorData.status === "active" && (
+          {vendorDetails.status === "active" && (
             <button
               className="bg-red-500 text-white px-4 py-2 rounded"
               onClick={() => confirmStatusChange("inactive", "suspend")}
@@ -157,7 +112,7 @@ const VendorDetailes = () => {
               Suspend
             </button>
           )}
-          {vendorData.status === "rejected" && (
+          {vendorDetails.status === "rejected" && (
             <button
               className="bg-green-500 text-white px-4 py-2 rounded"
               onClick={() => confirmStatusChange("active", "activate")}
@@ -165,7 +120,7 @@ const VendorDetailes = () => {
               Activate
             </button>
           )}
-          {vendorData.status === "inactive" && (
+          {vendorDetails.status === "inactive" && (
             <button
               className="bg-green-500 text-white px-4 py-2 rounded"
               onClick={() => confirmStatusChange("active", "activate")}
@@ -182,11 +137,11 @@ const VendorDetailes = () => {
         <div className="col-span-1 md:col-span-2 border rounded-md p-4">
           <p>Total Products:</p>
           <p className="text-xl font-semibold text-blue-600">
-            {vendorData?.totalProducts ?? 0}
+            {vendorDetails?.totalProducts ?? 0}
           </p>
           <p>Total Orders:</p>
           <p className="text-xl font-semibold text-blue-600">
-            {vendorData?.totalOrders ?? 0}
+            {vendorDetails?.totalOrders ?? 0}
           </p>
         </div>
         {/* Shop Information */}
@@ -199,21 +154,21 @@ const VendorDetailes = () => {
               <tbody>
                 <tr>
                   <td className="px-2 py-1 text-nowrap">Shop Name:</td>
-                  <td className="px-2 py-1">{vendorData.shopName}</td>
+                  <td className="px-2 py-1">{vendorDetails.shopName}</td>
                 </tr>
                 <tr>
                   <td className="px-2 py-1">Phone:</td>
-                  <td className="px-2 py-1">{vendorData.phoneNumber}</td>
+                  <td className="px-2 py-1">{vendorDetails.phoneNumber}</td>
                 </tr>
                 <tr>
                   <td className="px-2 py-1">Address:</td>
-                  <td className="px-2 py-1">{vendorData.address}</td>
+                  <td className="px-2 py-1">{vendorDetails.address}</td>
                 </tr>
                 <tr>
                   <td className="px-2 py-1">Status:</td>
                   <td className="px-2 py-1">
                     <span className="bg-[#00C9DB] text-white rounded-xl p-1">
-                      {vendorData.status}
+                      {vendorDetails.status}
                     </span>
                   </td>
                 </tr>
@@ -231,16 +186,16 @@ const VendorDetailes = () => {
                 <tr>
                   <td className="px-2 py-1">Name:</td>
                   <td className="px-2 py-1">
-                    {vendorData.firstName} {vendorData.lastName}
+                    {vendorDetails.firstName} {vendorDetails.lastName}
                   </td>
                 </tr>
                 <tr>
                   <td className="px-2 py-1">Email:</td>
-                  <td className="px-2 py-1">{vendorData.email}</td>
+                  <td className="px-2 py-1">{vendorDetails.email}</td>
                 </tr>
                 <tr>
                   <td className="px-2 py-1">Phone:</td>
-                  <td className="px-2 py-1">{vendorData.phoneNumber}</td>
+                  <td className="px-2 py-1">{vendorDetails.phoneNumber}</td>
                 </tr>
               </tbody>
             </table>

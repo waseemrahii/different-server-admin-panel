@@ -1,29 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { FaGlobe, FaStar, FaTrash } from "react-icons/fa";
 import { AiOutlineFile, AiOutlineShoppingCart } from "react-icons/ai";
-import { Link, useParams } from "react-router-dom"; // Import Link if used for navigation
+import { Link, useParams } from "react-router-dom"; 
 import axios from "axios";
-import { FiEye, FiTrash } from "react-icons/fi"; // Import icons for actions
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ApiUrl from "../../../../../ApiUrl";
 import ImageApiUrl from "../../../../../ImageApiUrl";
 import ActionButton from "../../../../../components/ActionButton/Action";
+import ApiConfig from "../../../../../config/apiConfig"; // Ensure you have the correct path for ApiConfig
+
 const ProductDetail = () => {
   const { productId } = useParams();
   const [productData, setProductData] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(""); // State for error messages
 
   useEffect(() => {
     const fetchProductData = async () => {
       try {
-        const response = await axios.get(`${ApiUrl}products/${productId}`);
+        const response = await axios.get(`${ApiConfig.seller}/products/${productId}`); // Updated URL
         if (response.status === 200) {
-          // console.log("API Response Data:", response.data);
           setProductData(response.data.doc);
         } else {
+          setErrorMessage("Failed to fetch product data");
           console.error("Failed to fetch product data");
         }
       } catch (error) {
+        setErrorMessage("An error occurred while fetching product data.");
         console.error("An error occurred while fetching product data:", error);
       }
     };
@@ -35,7 +37,7 @@ const ProductDetail = () => {
     const newStatus = currentStatus === "Active" ? "Inactive" : "Active";
     try {
       await axios.put(
-        `${ApiUrl}products/${productId}/reviews/${reviewId}/status`,
+        `${ApiConfig.seller}/products/${productId}/reviews/${reviewId}/status`, // Updated URL
         { status: newStatus }
       );
       setProductData((prevData) => ({
@@ -44,7 +46,6 @@ const ProductDetail = () => {
           review._id === reviewId ? { ...review, status: newStatus } : review
         ),
       }));
-      //  console.log("produt by id ======", productData)
       if (newStatus === "Active") {
         toast.success("Review activated!", { autoClose: 3000 });
       } else {
@@ -58,10 +59,7 @@ const ProductDetail = () => {
 
   const handleDeleteReview = async (reviewId) => {
     try {
-      console.log("Deleting review with ID:", reviewId);
-      console.log("Deleting review with Product ID:", productId);
-      await axios.delete(`${ApiUrl}products/${productId}/reviews/${reviewId}`);
-      console.log("Deleted successfully");
+      await axios.delete(`${ApiConfig.seller}/products/${productId}/reviews/${reviewId}`); // Updated URL
       setProductData((prevData) => ({
         ...prevData,
         reviews: prevData.reviews.filter((review) => review._id !== reviewId),
@@ -73,6 +71,10 @@ const ProductDetail = () => {
     }
   };
 
+  if (errorMessage) {
+    return <div className="error-message">{errorMessage}</div>; // Display error message if any
+  }
+
   if (!productData) {
     return <div>Loading...</div>;
   }
@@ -81,6 +83,7 @@ const ProductDetail = () => {
   const thumbnailUrl = productData.thumbnail
     ? `${ImageApiUrl}/${productData.thumbnail.replace(/\\/g, "/")}`
     : "/default-thumbnail.png";
+
   const {
     thumbnail = "/default-thumbnail.png",
     images = [],

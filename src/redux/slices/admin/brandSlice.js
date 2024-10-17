@@ -1,29 +1,28 @@
-
+// Helper function to make API calls with authorization
+import axiosInstance from '../../../utils/axiosConfig'; // axios instance with interceptors
+import apiConfig from '../../../config/apiConfig'; // API URLs
+import { ErrorMessage } from '../../../utils/ErrorMessage'; // Error handling utility
+import { getAuthData } from '../../../utils/authHelper'; // Authentication token helper
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import ApiUrl from '../../../ApiUrl';
 
-// API Endpoints
-const API_URL = `${ApiUrl}brands`;
-
-// Utility function to get token from localStorage
-const getToken = () => localStorage.getItem('token');
+// Use the admin endpoint for brands
+const API_URL = `${apiConfig.admin}/brands`;
 
 // Fetch brands
 export const fetchBrands = createAsyncThunk(
   'brand/fetchBrands',
   async (searchParams, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      const response = await axios.get(API_URL, {
+      const { token } = getAuthData(); // Use getAuthData to retrieve token
+      const response = await axiosInstance.get(API_URL, {
         params: searchParams,
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.data.doc; // Accessing brand data from the `docs` field
+      return response.data.doc;
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(ErrorMessage(error));
     }
   }
 );
@@ -33,15 +32,15 @@ export const fetchBrandById = createAsyncThunk(
   'brand/fetchBrandById',
   async (brandId, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      const response = await axios.get(`${API_URL}/${brandId}`, {
+      const { token } = getAuthData(); // Use getAuthData to retrieve token
+      const response = await axiosInstance.get(`${API_URL}/${brandId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.data.doc; // Accessing brand data from the `docs` field
+      return response.data.doc;
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(ErrorMessage(error));
     }
   }
 );
@@ -51,15 +50,15 @@ export const createBrand = createAsyncThunk(
   'brand/createBrand',
   async (brandData, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      const response = await axios.post(`http://192.168.0.100:3000/api/v1/admin/brands`, brandData, {
+      const { token } = getAuthData(); // Use getAuthData to retrieve token
+      const response = await axiosInstance.post(API_URL, brandData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.data.doc; // Ensure the response contains the created brand
+      return response.data.doc;
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(ErrorMessage(error));
     }
   }
 );
@@ -69,21 +68,21 @@ export const updateBrand = createAsyncThunk(
   'brand/updateBrand',
   async ({ brandId, brandData }, { rejectWithValue }) => {
     try {
-      const token = getToken();
+      const { token } = getAuthData(); // Use getAuthData to retrieve token
       const formData = new FormData();
       for (const key in brandData) {
         formData.append(key, brandData[key]);
       }
 
-      const response = await axios.put(`${API_URL}/${brandId}`, formData, {
+      const response = await axiosInstance.put(`${API_URL}/${brandId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.data.doc; // Ensure the response contains the updated brand
+      return response.data.doc;
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(ErrorMessage(error));
     }
   }
 );
@@ -93,15 +92,15 @@ export const updateBrandStatus = createAsyncThunk(
   'brand/updateBrandStatus',
   async ({ brandId, status }, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      const response = await axios.put(`${API_URL}/${brandId}/status`, { status }, {
+      const { token } = getAuthData(); // Use getAuthData to retrieve token
+      const response = await axiosInstance.put(`${API_URL}/${brandId}/status`, { status }, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.data.doc; // Ensure the response contains the updated brand
+      return response.data.doc;
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(ErrorMessage(error));
     }
   }
 );
@@ -111,15 +110,15 @@ export const deleteBrand = createAsyncThunk(
   'brand/deleteBrand',
   async (brandId, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      await axios.delete(`${API_URL}/${brandId}`, {
+      const { token } = getAuthData(); // Use getAuthData to retrieve token
+      await axiosInstance.delete(`${API_URL}/${brandId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       return brandId;
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(ErrorMessage(error));
     }
   }
 );
@@ -139,7 +138,6 @@ const brandSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Fetch brands
       .addCase(fetchBrands.pending, (state) => {
         state.loading = true;
       })
@@ -151,7 +149,6 @@ const brandSlice = createSlice({
         state.loading = false;
         state.error = action.payload || action.error.message;
       })
-      // Get brand by ID
       .addCase(fetchBrandById.pending, (state) => {
         state.loading = true;
       })
@@ -163,7 +160,6 @@ const brandSlice = createSlice({
         state.loading = false;
         state.error = action.payload || action.error.message;
       })
-      // Create brand
       .addCase(createBrand.pending, (state) => {
         state.loading = true;
       })
@@ -175,7 +171,6 @@ const brandSlice = createSlice({
         state.loading = false;
         state.error = action.payload || action.error.message;
       })
-      // Update brand
       .addCase(updateBrand.pending, (state) => {
         state.loading = true;
       })
@@ -193,7 +188,6 @@ const brandSlice = createSlice({
         state.loading = false;
         state.error = action.payload || action.error.message;
       })
-      // Update brand status
       .addCase(updateBrandStatus.pending, (state) => {
         state.loading = true;
       })
@@ -211,7 +205,6 @@ const brandSlice = createSlice({
         state.loading = false;
         state.error = action.payload || action.error.message;
       })
-      // Delete brand
       .addCase(deleteBrand.fulfilled, (state, action) => {
         const brandId = action.payload;
         state.brands = state.brands.filter((b) => b._id !== brandId);

@@ -1,9 +1,7 @@
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axiosInstance from '../../../utils/axiosConfig'; // Import axiosInstance with interceptors
-import apiConfig from '../../../config/apiConfig';  // Import apiConfig for API URLs
-import { saveAuthData, getAuthData, clearAuthData } from '../../../utils/authHelper'; // Import helper functions
-
+import axiosInstance from '../../../utils/axiosConfig'; 
+import apiConfig from '../../../config/apiConfig';  
+import { saveAuthData, getAuthData, clearAuthData } from '../../../utils/authHelper';
 // Initial state
 const initialState = {
   isLoggedIn: false,
@@ -26,9 +24,10 @@ export const login = createAsyncThunk(
 
       // Save token and user data using the helper
       saveAuthData(role, accessToken, user);
-
+      
       return { token: accessToken, user, role }; // Return role for further usage
     } catch (error) {
+
       console.error('Login error:', error.response?.data || error.message);
       return thunkAPI.rejectWithValue(error.response?.data?.message || 'An error occurred during login.');
     }

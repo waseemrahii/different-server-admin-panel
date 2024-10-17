@@ -1,17 +1,28 @@
+// Helper function to make API calls with authorization
+import axiosInstance from '../../../utils/axiosConfig'; // axios instance with interceptors
+import apiConfig from '../../../config/apiConfig'; // API URLs
+import { ErrorMessage } from '../../../utils/ErrorMessage'; // Error handling utility
+import { getAuthData } from '../../../utils/authHelper'; // Authentication token helper
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import ApiUrl from '../../../ApiUrl';
+
+// Use the admin endpoint for banners
+const API_URL = `${apiConfig.admin}/banners`;
 
 // Fetch banners
 export const fetchBanners = createAsyncThunk(
   'banner/fetchBanners',
   async (searchParams, { rejectWithValue }) => {
+    const { token } = getAuthData(); // Retrieve token for authorization
     try {
-      const response = await axios.get(`${API_URL}banners`, { params: searchParams });
-      console.log("baner",response )
-      return response.data.doc; // Assuming response contains the banner data in `doc`
+      const response = await axiosInstance.get(API_URL, {
+        params: searchParams,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data.doc; // Assuming the response contains the banner data in `doc`
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(ErrorMessage(error)); // Handle error using utility
     }
   }
 );
@@ -21,10 +32,15 @@ export const createBanner = createAsyncThunk(
   'banner/createBanner',
   async (bannerData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_URL}/banner`, bannerData);
+      const { token } = getAuthData(); // Retrieve token for authorization
+      const response = await axiosInstance.post(API_URL, bannerData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data.doc; // Assuming the response contains the created banner
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(ErrorMessage(error));
     }
   }
 );
@@ -34,10 +50,20 @@ export const updateBanner = createAsyncThunk(
   'banner/updateBanner',
   async ({ bannerId, bannerData }, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`${API_URL}/banner/${bannerId}`, bannerData);
+      const { token } = getAuthData(); // Retrieve token for authorization
+      const formData = new FormData();
+      for (const key in bannerData) {
+        formData.append(key, bannerData[key]);
+      }
+      const response = await axiosInstance.put(`${API_URL}/${bannerId}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data.doc; // Assuming the response contains the updated banner
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(ErrorMessage(error));
     }
   }
 );
@@ -47,10 +73,15 @@ export const updateBannerStatus = createAsyncThunk(
   'banner/updateBannerStatus',
   async ({ bannerId, status }, { rejectWithValue }) => {
     try {
-      const response = await axios.patch(`${API_URL}/banner/${bannerId}/publish`, { publish: status });
-      return response.data.doc;
+      const { token } = getAuthData(); // Retrieve token for authorization
+      const response = await axiosInstance.patch(`${API_URL}/${bannerId}/publish`, { publish: status }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data.doc; // Assuming the response contains the updated banner
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(ErrorMessage(error));
     }
   }
 );
@@ -60,10 +91,15 @@ export const deleteBanner = createAsyncThunk(
   'banner/deleteBanner',
   async (bannerId, { rejectWithValue }) => {
     try {
-      await axios.delete(`${API_URL}/banner/${bannerId}`);
-      return bannerId;
+      const { token } = getAuthData(); // Retrieve token for authorization
+      await axiosInstance.delete(`${API_URL}/${bannerId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return bannerId; // Return the deleted banner ID for frontend state update
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(ErrorMessage(error));
     }
   }
 );

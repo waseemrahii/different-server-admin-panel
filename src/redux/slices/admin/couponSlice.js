@@ -1,20 +1,20 @@
+
+import axiosInstance from '../../../utils/axiosConfig'; // axios instance with interceptors
+import apiConfig from '../../../config/apiConfig'; // API URLs
+import { ErrorMessage } from '../../../utils/ErrorMessage'; // Error handling utility
+import { getAuthData } from '../../../utils/authHelper'; // Authentication token helper
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import Swal from 'sweetalert2';
-import ApiUrl from '../../../ApiUrl';
-import { ErrorMessage } from '../../../utils/ErrorMessage';  
 
-const API_URL = `${ApiUrl}coupons/`;
-
-const getToken = () => localStorage.getItem('token');
+// Use the admin endpoint for banners
+const API_URL = `${apiConfig.admin}/coupons`;
+const { token } = getAuthData(); 
 
 // Thunk for fetching coupons
 export const fetchCoupons = createAsyncThunk(
   'coupons/fetchCoupons',
   async (_, { rejectWithValue }) => {
-    const token = getToken(); // Get the token from localStorage
     try {
-      const response = await axios.get(API_URL, {
+      const response = await axiosInstance.get(API_URL, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return response.data.doc;
@@ -25,13 +25,12 @@ export const fetchCoupons = createAsyncThunk(
   }
 );
 
-
+// Thunk for creating a coupon
 export const createCoupon = createAsyncThunk(
   'coupons/createCoupon',
   async (couponData, { rejectWithValue }) => {
-    const token = getToken(); // Get the token from localStorage
     try {
-      const response = await axios.post(API_URL, couponData, {
+      const response = await axiosInstance.post(API_URL, couponData, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -46,15 +45,13 @@ export const createCoupon = createAsyncThunk(
   }
 );
 
-
 // Thunk for updating coupon status
 export const updateCouponStatus = createAsyncThunk(
   'coupons/updateCouponStatus',
   async ({ couponId, status }, { rejectWithValue }) => {
-    const token = getToken(); // Get the token from localStorage
     try {
-      const response = await axios.put(
-        `${API_URL}${couponId}`,
+      const response = await axiosInstance.put(
+        `${API_URL}/${couponId}`,
         { status },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -70,9 +67,8 @@ export const updateCouponStatus = createAsyncThunk(
 export const deleteCoupon = createAsyncThunk(
   'coupons/deleteCoupon',
   async (couponId, { rejectWithValue }) => {
-    const token = getToken(); // Get the token from localStorage
     try {
-      const response = await axios.delete(`${API_URL}${couponId}`, {
+      const response = await axiosInstance.delete(`${API_URL}/${couponId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (response.status === 200) {

@@ -1,27 +1,27 @@
+import axiosInstance from '../../../utils/axiosConfig'; // axios instance with interceptors
+import apiConfig from '../../../config/apiConfig'; // API URLs
+import { ErrorMessage } from '../../../utils/ErrorMessage'; // Error handling utility
+import { getAuthData } from '../../../utils/authHelper'; // Authentication token helper
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import ApiUrl from '../../../ApiUrl';
 
-const API_URL = `${ApiUrl}deal-of-day`;
-
-const getToken = () => {
-  return localStorage.getItem('token');
-};
+// Use the admin endpoint for deals
+const API_URL = `${apiConfig.admin}/deal-of-day`;
+const { token } = getAuthData(); // Get the token for authorization
 
 // Fetch deals
 export const fetchDeals = createAsyncThunk(
   'dealOfTheDay/fetchDeals',
   async (_, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      const response = await axios.get(API_URL, {
+      const response = await axiosInstance.get(API_URL, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       return response.data.doc; // Adjust based on your API response structure
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      const errorMessage = ErrorMessage(error);
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -31,15 +31,15 @@ export const createDeal = createAsyncThunk(
   'dealOfTheDay/createDeal',
   async (dealData, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      const response = await axios.post(API_URL, dealData, {
+      const response = await axiosInstance.post(API_URL, dealData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       return response.data.doc; // Adjust based on your API response structure
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      const errorMessage = ErrorMessage(error);
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -49,15 +49,15 @@ export const updateDeal = createAsyncThunk(
   'dealOfTheDay/updateDeal',
   async ({ id, dealData }, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      const response = await axios.put(`${API_URL}/${id}`, dealData, {
+      const response = await axiosInstance.put(`${API_URL}/${id}`, dealData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       return response.data.doc; // Adjust based on your API response structure
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      const errorMessage = ErrorMessage(error);
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -67,15 +67,15 @@ export const updateDealStatus = createAsyncThunk(
   'dealOfTheDay/updateDealStatus',
   async ({ id, status }, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      const response = await axios.put(`${API_URL}/${id}`, { status }, {
+      const response = await axiosInstance.put(`${API_URL}/${id}`, { status }, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       return response.data.doc; // Adjust based on your API response structure
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      const errorMessage = ErrorMessage(error);
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -85,15 +85,15 @@ export const deleteDeal = createAsyncThunk(
   'dealOfTheDay/deleteDeal',
   async (id, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      await axios.delete(`${API_URL}/${id}`, {
+      await axiosInstance.delete(`${API_URL}/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      return id; // Return the ID of the deleted deal for removing it from state
+      return id; // Return the ID of the deleted deal
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      const errorMessage = ErrorMessage(error);
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -117,7 +117,7 @@ const dealOfTheDaySlice = createSlice({
       })
       .addCase(fetchDeals.fulfilled, (state, action) => {
         state.loading = false;
-        state.deals = action.payload; // The array of deals returned from the API
+        state.deals = action.payload;
       })
       .addCase(fetchDeals.rejected, (state, action) => {
         state.loading = false;
@@ -128,7 +128,7 @@ const dealOfTheDaySlice = createSlice({
       })
       .addCase(createDeal.fulfilled, (state, action) => {
         state.loading = false;
-        state.deals.push(action.payload); // Add the newly created deal to the state
+        state.deals.push(action.payload);
       })
       .addCase(createDeal.rejected, (state, action) => {
         state.loading = false;
@@ -139,7 +139,7 @@ const dealOfTheDaySlice = createSlice({
       })
       .addCase(updateDeal.fulfilled, (state, action) => {
         state.loading = false;
-        const updatedDeal = action.payload; // Updated deal from the response
+        const updatedDeal = action.payload;
         state.deals = state.deals.map((deal) =>
           deal._id === updatedDeal._id ? updatedDeal : deal
         );
@@ -153,7 +153,7 @@ const dealOfTheDaySlice = createSlice({
       })
       .addCase(updateDealStatus.fulfilled, (state, action) => {
         state.loading = false;
-        const updatedDeal = action.payload; // Updated deal from the response
+        const updatedDeal = action.payload;
         state.deals = state.deals.map((deal) =>
           deal._id === updatedDeal._id ? updatedDeal : deal
         );
@@ -163,7 +163,7 @@ const dealOfTheDaySlice = createSlice({
         state.error = action.payload || action.error.message;
       })
       .addCase(deleteDeal.fulfilled, (state, action) => {
-        const dealId = action.payload; // Get the ID of the deleted deal
+        const dealId = action.payload;
         state.deals = state.deals.filter((deal) => deal._id !== dealId);
       });
   },

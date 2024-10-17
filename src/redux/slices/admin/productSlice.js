@@ -1,26 +1,25 @@
+import axiosInstance from '../../../utils/axiosConfig'; // axios instance with interceptors
+import apiConfig from '../../../config/apiConfig'; // API URLs
+import { ErrorMessage } from '../../../utils/ErrorMessage'; // Error handling utility
+import { getAuthData } from '../../../utils/authHelper'; // Authentication token helper
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import ApiUrl from '../../../ApiUrl';
 
-const getAuthToken = () => {
-  return localStorage.getItem('token'); 
-}
+// Use the admin endpoint for products
+const API_URL = `${apiConfig.seller}/products`;
 
 // Fetch products with dynamic query parameters
 export const fetchProducts = createAsyncThunk(
   'product/fetchProducts',
   async (searchParams = {}, { rejectWithValue }) => {
     try {
-      const token = getAuthToken(); // Get the token
-      const response = await axios.get(`${API_URL}products`, {
+      const { token } = getAuthData(); // Get the token for authorization
+      const response = await axiosInstance.get(`${API_URL}`, {
         params: searchParams,
         headers: {
-          Authorization: `Bearer ${token}` 
+          Authorization: `Bearer ${token}`
         }
       });
-      console.log("dumary data  data :", response);
       return response.data; // Return the entire response data
-      
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -32,13 +31,13 @@ export const fetchProductById = createAsyncThunk(
   'product/fetchProductById',
   async (productId, { rejectWithValue }) => {
     try {
-      const token = getAuthToken(); // Get the token
-      const response = await axios.get(`${API_URL}${productId}`, {
+      const { token } = getAuthData(); // Get the token for authorization
+      const response = await axiosInstance.get(`${API_URL}/${productId}`, {
         headers: {
-          Authorization: `Bearer ${token}` 
+          Authorization: `Bearer ${token}`
         }
       });
-      return response.data; // Accessing product data from the `doc` field
+      return response.data; // Accessing product data from the response
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -50,13 +49,12 @@ export const createProduct = createAsyncThunk(
   'product/createProduct',
   async (productData, { rejectWithValue }) => {
     try {
-      const token = getAuthToken(); // Get the token
-      const response = await axios.post(`${API_URL}products/`, productData, {
+      const { token } = getAuthData(); // Get the token for authorization
+      const response = await axiosInstance.post(`${API_URL}`, productData, {
         headers: {
-          Authorization: `Bearer ${token}` // Include token in the headers
+          Authorization: `Bearer ${token}`
         }
       });
-      console.log("response-----", response)
       return response.data.doc; // Ensure the response contains the created product
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -69,10 +67,10 @@ export const updateProduct = createAsyncThunk(
   'product/updateProduct',
   async ({ productId, productData }, { rejectWithValue }) => {
     try {
-      const token = getAuthToken(); // Get the token
-      const response = await axios.put(`${API_URL}${productId}`, productData, {
+      const { token } = getAuthData(); // Get the token for authorization
+      const response = await axiosInstance.put(`${API_URL}/${productId}`, productData, {
         headers: {
-          Authorization: `Bearer ${token}` // Include token in the headers
+          Authorization: `Bearer ${token}`
         }
       });
       return response.data.doc; // Ensure the response contains the updated product
@@ -87,13 +85,13 @@ export const deleteProduct = createAsyncThunk(
   'product/deleteProduct',
   async (productId, { rejectWithValue }) => {
     try {
-      const token = getAuthToken(); // Get the token
-      await axios.delete(`${API_URL}${productId}`, {
+      const { token } = getAuthData(); // Get the token for authorization
+      await axiosInstance.delete(`${API_URL}/${productId}`, {
         headers: {
-          Authorization: `Bearer ${token}` // Include token in the headers
+          Authorization: `Bearer ${token}`
         }
       });
-      return productId;
+      return productId; // Return the deleted product ID
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -105,10 +103,10 @@ export const toggleFeatured = createAsyncThunk(
   'product/toggleFeatured',
   async ({ productId, isFeatured }, { rejectWithValue }) => {
     try {
-      const token = getAuthToken(); // Get the token
-      const response = await axios.put(`${API_URL}${productId}/feature`, { isFeatured }, {
+      const { token } = getAuthData(); // Get the token for authorization
+      const response = await axiosInstance.put(`${API_URL}/${productId}/feature`, { isFeatured }, {
         headers: {
-          Authorization: `Bearer ${token}` // Include token in the headers
+          Authorization: `Bearer ${token}`
         }
       });
       return response.data.doc; // Ensure the response contains the updated product
@@ -123,10 +121,10 @@ export const updateProductStatus = createAsyncThunk(
   'product/updateProductStatus',
   async ({ productId, status }, { rejectWithValue }) => {
     try {
-      const token = getAuthToken(); // Get the token
-      const response = await axios.put(`${API_URL}${productId}/status`, { status }, {
+      const { token } = getAuthData(); // Get the token for authorization
+      const response = await axiosInstance.put(`${API_URL}/${productId}/status`, { status }, {
         headers: {
-          Authorization: `Bearer ${token}` // Include token in the headers
+          Authorization: `Bearer ${token}`
         }
       });
       return response.data.doc; // Ensure the response contains the updated product
@@ -143,7 +141,7 @@ const initialState = {
   results: 0, // Number of results returned
   products: [], // Array of product objects
   loading: false, // To indicate if data is being fetched
-  error: null, 
+  error: null,
 };
 
 // Create slice
@@ -258,5 +256,5 @@ const productSlice = createSlice({
   },
 });
 
-// Export the slice reducer
+// Default export of the slice reducer
 export default productSlice.reducer;

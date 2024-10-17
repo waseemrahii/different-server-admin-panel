@@ -1,19 +1,19 @@
-// src/slices/vendorSlice.js
+// Helper function to make API calls with authorization
+import axiosInstance from '../../../utils/axiosConfig'; // axios instance with interceptors
+import apiConfig from '../../../config/apiConfig'; // API URLs
+import { ErrorMessage } from '../../../utils/ErrorMessage'; // Error handling utility
+import { getAuthData } from '../../../utils/authHelper'; // Authentication token helper
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import Swal from 'sweetalert2';
-import ApiUrl from '../../../ApiUrl';
-import { ErrorMessage } from '../../../utils/ErrorMessage';  
 
-const API_URL = `${ApiUrl}vendors/`;
+// Use the admin endpoint for vendors
+const API_URL = `${apiConfig.seller}/vendors`;
 
-const getToken = () => localStorage.getItem('token');
 export const createVendor = createAsyncThunk(
   'vendors/createVendor',
   async (vendorData, { rejectWithValue }) => {
-    const token = getToken(); 
+    const { token } = getAuthData(); 
     try {
-      const response = await axios.post(`${API_URL}signup`, vendorData, {
+      const response = await axiosInstance.post(`${API_URL}/signup`, vendorData, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`, 
@@ -30,16 +30,16 @@ export const createVendor = createAsyncThunk(
 export const registerVendor = createAsyncThunk(
   'vendors/registerVendor',
   async (vendorData, { rejectWithValue }) => {
-    const token = getToken(); // Get the token from localStorage
+    const { token } = getAuthData(); // Get the token from auth data
     try {
       const formData = new FormData();
       for (const key in vendorData) {
         formData.append(key, vendorData[key]);
       }
 
-      const response = await axios.post(`${API_URL}register`, formData, {
+      const response = await axiosInstance.post(`${API_URL}/signup`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`, // Pass the token
         },
       });
@@ -55,9 +55,9 @@ export const registerVendor = createAsyncThunk(
 export const fetchVendors = createAsyncThunk(
   'vendors/fetchVendors',
   async (_, { rejectWithValue }) => {
-    const token = getToken(); // Get the token from localStorage
+    const { token } = getAuthData(); // Get the token from auth data
     try {
-      const vendorsResponse = await axios.get(API_URL, {
+      const vendorsResponse = await axiosInstance.get(API_URL, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const vendorsData = vendorsResponse.data.doc;
@@ -74,12 +74,13 @@ export const fetchVendors = createAsyncThunk(
 export const fetchVendorById = createAsyncThunk(
   'vendors/fetchVendorById',
   async (vendorId, { rejectWithValue }) => {
-    const token = getToken(); // Get the token from localStorage
+    const { token } = getAuthData(); // Get the token from auth data
     try {
-      const response = await axios.get(`${API_URL}${vendorId}`, {
+      console.log("venodr id ", vendorId)
+      const response = await axiosInstance.get(`${API_URL}/${vendorId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      // console.log("response ===",response)
+      console.log("response=====", response)
       return response.data.doc;
     } catch (error) {
       const errorMessage = ErrorMessage(error);  // Use the error handler
@@ -92,10 +93,10 @@ export const fetchVendorById = createAsyncThunk(
 export const updateVendorStatus = createAsyncThunk(
   'vendors/updateVendorStatus',
   async ({ vendorId, status }, { rejectWithValue }) => {
-    const token = getToken(); // Get the token from localStorage
+    const { token } = getAuthData(); // Get the token from auth data
     try {
-      const response = await axios.put(
-        `${API_URL}${vendorId}/status`,
+      const response = await axiosInstance.put(
+        `${API_URL}/status/${vendorId}`,
         { status },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -111,9 +112,9 @@ export const updateVendorStatus = createAsyncThunk(
 export const deleteVendor = createAsyncThunk(
   'vendors/deleteVendor',
   async ({ vendorId }, { rejectWithValue }) => {
-    const token = getToken(); 
+    const { token } = getAuthData(); // Get the token from auth data
     try {
-      const response = await axios.delete(`${API_URL}${vendorId}`, {
+      const response = await axiosInstance.delete(`${API_URL}/${vendorId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (response.status === 200) {
@@ -181,7 +182,6 @@ const vendorSlice = createSlice({
         state.loading = false;
         state.vendorDetails = action.payload;
       })
-      
       .addCase(fetchVendorById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;

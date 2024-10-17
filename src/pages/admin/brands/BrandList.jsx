@@ -9,6 +9,7 @@ import Switcher from "../../../components/FormInput/Switcher";
 import ConfirmationModal from "../../../components/FormInput/ConfirmationModal"; 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 // Lazy load TableList for performance
 const LazyTableList = lazy(() => import("../../../components/FormInput/TableList"));
 
@@ -81,12 +82,12 @@ const BrandList = () => {
           <ActionButton
             to={`/update/${brand._id}`}
             icon={FaEdit}
-            label="Edit"
+       
           />
           <ActionButton
             onClick={() => handleDeleteBrand(brand._id)}
             icon={FaTrash}
-            label="Delete"
+        
           />
         </div>
       ),
