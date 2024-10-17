@@ -1,33 +1,27 @@
+import axiosInstance from '../../../utils/axiosConfig'; // Import axiosInstance with interceptors
+import apiConfig from '../../../config/apiConfig'; // Import apiConfig for API URLs
+import { ErrorMessage } from '../../../utils/ErrorMessage'; 
+import { getAuthData } from '../../../utils/authHelper'; 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import ApiUrl from '../../../ApiUrl';
 
-// API Endpoints
-const SUBCATEGORY_API_URL = `${ApiUrl}sub-categories`;
-
-const getToken = () => {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    throw new Error('No token found');
-  }
-  return token;
-};
+// Use the admin endpoint for subcategories
+const API_URL = `${apiConfig.admin}/sub-categories`; // to use admin role
 
 // Fetch subcategories
 export const fetchSubCategories = createAsyncThunk(
   'subCategory/fetchSubCategories',
   async (searchParams, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      const response = await axios.get(SUBCATEGORY_API_URL, {
+      const { token } = getAuthData(); // Get token for authorization
+      const response = await axiosInstance.get(API_URL, {
         params: searchParams,
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.data.doc;
+      return response.data.doc; // Adjust based on your API response structure
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(ErrorMessage(error.response?.data) || error.message);
     }
   }
 );
@@ -37,15 +31,15 @@ export const fetchSubCategoryById = createAsyncThunk(
   'subCategory/fetchSubCategoryById',
   async (subCategoryId, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      const response = await axios.get(`${SUBCATEGORY_API_URL}/${subCategoryId}`, {
+      const { token } = getAuthData(); // Get token for authorization
+      const response = await axiosInstance.get(`${API_URL}/${subCategoryId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.data.doc;
+      return response.data.doc; // Adjust based on your API response structure
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(ErrorMessage(error.response?.data) || error.message);
     }
   }
 );
@@ -55,15 +49,15 @@ export const createSubCategory = createAsyncThunk(
   'subCategory/createSubCategory',
   async (subCategoryData, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      const response = await axios.post(SUBCATEGORY_API_URL, subCategoryData, {
+      const { token } = getAuthData(); // Get token for authorization
+      const response = await axiosInstance.post(API_URL, subCategoryData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.data.doc;
+      return response.data.doc; // Adjust based on your API response structure
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(ErrorMessage(error.response?.data) || error.message);
     }
   }
 );
@@ -73,15 +67,15 @@ export const updateSubCategory = createAsyncThunk(
   'subCategory/updateSubCategory',
   async ({ subCategoryId, subCategoryData }, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      const response = await axios.put(`${SUBCATEGORY_API_URL}/${subCategoryId}`, subCategoryData, {
+      const { token } = getAuthData(); // Get token for authorization
+      const response = await axiosInstance.put(`${API_URL}/${subCategoryId}`, subCategoryData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.data.doc;
+      return response.data.doc; // Adjust based on your API response structure
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(ErrorMessage(error.response?.data) || error.message);
     }
   }
 );
@@ -91,15 +85,15 @@ export const updateSubCategoryStatus = createAsyncThunk(
   'subCategory/updateSubCategoryStatus',
   async ({ subCategoryId, status }, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      const response = await axios.put(`${SUBCATEGORY_API_URL}/${subCategoryId}/status`, { status }, {
+      const { token } = getAuthData(); // Get token for authorization
+      const response = await axiosInstance.put(`${API_URL}/${subCategoryId}/status`, { status }, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.data.doc;
+      return response.data.doc; // Adjust based on your API response structure
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(ErrorMessage(error.response?.data) || error.message);
     }
   }
 );
@@ -109,15 +103,15 @@ export const deleteSubCategory = createAsyncThunk(
   'subCategory/deleteSubCategory',
   async (subCategoryId, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      await axios.delete(`${SUBCATEGORY_API_URL}/${subCategoryId}`, {
+      const { token } = getAuthData(); // Get token for authorization
+      await axiosInstance.delete(`${API_URL}/${subCategoryId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      return subCategoryId;
+      return subCategoryId; // Return the ID of the deleted subcategory
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(ErrorMessage(error.response?.data) || error.message);
     }
   }
 );
@@ -139,6 +133,7 @@ const subCategorySlice = createSlice({
     builder
       .addCase(fetchSubCategories.pending, (state) => {
         state.loading = true;
+        state.error = null; // Clear error on pending
       })
       .addCase(fetchSubCategories.fulfilled, (state, action) => {
         state.loading = false;
@@ -146,10 +141,11 @@ const subCategorySlice = createSlice({
       })
       .addCase(fetchSubCategories.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || action.error.message;
+        state.error = action.payload; // Error message from ErrorMessage utility
       })
       .addCase(fetchSubCategoryById.pending, (state) => {
         state.loading = true;
+        state.error = null; // Clear error on pending
       })
       .addCase(fetchSubCategoryById.fulfilled, (state, action) => {
         state.loading = false;
@@ -157,10 +153,11 @@ const subCategorySlice = createSlice({
       })
       .addCase(fetchSubCategoryById.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || action.error.message;
+        state.error = action.payload; // Error message from ErrorMessage utility
       })
       .addCase(createSubCategory.pending, (state) => {
         state.loading = true;
+        state.error = null; // Clear error on pending
       })
       .addCase(createSubCategory.fulfilled, (state, action) => {
         state.loading = false;
@@ -168,10 +165,11 @@ const subCategorySlice = createSlice({
       })
       .addCase(createSubCategory.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || action.error.message;
+        state.error = action.payload; // Error message from ErrorMessage utility
       })
       .addCase(updateSubCategory.pending, (state) => {
         state.loading = true;
+        state.error = null; // Clear error on pending
       })
       .addCase(updateSubCategory.fulfilled, (state, action) => {
         state.loading = false;
@@ -185,10 +183,11 @@ const subCategorySlice = createSlice({
       })
       .addCase(updateSubCategory.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || action.error.message;
+        state.error = action.payload; // Error message from ErrorMessage utility
       })
       .addCase(updateSubCategoryStatus.pending, (state) => {
         state.loading = true;
+        state.error = null; // Clear error on pending
       })
       .addCase(updateSubCategoryStatus.fulfilled, (state, action) => {
         state.loading = false;
@@ -202,7 +201,7 @@ const subCategorySlice = createSlice({
       })
       .addCase(updateSubCategoryStatus.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || action.error.message;
+        state.error = action.payload; // Error message from ErrorMessage utility
       })
       .addCase(deleteSubCategory.fulfilled, (state, action) => {
         const subCategoryId = action.payload;

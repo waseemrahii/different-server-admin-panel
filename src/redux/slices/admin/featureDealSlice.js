@@ -1,25 +1,22 @@
+import axiosInstance from '../../../utils/axiosConfig'; // axios instance with interceptors
+import apiConfig from '../../../config/apiConfig'; // API URLs
+import { ErrorMessage } from '../../../utils/ErrorMessage'; // Error handling utility
+import { getAuthData } from '../../../utils/authHelper'; // Authentication token helper
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import ApiUrl from '../../../ApiUrl';
 
-// Define the API URL
-const API_URL = `${ApiUrl}featured-deals`; 
-
-const getToken = () => {
-  return localStorage.getItem('token');
-};
+// Use the admin endpoint for deals
+const API_URL = `${apiConfig.admin}/featured-deals`;
 
 // Fetch all deals
 export const fetchDeals = createAsyncThunk(
   'featureDeal/fetchDeals',
   async (searchQuery = '', { rejectWithValue }) => {
     try {
-      const token = getToken();
-      const response = await axios.get(`${API_URL}`, {
+      const { token } = getAuthData(); // Get the token for authorization
+      const response = await axiosInstance.get(API_URL, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log("response data feature", response.data.doc)
-      return response?.data.doc;
+      return response.data.doc; // Adjust based on your API response structure
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -31,11 +28,11 @@ export const createDeal = createAsyncThunk(
   'featureDeal/createDeal',
   async (dealData, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      const response = await axios.post(API_URL, dealData, {
+      const { token } = getAuthData(); // Get the token for authorization
+      const response = await axiosInstance.post(API_URL, dealData, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      return response.data.doc;
+      return response.data.doc; // Adjust based on your API response structure
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -47,11 +44,11 @@ export const updateDealStatus = createAsyncThunk(
   'featureDeal/updateDealStatus',
   async ({ id, status }, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      const response = await axios.put(`${API_URL}/${id}/status`, { status }, {
+      const { token } = getAuthData(); // Get the token for authorization
+      const response = await axiosInstance.put(`${API_URL}/${id}/status`, { status }, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      return response.data.doc;
+      return response.data.doc; // Adjust based on your API response structure
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -63,11 +60,11 @@ export const deleteDeal = createAsyncThunk(
   'featureDeal/deleteDeal',
   async (id, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      await axios.delete(`${API_URL}/${id}`, {
+      const { token } = getAuthData(); // Get the token for authorization
+      await axiosInstance.delete(`${API_URL}/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      return id;
+      return id; // Return the ID of the deleted deal for removing it from state
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -100,6 +97,7 @@ const featureDealSlice = createSlice({
       .addCase(fetchDeals.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || action.error.message;
+        ErrorMessage(action.payload); // Display error message
       })
 
       // Create deal
@@ -114,6 +112,7 @@ const featureDealSlice = createSlice({
       .addCase(createDeal.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || action.error.message;
+        ErrorMessage(action.payload); // Display error message
       })
 
       // Update deal status
@@ -131,6 +130,7 @@ const featureDealSlice = createSlice({
       .addCase(updateDealStatus.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || action.error.message;
+        ErrorMessage(action.payload); // Display error message
       })
 
       // Delete deal
@@ -145,6 +145,7 @@ const featureDealSlice = createSlice({
       .addCase(deleteDeal.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || action.error.message;
+        ErrorMessage(action.payload); // Display error message
       });
   },
 });

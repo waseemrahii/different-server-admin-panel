@@ -1,13 +1,28 @@
-// productCategorySlice.js
+import axiosInstance from '../../../utils/axiosConfig'; // Import axiosInstance with interceptors
+import apiConfig from '../../../config/apiConfig'; // Import apiConfig for API URLs
+import { ErrorMessage } from '../../../utils/ErrorMessage'; // Import ErrorMessage utility
+import { getAuthData } from '../../../utils/authHelper'; // Correctly import getAuthData
+
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import ApiUrl from '../../../ApiUrl';
-import { ErrorMessage } from '../../../utils/ErrorMessage'; // Adjust the path as necessary
 
-const API_URL = `${ApiUrl}categories`;
+// Use the admin endpoint for categories
+const API_URL = `${apiConfig.admin}/categories`; //  to use admin role
 
-const getToken = () => {
-  return localStorage.getItem('token');
+// Helper function to make API calls with authorization
+const makeAuthorizedRequest = async (method, url, data = null, params = null) => {
+  const { token } = getAuthData(); // Use getAuthData to retrieve token
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`, // Use token in headers
+    },
+    params,
+  };
+
+  if (method === 'post' || method === 'put') {
+    config.data = data;
+  }
+
+  return await axiosInstance[method](url, config);
 };
 
 // Fetch categories
@@ -15,13 +30,7 @@ export const fetchCategories = createAsyncThunk(
   'productCategory/fetchCategories',
   async (searchParams, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      const response = await axios.get(API_URL, {
-        params: searchParams,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await makeAuthorizedRequest('get', API_URL, null, searchParams);
       return response.data.doc;
     } catch (error) {
       return rejectWithValue(ErrorMessage(error)); // Use ErrorMessage here
@@ -34,12 +43,7 @@ export const fetchCategoryById = createAsyncThunk(
   'productCategory/fetchCategoryById',
   async (categoryId, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      const response = await axios.get(`${API_URL}/${categoryId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await makeAuthorizedRequest('get', `${API_URL}/${categoryId}`);
       return response.data.doc;
     } catch (error) {
       return rejectWithValue(ErrorMessage(error)); // Use ErrorMessage here
@@ -52,14 +56,7 @@ export const createCategory = createAsyncThunk(
   'productCategory/createCategory',
   async (categoryData, { rejectWithValue }) => {
     try {
-
-      const token = getToken();
-      console.log("category data----",categoryData)
-      const response = await axios.post(API_URL, categoryData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await makeAuthorizedRequest('post', API_URL, categoryData);
       return response.data.doc;
     } catch (error) {
       return rejectWithValue(ErrorMessage(error)); // Use ErrorMessage here
@@ -72,18 +69,12 @@ export const updateCategory = createAsyncThunk(
   'productCategory/updateCategory',
   async ({ categoryId, categoryData }, { rejectWithValue }) => {
     try {
-      const token = getToken();
       const formData = new FormData();
       for (const key in categoryData) {
         formData.append(key, categoryData[key]);
       }
 
-      const response = await axios.put(`${API_URL}/${categoryId}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await makeAuthorizedRequest('put', `${API_URL}/${categoryId}`, formData);
       return response.data.doc;
     } catch (error) {
       return rejectWithValue(ErrorMessage(error)); // Use ErrorMessage here
@@ -96,12 +87,7 @@ export const updateCategoryStatus = createAsyncThunk(
   'productCategory/updateCategoryStatus',
   async ({ categoryId, status }, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      const response = await axios.put(`${API_URL}/${categoryId}/status`, { status }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await makeAuthorizedRequest('put', `${API_URL}/${categoryId}/status`, { status });
       return response.data;
     } catch (error) {
       return rejectWithValue(ErrorMessage(error)); // Use ErrorMessage here
@@ -114,12 +100,7 @@ export const deleteCategory = createAsyncThunk(
   'productCategory/deleteCategory',
   async (categoryId, { rejectWithValue }) => {
     try {
-      const token = getToken();
-      await axios.delete(`${API_URL}/${categoryId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await makeAuthorizedRequest('delete', `${API_URL}/${categoryId}`);
       return categoryId;
     } catch (error) {
       return rejectWithValue(ErrorMessage(error)); // Use ErrorMessage here
