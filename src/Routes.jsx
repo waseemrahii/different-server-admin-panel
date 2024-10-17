@@ -135,6 +135,7 @@ function AllRoutes() {
         <Route path="/venderapprove" element={<VendorApprovedProductPage />} />
         {/* <Route path="/pos" element={<POS />} /> */}
         <Route path="/venderdenied" element={<VendorDeniedProductPage />} />
+        <Route path="/allorders" element={<}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/allorders" element={<OrderList />} />
         <Route path="/orderdetail/:id" element={<OrderDetails />} />

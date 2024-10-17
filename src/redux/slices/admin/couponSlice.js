@@ -4,6 +4,7 @@ import apiConfig from '../../../config/apiConfig'; // API URLs
 import { ErrorMessage } from '../../../utils/ErrorMessage'; // Error handling utility
 import { getAuthData } from '../../../utils/authHelper'; // Authentication token helper
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import Swal from 'sweetalert2';
 
 // Use the admin endpoint for banners
 const API_URL = `${apiConfig.admin}/coupons`;

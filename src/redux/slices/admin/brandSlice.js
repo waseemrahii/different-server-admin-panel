@@ -93,7 +93,7 @@ export const updateBrandStatus = createAsyncThunk(
   async ({ brandId, status }, { rejectWithValue }) => {
     try {
       const { token } = getAuthData(); // Use getAuthData to retrieve token
-      const response = await axiosInstance.put(`${API_URL}/${brandId}/status`, { status }, {
+      const response = await axiosInstance.put(`${API_URL}/status/${brandId}`, { status }, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
