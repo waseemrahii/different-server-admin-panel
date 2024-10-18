@@ -6,9 +6,13 @@ import FormSelect from "../../../../components/FormInput/FormSelect";
 import FormInput from "../../../../components/FormInput/FormInput";
 import ExportButton from "../../../../components/ActionButton/Export";
 import { toast } from "react-toastify";
-import { fetchCoupons } from "../../../../redux/slices/admin/couponSlice";
+import {
+  createCoupon,
+  fetchCoupons,
+} from "../../../../redux/slices/admin/couponSlice";
 import { fetchVendors } from "../../../../redux/slices/seller/vendorSlice";
 import { fetchCustomers } from "../../../../redux/slices/user/customerSlice";
+import LoadingSpinner from "../../../../components/LoodingSpinner/LoadingSpinner";
 const CouponManagement = () => {
   const dispatch = useDispatch();
   const { coupons, loading, error } = useSelector((state) => state.coupons);
@@ -304,15 +308,15 @@ const CouponManagement = () => {
                       isMulti
                     />
                   </div>
-
-                  <div className="col-md-12">
-                    <button
-                      type="submit"
-                      className="btn bg-green-400 text-white"
-                    >
-                      Submit
-                    </button>
-                  </div>
+                </div>
+                <div className="flex items-center justify-end">
+                  <button
+                    type="submit"
+                    className="btn bg-primary hover:bg-primary-dark text-white"
+                    style={{ color: "white" }}
+                  >
+                    Submit
+                  </button>
                 </div>
               </form>
             </div>
@@ -335,7 +339,9 @@ const CouponManagement = () => {
               </div>
               <div className="card-body">
                 {loading ? (
-                  <div className="text-center">Loading...</div>
+                  <div className="text-center">
+                    <LoadingSpinner />
+                  </div>
                 ) : (
                   <table className="table table-bordered">
                     <thead>

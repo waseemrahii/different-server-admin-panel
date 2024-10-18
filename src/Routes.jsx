@@ -32,7 +32,7 @@ import InhouseSale from "./pages/admin/transactionReport/InhouseProduct/InhouseP
 
 import Ticket_Support from "./pages/admin/healthSupport/Ticket_Support.jsx";
 import Message from "./pages/admin/healthSupport/Message.jsx";
-import ProdictGallery from "./pages/admin/healthSupport/Product_Gallery.jsx";
+// import ProductGallery from "./pages/admin/healthSupport/Product_Gallery.jsx";
 import BannerSetup from "./pages/admin/banner/list/bannerSetup.jsx";
 // import POS from "./pages/admin/healthSupport/Pos.js";
 import IndexMessage from "./pages/admin/healthSupport/Index.jsx";
@@ -124,7 +124,6 @@ function AllRoutes() {
   return (
     <>
       <Routes>
-
         <Route path="/" element={<Navigate to="/dashboard" />} />
         <Route path="/businesssetup" element={<BusinessSetupShop />} />
         <Route path="/vendernew" element={<VendorNewRequestProductPage />} />
@@ -135,6 +134,7 @@ function AllRoutes() {
         <Route path="/venderapprove" element={<VendorApprovedProductPage />} />
         {/* <Route path="/pos" element={<POS />} /> */}
         <Route path="/venderdenied" element={<VendorDeniedProductPage />} />
+
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/allorders" element={<OrderList />} />
         <Route path="/orderdetail/:id" element={<OrderDetails />} />
@@ -242,9 +242,11 @@ function AllRoutes() {
         <Route path="/addvenderform" element={<AddVendorForm />} />
         <Route path="/addvenderwallet" element={<VenderWallet />} />
         <Route path="/addvenderwalletmethod" element={<VenderWalletMethod />} />
-        <Route  path="/addvenderwidthrawtmethod"  element={<WithdrawalMethods />} />
+        <Route
+          path="/addvenderwidthrawtmethod"
+          element={<WithdrawalMethods />}
+        />
         <Route path="*" element={<NotFoundPage />} />
-
       </Routes>
     </>
   );
